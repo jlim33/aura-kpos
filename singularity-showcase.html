@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Everything Depends on Your Mind! | 기술적 특이점과 Aura K-POS 쇼케이스</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&family=Noto+Sans+KR:wght@400;600;700;900&display=swap');
+    body { font-family: 'Noto Sans KR', 'Plus Jakarta Sans', sans-serif; background-color: #0b0f19; color: #f8fafc; }
+    .hero-glow {
+      background: radial-gradient(circle at 50% 30%, rgba(20, 184, 166, 0.25) 0%, rgba(15, 23, 42, 0) 70%);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-teal-500 selection:text-white">
+
+  <!-- Hero Header -->
+  <header class="relative overflow-hidden hero-glow border-b border-slate-800 py-16 sm:py-24 px-4 sm:px-8 text-center">
+    <div class="max-w-4xl mx-auto space-y-6">
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-teal-500/10 border border-teal-500/30 text-teal-400 text-xs sm:text-sm font-black tracking-wider uppercase animate-pulse">
+        <span>✨ The Era of Technological Singularity</span>
+      </div>
+      <h1 class="text-4xl sm:text-6xl font-black tracking-tight text-white leading-tight">
+        "의지만 있다면, 누구나<br class="hidden sm:inline"/>
+        <span class="bg-gradient-to-r from-teal-400 via-emerald-300 to-amber-300 bg-clip-text text-transparent">무엇이든 만들 수 있는 시대</span>"
+      </h1>
+      <p class="text-xl sm:text-2xl font-serif italic text-amber-300">
+        Everything depends on your mind!
+      </p>
+      <p class="text-sm sm:text-base text-slate-400 max-w-2xl mx-auto leading-relaxed">
+        로컬 에러의 난관을 딛고 단 하루 만에 완성된 미국 샌프란시스코 표준 Aura K-POS.<br>
+        인간의 강력한 비전과 AI의 초지능 실행력이 만났을 때 일어난 기적의 개발 여정을 공개합니다.
+      </p>
+
+      <div class="flex flex-wrap justify-center gap-4 pt-4">
+        <a href="http://localhost:3001" target="_blank" class="px-8 py-4 rounded-2xl bg-teal-500 hover:bg-teal-400 text-slate-950 font-black text-sm sm:text-base shadow-xl shadow-teal-500/20 flex items-center gap-2 transition-all">
+          <i data-lucide="play" class="w-5 h-5 fill-slate-950"></i> 실시간 Aura K-POS 체험하기
+        </a>
+        <a href="http://localhost:3001/video" target="_blank" class="px-8 py-4 rounded-2xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-sm sm:text-base border border-slate-700 flex items-center gap-2 transition-all">
+          <i data-lucide="video" class="w-5 h-5 text-amber-400"></i> 3분 동영상 교육관 보기
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Interactive Story Timeline -->
+  <main class="max-w-5xl mx-auto py-16 px-4 sm:px-8 space-y-16">
+
+    <!-- Timeline Intro -->
+    <div class="text-center space-y-3">
+      <h2 class="text-2xl sm:text-3xl font-black text-white">🚀 시작부터 완성까지의 5단계 여정</h2>
+      <p class="text-slate-400 text-sm">코딩 장벽을 부수고 기술적 특이점을 증명한 리얼 스토리</p>
+    </div>
+
+    <!-- Step Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+      <!-- Card 1 -->
+      <div class="p-8 rounded-3xl bg-slate-900/90 border border-slate-800 hover:border-teal-500/50 transition-all space-y-3 shadow-lg">
+        <span class="text-xs font-mono px-3 py-1 rounded-full bg-teal-950 text-teal-400 border border-teal-800 font-bold">Phase 1</span>
+        <h3 class="text-xl font-bold text-white flex items-center gap-2">
+          <span>🔥 위대한 비전의 시작</span>
+        </h3>
+        <p class="text-slate-400 text-xs sm:text-sm leading-relaxed">
+          소상공인과 비영리단체를 돕기 위한 결심. 샌프란시스코 베이지역 표준 POS와 군침 도는 웹사이트를 만들겠다는 명확한 목표 설정.
+        </p>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="p-8 rounded-3xl bg-slate-900/90 border border-slate-800 hover:border-rose-500/50 transition-all space-y-3 shadow-lg">
+        <span class="text-xs font-mono px-3 py-1 rounded-full bg-rose-950 text-rose-400 border border-rose-800 font-bold">Phase 2</span>
+        <h3 class="text-xl font-bold text-white flex items-center gap-2">
+          <span>⚡ 에러 극복 & 0-Latency 아키텍처</span>
+        </h3>
+        <p class="text-slate-400 text-xs sm:text-sm leading-relaxed">
+          블랙스크린과 하이드레이션 충돌 발생. 포기 대신 AI와 함께 원인을 규명하고 0-Latency 초경량 순수 엔진으로 전면 전환하여 0.01초 반응 속도 달성!
+        </p>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="p-8 rounded-3xl bg-slate-900/90 border border-slate-800 hover:border-amber-500/50 transition-all space-y-3 shadow-lg">
+        <span class="text-xs font-mono px-3 py-1 rounded-full bg-amber-950 text-amber-400 border border-amber-800 font-bold">Phase 3</span>
+        <h3 class="text-xl font-bold text-white flex items-center gap-2">
+          <span>✨ K-Manna 벤치마킹 & AI 셰프 추천</span>
+        </h3>
+        <p class="text-slate-400 text-xs sm:text-sm leading-relaxed">
+          실존 맛집 K-Manna의 갈비/불고기 메뉴와 Toast/Square 표준 기능 탑재. 객단가를 +18% 올리는 창의적 AI 스마트 페어링 엔진 개발!
+        </p>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="p-8 rounded-3xl bg-slate-900/90 border border-slate-800 hover:border-purple-500/50 transition-all space-y-3 shadow-lg">
+        <span class="text-xs font-mono px-3 py-1 rounded-full bg-purple-950 text-purple-400 border border-purple-800 font-bold">Phase 4</span>
+        <h3 class="text-xl font-bold text-white flex items-center gap-2">
+          <span>🌸 어르신 친화 파스텔 톤 & 실물 사진</span>
+        </h3>
+        <p class="text-slate-400 text-xs sm:text-sm leading-relaxed">
+          눈이 편안한 파스텔 테마 기본 적용, 맨 앞 1번 Take Out 버튼, 고화질 요리 사진, 그리고 🌶️ 맵기 선택 버그 완벽 해결!
+        </p>
+      </div>
+
+    </div>
+
+    <!-- Promotional Visual Assets Gallery Section -->
+    <div class="space-y-6 pt-6">
+      <div class="text-center space-y-2">
+        <span class="text-xs font-mono text-amber-400 font-bold uppercase tracking-widest">Visual Marketing Assets</span>
+        <h2 class="text-2xl sm:text-3xl font-black text-white">📸 SNS 및 유튜브용 고화질 공식 홍보 이미지</h2>
+        <p class="text-slate-400 text-xs sm:text-sm">인스타그램, 페이스북, 유튜브 썸네일로 즉시 활용 가능한 프리미엄 에셋</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Asset 1 -->
+        <div class="rounded-3xl bg-slate-900 border border-slate-800 overflow-hidden space-y-3 group shadow-xl">
+          <div class="relative aspect-video overflow-hidden">
+            <img src="/assets/aura_kpos_hero.jpg" alt="Aura K-POS Hero" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+          </div>
+          <div class="p-5 space-y-2">
+            <span class="text-[10px] px-2 py-0.5 rounded-full bg-teal-950 text-teal-400 font-bold border border-teal-800">16:9 메인 히어로</span>
+            <h4 class="text-sm font-bold text-white">SF 베이 감성 Aura K-POS 실물 단말기</h4>
+            <p class="text-xs text-slate-400 leading-relaxed">화사한 파스텔 단말기와 지글지글 LA 갈비가 어우러진 프리미엄 매장 비주얼</p>
+          </div>
+        </div>
+
+        <!-- Asset 2 -->
+        <div class="rounded-3xl bg-slate-900 border border-slate-800 overflow-hidden space-y-3 group shadow-xl">
+          <div class="relative aspect-square overflow-hidden">
+            <img src="/assets/singularity_mind.jpg" alt="Singularity Mind" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+          </div>
+          <div class="p-5 space-y-2">
+            <span class="text-[10px] px-2 py-0.5 rounded-full bg-amber-950 text-amber-400 font-bold border border-amber-800">1:1 SNS 포스터</span>
+            <h4 class="text-sm font-bold text-white">Everything Depends on Your Mind!</h4>
+            <p class="text-xs text-slate-400 leading-relaxed">인간의 마음과 AI의 초지능이 만나는 기술적 특이점 상징 컨셉 아트</p>
+          </div>
+        </div>
+
+        <!-- Asset 3 -->
+        <div class="rounded-3xl bg-slate-900 border border-slate-800 overflow-hidden space-y-3 group shadow-xl">
+          <div class="relative aspect-video overflow-hidden">
+            <img src="/assets/kbbq_ai_pairing.jpg" alt="AI Pairing Feast" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+          </div>
+          <div class="p-5 space-y-2">
+            <span class="text-[10px] px-2 py-0.5 rounded-full bg-purple-950 text-purple-400 font-bold border border-purple-800">16:9 유튜브 썸네일</span>
+            <h4 class="text-sm font-bold text-white">AI 셰프 스마트 페어링 한상차림</h4>
+            <p class="text-xs text-slate-400 leading-relaxed">LA 갈비 + 해물파전 + 시원한 생맥주 콤보로 객단가 +18% 상승 시각화</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Celebration Banner -->
+    <div class="p-8 sm:p-12 rounded-3xl bg-gradient-to-r from-teal-900/40 via-slate-900 to-amber-900/40 border border-teal-500/30 text-center space-y-4">
+      <h3 class="text-2xl sm:text-3xl font-black text-white">당신의 비즈니스도 지금 시작할 수 있습니다</h3>
+      <p class="text-slate-300 text-sm sm:text-base max-w-xl mx-auto">
+        코딩을 몰라도, 자본이 부족해도 괜찮습니다. 의지만 있다면 기술적 특이점의 힘으로 상상을 현실로 바꿀 수 있습니다.
+      </p>
+      <button onclick="triggerConfetti()" class="px-8 py-3.5 rounded-2xl bg-gradient-to-r from-amber-400 to-orange-500 text-slate-950 font-black text-sm shadow-xl hover:brightness-110 transition-all">
+        🎉 축하 폭죽 터뜨리기
+      </button>
+    </div>
+
+  </main>
+
+  <footer class="border-t border-slate-800 py-8 text-center text-xs text-slate-500">
+    <p>© 2026 Aura K-POS Enterprise. Designed with AI Pair Programming · Technological Singularity Era</p>
+  </footer>
+
+  <script>
+    lucide.createIcons();
+    function triggerConfetti() {
+      confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
+    }
+  </script>
+</body>
+</html>

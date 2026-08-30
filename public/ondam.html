@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="ko" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>온담 (ONDAM) - 정성을 담은 숯불 & 미식 한상 | 배달·포장·스마트 POS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#fff7ed', 100: '#ffedd5', 200: '#fed7aa', 300: '#fdba74',
+              400: '#fb923c', 500: '#f97316', 600: '#ea580c', 700: '#c2410c',
+              800: '#9a3412', 900: '#7c2d12',
+            },
+            gourmet: {
+              gold: '#f59e0b', amber: '#d97706', dark: '#141210', charcoal: '#0c0a09',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+    body { font-family: Pretendard, sans-serif; }
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #141210; }
+    ::-webkit-scrollbar-thumb { background: #292524; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #ea580c; }
+    .amber-glow { box-shadow: 0 0 35px -5px rgba(249, 115, 22, 0.35); }
+    .gold-glow { box-shadow: 0 0 25px -3px rgba(245, 158, 11, 0.3); }
+  </style>
+</head>
+<body class="bg-[#0c0a09] text-[#f5f5f4] min-h-screen antialiased selection:bg-orange-600 selection:text-white">
+
+  <!-- TOP ANNOUNCEMENT BAR -->
+  <div class="bg-gradient-to-r from-orange-600 via-amber-600 to-orange-700 py-1.5 px-4 text-center text-xs font-medium text-white flex items-center justify-center gap-2 shadow-inner">
+    <span class="flex h-2 w-2 rounded-full bg-white animate-ping"></span>
+    <span>🔥 <strong>[오늘의 감동 특선]</strong> 24시간 훈제 우대갈비 주문 시 수제 파김치 증정 중!</span>
+    <span class="hidden md:inline text-orange-200">| 매일 새벽 1++ 원육 가락시장 직송</span>
+  </div>
+
+  <!-- HEADER -->
+  <header class="sticky top-0 z-40 w-full border-b border-stone-800/80 bg-[#0e0c0a]/90 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      <div class="flex items-center gap-3 cursor-pointer" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center shadow-lg shadow-orange-500/20 border border-orange-400/30">
+          <i data-lucide="flame" class="w-7 h-7 text-white fill-white animate-pulse"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-2xl font-black tracking-tight text-white font-serif">온담</span>
+            <span class="text-xs px-2 py-0.5 rounded-full bg-orange-500/20 text-orange-400 border border-orange-500/30 font-semibold tracking-wider">
+              ONDAM GOURMET
+            </span>
+          </div>
+          <p className="text-xs text-stone-400 font-light">정성을 담은 숯불 & 미식 한상</p>
+        </div>
+      </div>
+
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-stone-300">
+        <a href="#menu-section" class="hover:text-orange-400 transition-colors flex items-center gap-1.5">
+          <i data-lucide="sparkles" class="w-4 h-4 text-amber-500"></i> 미식 메뉴
+        </a>
+        <a href="#story-section" class="hover:text-orange-400 transition-colors">셰프의 철학</a>
+        <a href="#reviews-section" class="hover:text-orange-400 transition-colors">감동 후기</a>
+        <a href="#location-section" class="hover:text-orange-400 transition-colors">매장 안내 & 지도</a>
+      </nav>
+
+      <div class="flex items-center gap-3">
+        <button onclick="toggleCart()" class="relative flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-gradient-to-r from-orange-600 to-amber-600 text-white font-semibold text-sm shadow-lg shadow-orange-600/30 hover:brightness-110 active:scale-95 transition-all">
+          <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+          <span class="hidden sm:inline">주문 장바구니</span>
+          <span id="header-cart-badge" class="hidden bg-white text-orange-600 text-xs font-extrabold px-1.5 py-0.5 rounded-full min-w-[20px] shadow">0</span>
+        </button>
+
+        <button onclick="togglePOS()" class="p-2.5 rounded-xl border text-xs font-medium flex items-center gap-1.5 bg-stone-900/80 text-stone-400 border-stone-800 hover:text-white hover:border-stone-700 transition-all" id="pos-toggle-btn">
+          <i data-lucide="store" class="w-4 h-4"></i>
+          <span class="hidden lg:inline">점주 POS 모드</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- LIVE NUDGE TICKER -->
+  <div class="w-full bg-[#161311] border-y border-stone-800/80 py-2.5 px-4 overflow-hidden shadow-sm">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-xs">
+      <div class="flex items-center gap-2 text-stone-300">
+        <span class="flex items-center gap-1 px-2 py-0.5 rounded-full bg-red-950/80 text-red-400 border border-red-800/60 font-semibold text-[11px] animate-pulse">
+          <span class="h-1.5 w-1.5 rounded-full bg-red-500"></span> LIVE ORDER
+        </span>
+        <div class="flex items-center gap-1.5 font-medium" id="live-nudge-text">
+          <span class="text-orange-400 font-semibold">서울 강남구 역삼동</span>에서
+          <span class="text-amber-200 font-bold bg-amber-950/40 px-1.5 py-0.5 rounded border border-amber-800/30">[24시간 우대갈비 한상]</span>
+          <span class="text-stone-300">주문 접수! (1분 전)</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-4 text-stone-400 font-light">
+        <div class="flex items-center gap-1.5">
+          <i data-lucide="users" class="w-3.5 h-3.5 text-orange-400"></i>
+          <span>현재 <strong class="text-white font-semibold" id="live-viewers">28명</strong>이 메뉴를 보는 중</span>
+        </div>
+        <div class="hidden md:flex items-center gap-1.5 text-emerald-400 font-medium">
+          <i data-lucide="zap" class="w-3.5 h-3.5 fill-emerald-400"></i>
+          <span>평균 조리+배달: <strong>28분</strong> (특수 보온백 포장)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HERO SECTION -->
+  <section class="relative overflow-hidden pt-8 pb-16 lg:pt-14 lg:pb-24">
+    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-gradient-to-b from-orange-600/15 via-amber-600/10 to-transparent blur-3xl pointer-events-none rounded-full"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <!-- Left Column -->
+        <div class="lg:col-span-7 space-y-6 text-left">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-stone-900/90 border border-orange-500/30 text-xs font-semibold text-orange-300 shadow-sm">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-400"></i>
+            <span>지친 하루 끝, 당신의 식탁에 닿는 가장 따뜻한 위로</span>
+          </div>
+
+          <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight font-serif">
+            입안 가득 터지는 <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-amber-400 to-yellow-300">참나무 숯불의 풍미</span>,<br />
+            마음을 녹이는 <span class="underline decoration-orange-500/60 decoration-wavy underline-offset-8">정갈한 미식 한상</span>
+          </h1>
+
+          <p class="text-base sm:text-lg text-stone-300 font-light leading-relaxed">
+            24시간 저온 참나무 훈연으로 가둔 폭발적인 육즙과 30년 비법 발효 양념.<br class="hidden sm:inline" />
+            오늘 하루도 묵묵히 버텨낸 당신을 위해, 주문 즉시 갓 구워낸 <strong class="text-amber-400 font-semibold">65°C 온기 그대로</strong> 문 앞까지 정성을 배달합니다.
+          </p>
+
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
+            <div class="p-3 rounded-xl bg-stone-900/70 border border-stone-800 flex items-start gap-2.5">
+              <i data-lucide="star" class="w-5 h-5 text-amber-400 fill-amber-400 shrink-0 mt-0.5"></i>
+              <div>
+                <div class="text-xs font-bold text-white">평점 4.99 / 5.0</div>
+                <div class="text-[11px] text-stone-400">누적 리뷰 3,240건</div>
+              </div>
+            </div>
+            <div class="p-3 rounded-xl bg-stone-900/70 border border-stone-800 flex items-start gap-2.5">
+              <i data-lucide="flame" class="w-5 h-5 text-orange-500 fill-orange-500 shrink-0 mt-0.5"></i>
+              <div>
+                <div class="text-xs font-bold text-white">직화 훈연 보증</div>
+                <div class="text-[11px] text-stone-400">새벽 직송 1++ 한우/한돈</div>
+              </div>
+            </div>
+            <div class="col-span-2 sm:col-span-1 p-3 rounded-xl bg-stone-900/70 border border-stone-800 flex items-start gap-2.5">
+              <i data-lucide="clock" class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5"></i>
+              <div>
+                <div class="text-xs font-bold text-white">25~35분 도착</div>
+                <div class="text-[11px] text-stone-400">특수 보온백 밀봉 배송</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-4">
+            <a href="#menu-section" class="group px-7 py-4 rounded-2xl bg-gradient-to-r from-orange-600 via-orange-500 to-amber-500 text-white font-bold text-base shadow-xl shadow-orange-600/30 hover:shadow-orange-500/50 hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+              <span>지금 군침 도는 메뉴 주문하기</span>
+              <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
+            </a>
+
+            <button onclick="claimCoupon()" id="hero-coupon-btn" class="px-6 py-4 rounded-2xl border font-bold text-sm flex items-center justify-center gap-2 bg-stone-900 text-amber-300 border-amber-500/40 hover:bg-stone-800 transition-all">
+              <i data-lucide="gift" class="w-4 h-4 text-amber-400"></i>
+              <span>🎁 첫 주문 3,000원 할인쿠폰 받기</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Right Column: Visual Card -->
+        <div class="lg:col-span-5 relative">
+          <div class="relative rounded-3xl overflow-hidden border border-orange-500/30 bg-stone-900/90 shadow-2xl shadow-orange-950/60 group">
+            <div class="absolute top-4 left-4 z-20 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/75 backdrop-blur-md border border-orange-500/40 text-xs font-bold text-orange-400">
+              <i data-lucide="flame" class="w-3.5 h-3.5 fill-orange-500 text-orange-500 animate-pulse"></i>
+              <span>오늘 당일 한정 특선 (잔여 6그릇)</span>
+            </div>
+            <div class="absolute top-4 right-4 z-20 flex items-center gap-1 px-3 py-1.5 rounded-full bg-black/75 backdrop-blur-md border border-amber-500/40 text-xs font-bold text-amber-300">
+              <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400 text-amber-400"></i>
+              <span>4.99 (842)</span>
+            </div>
+            <div class="relative h-[360px] sm:h-[420px] w-full overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1200&auto=format&fit=crop" alt="24시간 훈제 우대갈비" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+              <div class="absolute inset-0 bg-gradient-to-t from-[#0e0c0a] via-transparent to-black/20"></div>
+            </div>
+            <div class="p-5 space-y-3 relative -mt-12 bg-gradient-to-t from-[#141210] to-[#141210]/95 rounded-t-2xl border-t border-stone-800">
+              <div class="flex items-center justify-between">
+                <h3 class="text-lg font-bold text-white font-serif">24시간 참나무 직화 훈제 우대갈비</h3>
+                <div class="text-right">
+                  <span class="text-xs text-stone-400 line-through mr-2">38,000원</span>
+                  <span class="text-lg font-black text-orange-400">34,900원</span>
+                </div>
+              </div>
+              <p class="text-xs text-stone-300">천연 참나무로 24시간 은은하게 훈연하여 입에 넣는 순간 사르르 녹아내리는 육즙의 향연</p>
+              <div class="flex items-center justify-between pt-1">
+                <div class="flex items-center gap-2 text-[11px] text-stone-400">
+                  <span class="px-2 py-0.5 rounded bg-stone-800 text-stone-300 font-medium">수제 비법소스</span>
+                  <span class="px-2 py-0.5 rounded bg-stone-800 text-stone-300 font-medium">구운 가니쉬</span>
+                </div>
+                <button onclick="quickAdd('rib-feast')" class="px-3.5 py-1.5 rounded-lg bg-orange-600 hover:bg-orange-500 text-white font-bold text-xs shadow transition-all">
+                  장바구니 담기
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MENU SECTION -->
+  <section id="menu-section" class="py-16 lg:py-24 bg-[#0a0908] relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto space-y-4 mb-12">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-950/60 border border-orange-500/30 text-xs font-bold text-orange-400">
+          <i data-lucide="flame" class="w-3.5 h-3.5 fill-orange-400"></i>
+          <span>ONDAM GOURMET SPECIALS</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white font-serif">
+          누구나 군침 흘리는 <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-400">온담의 미식 메뉴</span>
+        </h2>
+        <p class="text-sm sm:text-base text-stone-300 font-light">
+          엄선된 최상급 원육, 참나무 훈연의 불향, 매일 신선하게 끓여내는 깊은 국물까지.<br />
+          당신의 식탁을 행복으로 가득 채울 시그니처 메뉴들을 만나보세요.
+        </p>
+      </div>
+
+      <!-- Menu Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7" id="menu-grid">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- BRAND STORY SECTION -->
+  <section id="story-section" class="py-20 bg-[#0e0c0a] relative overflow-hidden border-t border-stone-800/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-950/60 border border-orange-500/30 text-xs font-bold text-orange-400">
+          <i data-lucide="heart" class="w-3.5 h-3.5 fill-orange-400"></i>
+          <span>OUR HEARTFELT PROMISE</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-white font-serif leading-tight">
+          "한 그릇의 음식에도 <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-400">정성과 따뜻한 온기</span>를 담습니다"
+        </h2>
+        <p class="text-base text-stone-300 font-light leading-relaxed">
+          우리는 단순히 배를 채우는 음식을 만들지 않습니다.<br />
+          치열했던 하루의 끝, 문을 열고 들어선 당신에게 <strong class="text-amber-300">"오늘도 정말 수고 많았어요"</strong>라는
+          가장 진심 어린 위로를 건네는 따뜻한 식탁이 되고자 합니다.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="p-8 rounded-3xl bg-stone-900/60 border border-stone-800 hover:border-orange-500/40 transition-all space-y-5 flex flex-col justify-between group">
+          <div class="space-y-4">
+            <div class="w-14 h-14 rounded-2xl bg-orange-500/20 text-orange-400 border border-orange-500/30 flex items-center justify-center group-hover:scale-110 transition-transform">
+              <i data-lucide="chef-hat" class="w-7 h-7"></i>
+            </div>
+            <div class="space-y-2">
+              <span class="text-xs font-bold text-orange-400 tracking-wider">COMMITMENT 01</span>
+              <h3 class="text-xl font-bold text-white font-serif">새벽 5시 가락시장 직송</h3>
+            </div>
+            <p class="text-xs sm:text-sm text-stone-300 leading-relaxed font-light">
+              절대 타협하지 않는 1++ 등급 최상급 원육과 당일 새벽 직송된 유기농 신선 채소만을 고집합니다. 신선함이 곧 미식의 시작입니다.
+            </p>
+          </div>
+          <div class="pt-4 border-t border-stone-800/80 text-xs text-stone-400 font-medium flex items-center gap-1.5">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-400"></i>
+            <span>100% 당일 소비 원칙 · 잔반 재사용 ZERO</span>
+          </div>
+        </div>
+
+        <div class="p-8 rounded-3xl bg-stone-900/60 border border-stone-800 hover:border-orange-500/40 transition-all space-y-5 flex flex-col justify-between group">
+          <div class="space-y-4">
+            <div class="w-14 h-14 rounded-2xl bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center justify-center group-hover:scale-110 transition-transform">
+              <i data-lucide="flame" class="w-7 h-7"></i>
+            </div>
+            <div class="space-y-2">
+              <span class="text-xs font-bold text-amber-400 tracking-wider">COMMITMENT 02</span>
+              <h3 class="text-xl font-bold text-white font-serif">24시간 참나무 훈연 & 옹기 숙성</h3>
+            </div>
+            <p class="text-xs sm:text-sm text-stone-300 leading-relaxed font-light">
+              화학 첨가물이나 인위적인 불맛 소스 없이, 100% 천연 참나무 장작으로 24시간 은은하게 훈연하고 전통 옹기에서 저온 숙성합니다.
+            </p>
+          </div>
+          <div class="pt-4 border-t border-stone-800/80 text-xs text-stone-400 font-medium flex items-center gap-1.5">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-400"></i>
+            <span>30년 전통 발효 씨간장 비법 소스</span>
+          </div>
+        </div>
+
+        <div class="p-8 rounded-3xl bg-stone-900/60 border border-stone-800 hover:border-orange-500/40 transition-all space-y-5 flex flex-col justify-between group">
+          <div class="space-y-4">
+            <div class="w-14 h-14 rounded-2xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center group-hover:scale-110 transition-transform">
+              <i data-lucide="shield-check" class="w-7 h-7"></i>
+            </div>
+            <div class="space-y-2">
+              <span class="text-xs font-bold text-emerald-400 tracking-wider">COMMITMENT 03</span>
+              <h3 class="text-xl font-bold text-white font-serif">65°C 온기 유지 안심 포장</h3>
+            </div>
+            <p class="text-xs sm:text-sm text-stone-300 leading-relaxed font-light">
+              배달 도중 음식이 식지 않도록 특수 3중 은박 보온백과 친환경 안심 실링 용기로 포장하여, 매장에서 방금 나온 맛 그대로 전해드립니다.
+            </p>
+          </div>
+          <div class="pt-4 border-t border-stone-800/80 text-xs text-stone-400 font-medium flex items-center gap-1.5">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-400"></i>
+            <span>따뜻한 손편지 스티커 동봉</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REVIEWS SECTION -->
+  <section id="reviews-section" class="py-20 bg-[#0a0908] relative border-t border-stone-800/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-950/60 border border-amber-500/30 text-xs font-bold text-amber-400">
+          <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400"></i>
+          <span>REAL VERIFIED REVIEWS</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-black text-white font-serif">
+          고객님들이 남겨주신 <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-400">감동의 순간들</span>
+        </h2>
+        <p class="text-stone-300 text-sm sm:text-base font-light">
+          실제 배달 & 포장 주문 고객님들이 보내주신 100% 리얼 솔직 리뷰 (누적 3,240건 / 평점 4.99)
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-7">
+        <div class="p-7 rounded-3xl bg-stone-900/80 border border-stone-800 space-y-4 shadow-xl">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="font-bold text-white text-sm">민지* (직장인) <span class="text-[10px] text-emerald-400 bg-emerald-950/60 px-1.5 py-0.5 rounded border border-emerald-800/40">배달 인증</span></div>
+              <span class="text-[11px] text-stone-500">2026. 8. 26</span>
+            </div>
+            <div class="text-amber-400">★★★★★</div>
+          </div>
+          <div class="px-3 py-1.5 rounded-xl bg-[#141210] border border-stone-800 text-xs text-orange-300 font-medium truncate">
+            주문: 24시간 참나무 직화 훈제 우대갈비 한상
+          </div>
+          <p class="text-xs sm:text-sm text-stone-300 font-light leading-relaxed">
+            "야근하고 지친 몸으로 집에 와서 배달 시켰는데 진짜 눈물 날 뻔했습니다... 뚜껑 열자마자 불향이 방안 가득 퍼지고 고기가 이 안 닿아도 씹힐 정도로 부드러워요. 보온 포장 덕에 김이 모락모락 나서 매장에서 바로 먹는 기분이었습니다!"
+          </p>
+        </div>
+
+        <div class="p-7 rounded-3xl bg-stone-900/80 border border-stone-800 space-y-4 shadow-xl">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="font-bold text-white text-sm">김승* (단골 2년차) <span class="text-[10px] text-emerald-400 bg-emerald-950/60 px-1.5 py-0.5 rounded border border-emerald-800/40">배달 인증</span></div>
+              <span class="text-[11px] text-stone-500">2026. 8. 25</span>
+            </div>
+            <div class="text-amber-400">★★★★★</div>
+          </div>
+          <div class="px-3 py-1.5 rounded-xl bg-[#141210] border border-stone-800 text-xs text-orange-300 font-medium truncate">
+            주문: 특제 항아리 숙성 삼겹 바비큐 & 파김치 플래터
+          </div>
+          <p class="text-xs sm:text-sm text-stone-300 font-light leading-relaxed">
+            "부모님 오셔서 시켜드렸는데 아버지가 입맛 까다로우신데도 어디 식당이냐고 명함 받아두라고 하셨습니다 ㅎㅎ 파김치가 진짜 신의 한 수입니다. 고기 겉은 바삭하고 육즙 팡팡 터져서 순식간에 다 비웠네요. 벌써 15번째 재주문입니다."
+          </p>
+        </div>
+
+        <div class="p-7 rounded-3xl bg-stone-900/80 border border-stone-800 space-y-4 shadow-xl">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="font-bold text-white text-sm">이수* (동네 주민) <span class="text-[10px] text-emerald-400 bg-emerald-950/60 px-1.5 py-0.5 rounded border border-emerald-800/40">배달 인증</span></div>
+              <span class="text-[11px] text-stone-500">2026. 8. 24</span>
+            </div>
+            <div class="text-amber-400">★★★★★</div>
+          </div>
+          <div class="px-3 py-1.5 rounded-xl bg-[#141210] border border-stone-800 text-xs text-orange-300 font-medium truncate">
+            주문: 진국 12시간 가마솥 한우 사골 도가니탕
+          </div>
+          <p class="text-xs sm:text-sm text-stone-300 font-light leading-relaxed">
+            "감기 기운 있어서 뜨끈한 국물 생각나서 주문했는데 진짜 보약 먹은 것처럼 땀 쫙 빼고 개운해졌어요. 도가니도 진짜 아낌없이 팍팍 들어가 있고 국물이 입술에 쩍쩍 달라붙을 만큼 진국입니다. 온담은 진짜 믿고 먹습니다."
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer id="location-section" class="bg-[#080706] border-t border-stone-800 text-stone-400 text-xs font-light">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 grid grid-cols-1 md:grid-cols-4 gap-10">
+      <div class="space-y-4 md:col-span-2">
+        <div class="flex items-center gap-2.5">
+          <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center text-white">
+            <i data-lucide="flame" class="w-6 h-6 fill-white"></i>
+          </div>
+          <div>
+            <span class="text-xl font-bold text-white font-serif tracking-tight">온담 (ONDAM)</span>
+            <p class="text-[11px] text-orange-400 font-medium">정성을 담은 숯불 & 미식 한상</p>
+          </div>
+        </div>
+        <p class="text-stone-400 text-xs sm:text-sm leading-relaxed max-w-md">
+          매일 새벽 가락시장에서 직송된 1++ 한우와 한돈, 24시간 천연 참나무 훈연으로
+          고객님의 지친 일상에 가장 따뜻한 감동과 행복을 전합니다.
+        </p>
+        <div class="flex items-center gap-2 text-[11px] text-emerald-400 bg-emerald-950/40 px-3 py-1.5 rounded-xl border border-emerald-800/40 w-fit">
+          <i data-lucide="shield-check" class="w-4 h-4"></i>
+          <span>식약처 위생등급 <strong>[매우 우수 (★★★)]</strong> 인증 매장</span>
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <div class="font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
+          <i data-lucide="clock" class="w-4 h-4 text-orange-500"></i> 영업 및 배달 시간
+        </div>
+        <ul class="space-y-1.5 text-stone-300">
+          <li><strong>매일:</strong> 11:00 ~ 23:00 (연중무휴)</li>
+          <li><strong>브레이크타임:</strong> 15:00 ~ 17:00</li>
+          <li><strong>마지막 주문:</strong> 22:30</li>
+          <li class="text-orange-400 font-semibold pt-1">🚀 배달/포장 주문 11:00 ~ 22:30 상시 가동</li>
+        </ul>
+      </div>
+
+      <div class="space-y-3">
+        <div class="font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
+          <i data-lucide="map-pin" class="w-4 h-4 text-orange-500"></i> 매장 위치 & 연락처
+        </div>
+        <div class="space-y-1.5 text-stone-300">
+          <p>서울시 강남구 테헤란로 152 1층 (역삼역 3번 출구 150m)</p>
+          <p class="flex items-center gap-1.5 pt-1 text-white font-bold">
+            <i data-lucide="phone" class="w-3.5 h-3.5 text-emerald-400"></i>
+            <span>02-555-8292 (예약/단체 문의)</span>
+          </p>
+          <p class="text-[11px] text-stone-500">주차 가능 (건물 지하 2시간 무료)</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- CART DRAWER MODAL -->
+  <div id="cart-drawer" class="hidden fixed inset-0 z-50 overflow-hidden bg-black/75 backdrop-blur-sm">
+    <div class="absolute inset-y-0 right-0 max-w-full flex pl-10">
+      <div class="w-screen max-w-md bg-[#141210] border-l border-stone-800 shadow-2xl flex flex-col">
+        <div class="p-5 border-b border-stone-800 flex items-center justify-between bg-[#0e0c0a]">
+          <div class="flex items-center gap-2">
+            <i data-lucide="shopping-bag" class="w-5 h-5 text-orange-500"></i>
+            <h2 class="text-lg font-bold text-white font-serif">주문 장바구니</h2>
+            <span id="cart-drawer-count" class="px-2 py-0.5 rounded-full bg-orange-600/20 text-orange-400 border border-orange-500/30 text-xs font-bold">0개</span>
+          </div>
+          <button onclick="toggleCart()" class="p-2 rounded-xl text-stone-400 hover:text-white hover:bg-stone-800">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <div class="p-4 bg-[#181614] border-b border-stone-800">
+          <div class="grid grid-cols-2 gap-2 p-1 rounded-2xl bg-stone-900 border border-stone-800 text-xs font-bold">
+            <button class="py-2.5 rounded-xl bg-orange-600 text-white shadow flex items-center justify-center gap-1.5">
+              <i data-lucide="bike" class="w-4 h-4"></i> 따뜻한 배달
+            </button>
+            <button class="py-2.5 rounded-xl text-stone-400 hover:text-white flex items-center justify-center gap-1.5">
+              <i data-lucide="store" class="w-4 h-4"></i> 방문 포장
+            </button>
+          </div>
+          <div class="mt-3 space-y-1 text-[11px]">
+            <div class="flex justify-between text-stone-400">
+              <span id="free-delivery-msg">30,000원 이상 주문 시 <strong class="text-amber-400">무료 배달!</strong></span>
+              <span id="delivery-progress-percent" class="font-bold text-stone-300">0%</span>
+            </div>
+            <div class="w-full h-2 rounded-full bg-stone-800 overflow-hidden">
+              <div id="delivery-progress-bar" class="h-full bg-gradient-to-r from-orange-500 to-amber-400 w-0 transition-all duration-500"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex-1 overflow-y-auto p-4 space-y-3" id="cart-items-container">
+          <!-- Cart items injected by JS -->
+        </div>
+
+        <div class="p-5 bg-[#0e0c0a] border-t border-stone-800 space-y-4">
+          <div class="flex items-center justify-between p-3 rounded-xl bg-amber-950/30 border border-amber-500/30">
+            <div class="flex items-center gap-2 text-xs font-bold text-amber-300">
+              <i data-lucide="gift" class="w-4 h-4 text-amber-400"></i>
+              <span>첫 주문 3,000원 웰컴 할인 쿠폰</span>
+            </div>
+            <button onclick="toggleCouponCart()" id="cart-coupon-btn" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-stone-800 text-stone-300">
+              쿠폰 적용
+            </button>
+          </div>
+
+          <div class="space-y-1.5 text-xs text-stone-400">
+            <div class="flex justify-between"><span>주문 금액</span><span id="cart-subtotal" class="text-stone-200">0원</span></div>
+            <div class="flex justify-between text-orange-400 font-medium" id="cart-discount-row" style="display:none;"><span>쿠폰 할인</span><span>-3,000원</span></div>
+            <div class="flex justify-between"><span>배달팁</span><span id="cart-delivery-fee" class="text-stone-200">3,000원</span></div>
+            <div class="pt-2 border-t border-stone-800 flex justify-between text-base font-extrabold text-white">
+              <span>최종 결제 금액</span>
+              <span id="cart-grandtotal" class="text-orange-400">0원</span>
+            </div>
+          </div>
+
+          <button onclick="openCheckout()" class="w-full py-4 rounded-2xl bg-gradient-to-r from-orange-600 to-amber-600 text-white font-bold text-base shadow-xl shadow-orange-600/30 hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-2">
+            <span>주문 결제하기</span>
+            <i data-lucide="arrow-right" class="w-5 h-5"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHECKOUT MODAL -->
+  <div id="checkout-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md overflow-y-auto">
+    <div class="relative w-full max-w-xl bg-[#141210] border border-stone-800 rounded-3xl overflow-hidden shadow-2xl my-6">
+      <div class="p-6 border-b border-stone-800 bg-[#0e0c0a] flex items-center justify-between">
+        <div>
+          <h2 class="text-xl font-black text-white font-serif">주문서 작성 및 결제</h2>
+          <p class="text-xs text-stone-400 font-light mt-0.5">🛵 따뜻한 보온 배달 주문</p>
+        </div>
+        <button onclick="closeCheckout()" class="p-2 rounded-xl text-stone-400 hover:text-white hover:bg-stone-800">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="p-6 space-y-5 max-h-[70vh] overflow-y-auto">
+        <div class="space-y-3">
+          <label class="text-xs font-bold text-stone-300 uppercase tracking-wider flex items-center gap-1.5">
+            <i data-lucide="map-pin" class="w-3.5 h-3.5 text-orange-500"></i> 배달 주소
+          </label>
+          <input type="text" value="서울시 강남구 테헤란로 152 (역삼동)" class="w-full p-3.5 rounded-xl bg-stone-900 border border-stone-800 text-sm text-white focus:outline-none focus:border-orange-500" />
+          <input type="text" value="102동 1402호 (공동현관 1234#)" class="w-full p-3.5 rounded-xl bg-stone-900 border border-stone-800 text-sm text-white focus:outline-none focus:border-orange-500" />
+        </div>
+
+        <div class="space-y-2">
+          <label class="text-xs font-bold text-stone-300 uppercase tracking-wider flex items-center gap-1.5">
+            <i data-lucide="file-text" class="w-3.5 h-3.5 text-amber-500"></i> 라이더 / 매장 요청사항
+          </label>
+          <input type="text" value="문 앞에 두고 벨 눌러주세요" class="w-full p-3.5 rounded-xl bg-stone-900 border border-stone-800 text-sm text-white focus:outline-none focus:border-orange-500" />
+        </div>
+
+        <div class="space-y-3">
+          <label class="text-xs font-bold text-stone-300 uppercase tracking-wider flex items-center gap-1.5">
+            <i data-lucide="credit-card" class="w-3.5 h-3.5 text-emerald-500"></i> 결제 수단
+          </label>
+          <div class="p-3.5 rounded-xl bg-orange-950/40 text-orange-300 border border-orange-500/60 font-semibold text-xs flex justify-between items-center">
+            <span>신용/체크카드 (간편결제)</span>
+            <i data-lucide="check" class="w-4 h-4 text-orange-400"></i>
+          </div>
+        </div>
+
+        <button onclick="completeOrder()" class="w-full py-4 rounded-2xl bg-gradient-to-r from-orange-600 via-orange-500 to-amber-500 text-white font-bold text-base shadow-xl shadow-orange-600/30 hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+          <i data-lucide="shield-check" class="w-5 h-5"></i>
+          <span id="checkout-pay-btn">바로 주문 완료</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ORDER TRACKER MODAL -->
+  <div id="tracker-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md overflow-y-auto">
+    <div class="relative w-full max-w-2xl bg-[#141210] border border-orange-500/40 rounded-3xl overflow-hidden shadow-2xl my-6">
+      <div class="p-6 bg-gradient-to-r from-[#1c1917] to-[#141210] border-b border-stone-800 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-orange-600/20 text-orange-400 border border-orange-500/40 flex items-center justify-center">
+            <i data-lucide="bike" class="w-5 h-5 animate-bounce"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-lg font-black text-white font-serif">실시간 배달/조리 현황</span>
+              <span id="tracker-ord-num" class="px-2 py-0.5 rounded-full bg-orange-950 text-orange-400 border border-orange-800 text-[11px] font-mono font-bold">OD-892102</span>
+            </div>
+            <p class="text-xs text-stone-400">주문 접수 시간: 방금 전</p>
+          </div>
+        </div>
+        <button onclick="closeTracker()" class="p-2 rounded-xl text-stone-400 hover:text-white hover:bg-stone-800">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="p-6 bg-gradient-to-b from-orange-950/30 to-transparent border-b border-stone-800/80 text-center space-y-2">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/20 text-orange-400 text-xs font-bold border border-orange-500/30 animate-pulse">
+          <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+          <span>도착까지 약 25분 남음 (온기 보온 배송)</span>
+        </div>
+        <h3 class="text-2xl font-black text-white font-serif">셰프 직화 조리 중 🔥</h3>
+        <p class="text-sm text-stone-300 font-light">참나무 숯불에서 지글지글 훈연 중입니다</p>
+      </div>
+
+      <div class="p-6 space-y-4">
+        <div class="p-3 rounded-2xl bg-amber-950/40 border border-amber-500/30 flex items-center gap-2.5 text-xs text-amber-300 font-medium">
+          <i data-lucide="sparkles" class="w-4 h-4 text-amber-400 shrink-0"></i>
+          <span>포토리뷰 약속 선물 <strong>[수제 옥수수 치즈전]</strong>이 함께 조리되어 동봉됩니다.</span>
+        </div>
+      </div>
+
+      <div class="p-5 bg-[#0e0c0a] border-t border-stone-800 flex items-center justify-between gap-3">
+        <a href="tel:02-555-8292" class="flex-1 py-3 rounded-2xl bg-stone-900 hover:bg-stone-800 border border-stone-800 text-stone-300 hover:text-white font-bold text-xs flex items-center justify-center gap-2 transition-all">
+          <i data-lucide="phone" class="w-4 h-4 text-emerald-400"></i> 매장 전화 연결
+        </a>
+        <button onclick="closeTracker()" class="flex-1 py-3 rounded-2xl bg-orange-600 hover:bg-orange-500 text-white font-bold text-xs shadow">
+          확인 및 닫기
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT DATA & LOGIC -->
+  <script>
+    const MENU = [
+      {
+        id: 'rib-feast',
+        name: '24시간 참나무 직화 훈제 우대갈비 한상',
+        price: 34900,
+        originalPrice: 38000,
+        desc: '24시간 은은한 참나무 훈연으로 가둔 폭발적 육즙. 입안에 넣는 순간 사르르 녹아내리는 부드러움과 깊은 불향의 절정입니다.',
+        note: '풍부한 마블링 · 천연 참나무 훈향 · 겉바속촉',
+        img: 'https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=800&auto=format&fit=crop',
+        tags: ['🔥 실시간 1위', '셰프 특선', '한정 수량'],
+        viewers: 24,
+        rating: 4.99,
+        stock: 6
+      },
+      {
+        id: 'pork-platter',
+        name: '특제 항아리 숙성 삼겹 바비큐 & 파김치 플래터',
+        price: 23800,
+        originalPrice: 26000,
+        desc: '전통 옹기에서 48시간 저온 숙성하여 겉은 바삭하고 속은 촉촉한 육즙이 팡팡 터집니다. 알싸한 전라도식 파김치와의 환상 조합.',
+        note: '48시간 옹기 숙성 · 황금빛 바삭 껍질 · 파김치 페어링',
+        img: 'https://images.unsplash.com/photo-1592686096463-9a38ac93ee58?q=80&w=800&auto=format&fit=crop',
+        tags: ['⭐ 베스트셀러', '겉바속촉', '인기 폭발'],
+        viewers: 19,
+        rating: 4.98,
+        stock: 12
+      },
+      {
+        id: 'cheese-bulgogi',
+        name: '녹아내리는 치즈 폭포 숯불 양념 불고기',
+        price: 19800,
+        originalPrice: 22000,
+        desc: '100% 자연산 모짜렐라 치즈가 눈꽃처럼 듬뿍 덮인 직화 숯불 불고기. 쭈욱 늘어나는 치즈와 달콤 짭조름한 비법 양념의 완벽한 조화.',
+        note: '100% 자연산 치즈 폭포 · 직화 불향 · 비법 양념',
+        img: 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?q=80&w=800&auto=format&fit=crop',
+        tags: ['🧀 치즈 듬뿍', '남녀노소 최애'],
+        viewers: 16,
+        rating: 4.95,
+        stock: 15
+      },
+      {
+        id: 'tendon-soup',
+        name: '진국 12시간 가마솥 한우 사골 도가니탕',
+        price: 16500,
+        originalPrice: 18000,
+        desc: '전통 무쇠 가마솥에서 12시간 동안 우려낸 뽀얗고 진한 한우 사골 육수와 쫄깃한 도가니가 선사하는 든든한 보약 한 그릇.',
+        note: '12시간 가마솥 진국 · 쫄깃한 한우 도가니',
+        img: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?q=80&w=800&auto=format&fit=crop',
+        tags: ['🍲 보약 한 그릇', '깊은 국물'],
+        viewers: 14,
+        rating: 4.97,
+        stock: 9
+      },
+      {
+        id: 'corn-pancake',
+        name: '겉바속촉 황금 치즈 옥수수전',
+        price: 9900,
+        desc: '톡톡 터지는 달콤한 옥수수 알갱이와 고소한 치즈가 바삭바삭 노릇하게 구워진 마약 사이드 메뉴.',
+        note: '톡톡 터지는 옥수수 · 바삭 고소',
+        img: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=800&auto=format&fit=crop',
+        tags: ['🌽 바삭 고소', '사이드 1위'],
+        viewers: 8,
+        rating: 4.98,
+        stock: 35
+      },
+      {
+        id: 'jeju-ade',
+        name: '제주 유기농 청귤 & 문경 오미자 수제 에이드',
+        price: 4500,
+        desc: '산지에서 직접 공수한 유기농 제철 청귤과 문경 오미자 청으로 블렌딩한 청량하고 달콤 쌉싸름한 프리미엄 스파클링 에이드.',
+        note: '100% 생과일 수제청 · 청량한 마무리',
+        img: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?q=80&w=800&auto=format&fit=crop',
+        tags: ['🍊 100% 생과즙', '인기 음료'],
+        viewers: 5,
+        rating: 4.94,
+        stock: 50
+      }
+    ];
+
+    let cart = [];
+    let isCouponApplied = false;
+
+    function renderMenu() {
+      const grid = document.getElementById('menu-grid');
+      grid.innerHTML = MENU.map(item => \`
+        <div class="group relative rounded-3xl overflow-hidden bg-stone-900/80 border border-stone-800 hover:border-orange-500/50 shadow-xl hover:shadow-2xl hover:shadow-orange-950/40 transition-all duration-300 flex flex-col">
+          <div class="relative h-64 w-full overflow-hidden bg-stone-950">
+            <img src="\${item.img}" alt="\${item.name}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+            <div class="absolute inset-0 bg-gradient-to-t from-stone-950 via-transparent to-black/30"></div>
+            <div class="absolute top-3.5 left-3.5 flex flex-wrap gap-1.5 z-10">
+              \${item.tags.map(t => \`<span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-black/75 backdrop-blur-md text-amber-300 border border-amber-500/30 shadow">\${t}</span>\`).join('')}
+            </div>
+            <div class="absolute bottom-3 left-3.5 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/70 backdrop-blur-sm text-[11px] font-medium text-stone-300 border border-stone-700">
+              <i data-lucide="eye" class="w-3.5 h-3.5 text-orange-400"></i>
+              <span>지금 <strong>\${item.viewers}명</strong>이 보는 중</span>
+            </div>
+            \${item.stock <= 10 ? \`<div class="absolute bottom-3 right-3.5 px-2.5 py-1 rounded-full bg-red-950/80 border border-red-800/60 text-[11px] font-bold text-red-400 animate-pulse">⏳ 잔여 \${item.stock}개</div>\` : ''}
+          </div>
+          <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+            <div class="space-y-2">
+              <div class="flex items-center justify-between text-xs">
+                <div class="flex items-center gap-1 text-amber-400 font-bold">
+                  <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400"></i> <span>\${item.rating}</span>
+                </div>
+                <span class="text-orange-400 font-semibold text-[11px]">셰프 추천</span>
+              </div>
+              <h3 class="text-lg font-bold text-white font-serif">\${item.name}</h3>
+              <p class="text-xs text-stone-300 font-light line-clamp-2 leading-relaxed">\${item.desc}</p>
+              <div class="pt-1">
+                <div class="px-3 py-1.5 rounded-xl bg-[#1c1917] border border-stone-800 text-[11px] text-amber-300/90 font-medium flex items-center gap-1.5">
+                  <i data-lucide="sparkles" class="w-3 h-3 text-amber-400"></i>
+                  <span>\${item.note}</span>
+                </div>
+              </div>
+            </div>
+            <div class="pt-3 border-t border-stone-800/80 flex items-center justify-between">
+              <div>
+                \${item.originalPrice ? \`<div class="text-xs text-stone-500 line-through">\${item.originalPrice.toLocaleString()}원</div>\` : ''}
+                <div class="text-lg font-extrabold text-white">\${item.price.toLocaleString()}원</div>
+              </div>
+              <button onclick="quickAdd('\${item.id}')" class="px-4 py-2 rounded-xl bg-orange-600 hover:bg-orange-500 text-white font-bold text-xs shadow transition-all flex items-center gap-1">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i> 담기
+              </button>
+            </div>
+          </div>
+        </div>
+      \`).join('');
+      lucide.createIcons();
+    }
+
+    function quickAdd(id) {
+      const item = MENU.find(m => m.id === id);
+      if (!item) return;
+      const exist = cart.find(c => c.id === id);
+      if (exist) {
+        exist.qty += 1;
+      } else {
+        cart.push({ id: item.id, name: item.name, price: item.price, qty: 1 });
+      }
+      updateCartUI();
+      toggleCart(true);
+    }
+
+    function updateCartUI() {
+      const totalQty = cart.reduce((sum, i) => sum + i.qty, 0);
+      const subtotal = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
+      const discount = isCouponApplied ? 3000 : 0;
+      const deliveryFee = subtotal >= 30000 || subtotal === 0 ? 0 : 3000;
+      const grandTotal = Math.max(0, subtotal - discount + deliveryFee);
+
+      const badge = document.getElementById('header-cart-badge');
+      if (totalQty > 0) {
+        badge.classList.remove('hidden');
+        badge.innerText = totalQty;
+      } else {
+        badge.classList.add('hidden');
+      }
+
+      document.getElementById('cart-drawer-count').innerText = totalQty + '개';
+      document.getElementById('cart-subtotal').innerText = subtotal.toLocaleString() + '원';
+      document.getElementById('cart-delivery-fee').innerText = deliveryFee === 0 ? '무료 (0원)' : deliveryFee.toLocaleString() + '원';
+      document.getElementById('cart-grandtotal').innerText = grandTotal.toLocaleString() + '원';
+
+      const discRow = document.getElementById('cart-discount-row');
+      if (isCouponApplied) {
+        discRow.style.display = 'flex';
+      } else {
+        discRow.style.display = 'none';
+      }
+
+      const percent = Math.min(100, Math.round((subtotal / 30000) * 100));
+      document.getElementById('delivery-progress-percent').innerText = percent + '%';
+      document.getElementById('delivery-progress-bar').style.width = percent + '%';
+
+      const container = document.getElementById('cart-items-container');
+      if (cart.length === 0) {
+        container.innerHTML = '<p class="text-xs text-stone-500 text-center py-10">장바구니가 비어 있습니다.</p>';
+      } else {
+        container.innerHTML = cart.map(i => \`
+          <div class="p-3.5 rounded-2xl bg-stone-900/90 border border-stone-800 flex justify-between items-center text-xs">
+            <div>
+              <div class="font-bold text-white">\${i.name}</div>
+              <div class="text-stone-400 mt-0.5">\${i.price.toLocaleString()}원 x \${i.qty}</div>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="font-bold text-amber-300">\${(i.price * i.qty).toLocaleString()}원</span>
+              <button onclick="removeFromCart('\${i.id}')" class="text-stone-500 hover:text-red-400 p-1">
+                <i data-lucide="trash-2" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
+        \`).join('');
+      }
+      lucide.createIcons();
+    }
+
+    function removeFromCart(id) {
+      cart = cart.filter(c => c.id !== id);
+      updateCartUI();
+    }
+
+    function toggleCart(forceOpen = false) {
+      const drawer = document.getElementById('cart-drawer');
+      if (forceOpen) {
+        drawer.classList.remove('hidden');
+      } else {
+        drawer.classList.toggle('hidden');
+      }
+    }
+
+    function claimCoupon() {
+      isCouponApplied = true;
+      document.getElementById('hero-coupon-btn').innerHTML = '<i data-lucide="check" class="w-4 h-4 text-emerald-400"></i><span>✓ 3,000원 쿠폰 적용 완료</span>';
+      document.getElementById('cart-coupon-btn').innerText = '적용됨 ✓';
+      document.getElementById('cart-coupon-btn').classList.add('bg-amber-500', 'text-black');
+      updateCartUI();
+      toggleCart(true);
+      lucide.createIcons();
+    }
+
+    function toggleCouponCart() {
+      isCouponApplied = !isCouponApplied;
+      const btn = document.getElementById('cart-coupon-btn');
+      if (isCouponApplied) {
+        btn.innerText = '적용됨 ✓';
+        btn.classList.add('bg-amber-500', 'text-black');
+      } else {
+        btn.innerText = '쿠폰 적용';
+        btn.classList.remove('bg-amber-500', 'text-black');
+      }
+      updateCartUI();
+    }
+
+    function openCheckout() {
+      if (cart.length === 0) return alert('장바구니에 메뉴를 먼저 담아주세요!');
+      toggleCart();
+      const subtotal = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
+      const discount = isCouponApplied ? 3000 : 0;
+      const deliveryFee = subtotal >= 30000 ? 0 : 3000;
+      const grandTotal = Math.max(0, subtotal - discount + deliveryFee);
+      document.getElementById('checkout-pay-btn').innerText = grandTotal.toLocaleString() + '원 바로 주문 완료';
+      document.getElementById('checkout-modal').classList.remove('hidden');
+    }
+
+    function closeCheckout() {
+      document.getElementById('checkout-modal').classList.add('hidden');
+    }
+
+    function completeOrder() {
+      confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+      closeCheckout();
+      cart = [];
+      updateCartUI();
+      document.getElementById('tracker-modal').classList.remove('hidden');
+    }
+
+    function closeTracker() {
+      document.getElementById('tracker-modal').classList.add('hidden');
+    }
+
+    function togglePOS() {
+      window.location.href = 'http://localhost:3000';
+    }
+
+    window.onload = function() {
+      renderMenu();
+      lucide.createIcons();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aura K-POS 어르신 및 초보자를 위한 3분 동영상 교육 & 시뮬레이터</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;900&display=swap');
+    body { font-family: 'Noto Sans KR', sans-serif; background-color: #faf8f5; color: #1e293b; }
+    .video-canvas {
+      background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+  </style>
+</head>
+<body class="min-h-screen p-4 sm:p-8 flex flex-col items-center">
+
+  <!-- Header -->
+  <header class="max-w-4xl w-full text-center space-y-3 mb-8">
+    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-teal-100 text-teal-800 text-sm font-bold border border-teal-300">
+      <span>🎬 Aura K-POS 멀티미디어 동영상 교육관</span>
+    </div>
+    <h1 class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
+      어르신과 초보자도 3분 만에 마스터하는 <br class="hidden sm:inline" />
+      <span class="text-teal-600">Aura K-POS</span> 비주얼 동영상 가이드
+    </h1>
+    <p class="text-lg text-slate-600 font-medium">
+      글씨가 크고 화면이 시원한 인터랙티브 동영상으로 POS의 모든 핵심 기능을 생생하게 체험하세요!
+    </p>
+  </header>
+
+  <!-- Interactive Animated Video Player Component -->
+  <main class="max-w-4xl w-full bg-white rounded-3xl border-2 border-slate-200 p-6 sm:p-8 shadow-xl space-y-6">
+
+    <!-- Video Screen Frame -->
+    <div class="video-canvas rounded-2xl p-6 sm:p-10 text-white relative min-h-[380px] flex flex-col justify-between overflow-hidden">
+      <!-- Top Status -->
+      <div class="flex justify-between items-center z-10">
+        <div class="flex items-center gap-2 px-3 py-1 rounded-full bg-rose-600/90 text-white text-xs font-black animate-pulse">
+          <span>● LIVE DEMO PLAYING</span>
+        </div>
+        <span class="text-xs font-mono text-slate-300" id="step-indicator">Chapter 1 / 5</span>
+      </div>
+
+      <!-- Animated Scene Display Area -->
+      <div class="my-6 z-10 space-y-4 text-center sm:text-left" id="scene-container">
+        <!-- Dynamic JS Animation Content -->
+      </div>
+
+      <!-- Video Subtitle Bar (Extra Large Senior Font) -->
+      <div class="bg-black/80 backdrop-blur-md rounded-2xl p-4 sm:p-5 border border-white/20 z-10">
+        <div class="flex items-start gap-3">
+          <span class="text-2xl sm:text-3xl">🎙️</span>
+          <div>
+            <span class="text-xs text-amber-400 font-bold uppercase tracking-wider">AI 음성 해설 자막</span>
+            <p class="text-base sm:text-xl font-bold text-white leading-relaxed mt-0.5" id="subtitle-text">
+              "안녕하세요! Aura K-POS에 오신 것을 환영합니다. 먼저 1번 탭의 포장(Take Out) 버튼을 눌러보겠습니다."
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Animated Background Glow -->
+      <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-teal-500/20 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -left-20 -top-20 w-80 h-80 bg-amber-500/20 rounded-full blur-3xl pointer-events-none"></div>
+    </div>
+
+    <!-- Video Controls & Scene Navigation -->
+    <div class="space-y-4 pt-2">
+      <!-- Progress Bar -->
+      <div class="w-full bg-slate-200 h-3 rounded-full overflow-hidden">
+        <div id="video-progress" class="bg-teal-500 h-full w-1/5 transition-all duration-500"></div>
+      </div>
+
+      <!-- Playback Buttons -->
+      <div class="flex flex-wrap items-center justify-between gap-4">
+        <div class="flex items-center gap-2">
+          <button onclick="prevStep()" class="px-5 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 font-bold text-slate-700 text-sm flex items-center gap-2">
+            <i data-lucide="skip-back" class="w-4 h-4"></i> 이전 단계
+          </button>
+          <button onclick="toggleAutoPlay()" id="play-btn" class="px-6 py-3 rounded-2xl bg-teal-600 hover:bg-teal-500 text-white font-extrabold text-sm flex items-center gap-2 shadow-md shadow-teal-500/30">
+            <i data-lucide="pause" class="w-4 h-4" id="play-icon"></i> <span id="play-label">일시 정지</span>
+          </button>
+          <button onclick="nextStep()" class="px-5 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 font-bold text-slate-700 text-sm flex items-center gap-2">
+            다음 단계 <i data-lucide="skip-forward" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <a href="http://localhost:3001" target="_blank" class="px-6 py-3 rounded-2xl bg-gradient-to-r from-orange-500 to-amber-500 hover:brightness-110 text-white font-black text-sm flex items-center gap-2 shadow-md">
+          <span>🚀 실물 POS 열기 (Port 3001)</span>
+          <i data-lucide="external-link" class="w-4 h-4"></i>
+        </a>
+      </div>
+
+      <!-- Scene Quick Select Tabs -->
+      <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 pt-2 text-xs font-bold text-center">
+        <button onclick="jumpTo(0)" class="scene-tab p-2.5 rounded-xl border-2 border-teal-500 bg-teal-50 text-teal-800">1. 포장 주문 (Take Out)</button>
+        <button onclick="jumpTo(1)" class="scene-tab p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-600">2. 음식 사진 & 맵기 선택</button>
+        <button onclick="jumpTo(2)" class="scene-tab p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-600">3. AI 셰프 페어링 추천</button>
+        <button onclick="jumpTo(3)" class="scene-tab p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-600">4. 주방 KDS 자동 전달</button>
+        <button onclick="jumpTo(4)" class="scene-tab p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-600">5. 팁 & 원터치 결제</button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const scenes = [
+      {
+        chapter: 'Chapter 1: 1초 만에 끝내는 포장(Take Out) 주문',
+        title: '🥡 맨 첫 번째 탭의 [Take Out] 버튼',
+        visual: `
+          <div class="inline-block p-4 rounded-2xl bg-orange-500 text-white font-black text-2xl shadow-xl animate-bounce">
+            🥡 1번 위치 : Take Out / To-Go
+          </div>
+          <p class="text-slate-300 text-sm mt-3">화면 상단 맨 앞의 주황색 버튼만 누르면 즉시 포장 계산대 모드로 전환됩니다.</p>
+        `,
+        subtitle: '손님이 가게에 들어와서 포장을 요청하시면, 맨 앞 1번의 주황색 [Take Out] 버튼을 터치해 주세요. 복잡한 테이블 번호를 찾을 필요 없이 바로 주문서가 열립니다.'
+      },
+      {
+        chapter: 'Chapter 2: 군침 도는 실물 음식 사진과 맵기 선택',
+        title: '🥩 큰 사진으로 보고 🌶️ 맵기를 콕!',
+        visual: `
+          <div class="flex flex-wrap justify-center sm:justify-start gap-4">
+            <div class="p-3 bg-white/10 rounded-2xl border border-white/20 text-center">
+              <span class="text-3xl">🥩</span>
+              <div class="font-bold text-sm text-white mt-1">LA 갈비 (LA Galbi)</div>
+            </div>
+            <div class="p-3 bg-teal-500/30 rounded-2xl border border-teal-400 text-center">
+              <span class="text-3xl">🌶️</span>
+              <div class="font-bold text-sm text-teal-300 mt-1">Medium Spicy 🔥</div>
+            </div>
+          </div>
+          <p class="text-slate-300 text-sm mt-3">글씨가 작아도 걱정 끝! 실물 요리 사진과 아이콘으로 메뉴를 0.1초 만에 확인합니다.</p>
+        `,
+        subtitle: '메뉴에 실물 사진과 아이콘이 큼직하게 들어가 있습니다. 메뉴를 누르고 🌶️ 순한맛(Mild), 보통맛(Spicy), 매운맛(Fire) 중 손님이 원하시는 단계를 콕 눌러주시면 됩니다.'
+      },
+      {
+        chapter: 'Chapter 3: 매장 매출을 +18% 올려주는 AI 추천',
+        title: '✨ AI 셰프 스마트 페어링 (원클릭 추천)',
+        visual: `
+          <div class="p-4 rounded-2xl bg-gradient-to-r from-teal-900/60 to-amber-900/60 border border-teal-400 text-left">
+            <div class="flex items-center gap-2 text-teal-300 font-bold text-sm">
+              <i data-lucide="sparkles" class="w-5 h-5 text-amber-400"></i>
+              <span>AI 추천: LA 갈비 + 해물파전 세트 ($2 할인)</span>
+            </div>
+            <button class="mt-2 px-4 py-1.5 rounded-xl bg-teal-500 text-white font-black text-xs">
+              + 1초 만에 티켓에 추가하기
+            </button>
+          </div>
+        `,
+        subtitle: '손님이 LA 갈비를 주문하시면, 화면에 어울리는 해물파전이나 시원한 음료가 자동으로 추천됩니다. 직원들이 외우지 않아도 버튼 하나로 추가 주문을 유도할 수 있습니다.'
+      },
+      {
+        chapter: 'Chapter 4: 종이 전표 없는 실시간 주방 전달',
+        title: '🍳 주방 KDS 화면으로 번개처럼 전송',
+        visual: `
+          <div class="inline-flex items-center gap-3 p-4 rounded-2xl bg-orange-600/80 text-white font-bold">
+            <span class="text-3xl">🔥</span>
+            <div class="text-left">
+              <div class="text-lg">주방 모니터로 전송 완료!</div>
+              <div class="text-xs text-orange-200">주방 셰프 모니터에 "LA 갈비 (보통 매운맛)" 즉시 표시</div>
+            </div>
+          </div>
+        `,
+        subtitle: '[Fire to Kitchen] 버튼을 누르면 종이를 들고 주방에 갈 필요 없이, 주방 모니터에 맵기와 옵션이 큼직하게 나타나 주문 누락이 완전히 사라집니다.'
+      },
+      {
+        chapter: 'Chapter 5: 미국 샌프란시스코 표준 팁 & 축하 폭죽',
+        title: '💵 18%·20% 팁 자동 계산 & 스마트 분할 결제',
+        visual: `
+          <div class="flex justify-center sm:justify-start gap-2">
+            <span class="px-3 py-2 rounded-xl bg-teal-500 text-white font-black text-sm">20% ⭐ 추천 팁</span>
+            <span class="px-3 py-2 rounded-xl bg-white/20 text-white font-bold text-sm">Apple Pay</span>
+            <span class="px-3 py-2 rounded-xl bg-white/20 text-white font-bold text-sm">N등분 결제</span>
+          </div>
+          <p class="text-emerald-300 text-sm mt-3 font-bold">🎉 결제 성공 시 화면에 축하 폭죽(Confetti)이 터집니다!</p>
+        `,
+        subtitle: '계산할 때는 복잡한 계산기 없이 20% 팁 버튼이나 분할 결제를 누르면 끝납니다. 결제가 완료되면 축하 폭죽이 팡팡 터지며 기분 좋게 마무리됩니다.'
+      }
+    ];
+
+    let currentScene = 0;
+    let autoPlay = true;
+    let timer = null;
+
+    function renderScene() {
+      const s = scenes[currentScene];
+      document.getElementById('step-indicator').innerText = `Chapter ${currentScene + 1} / ${scenes.length}`;
+      document.getElementById('scene-container').innerHTML = `
+        <span class="text-xs font-extrabold text-teal-400 uppercase tracking-widest">${s.chapter}</span>
+        <h2 class="text-2xl sm:text-3xl font-black text-white mt-1">${s.title}</h2>
+        <div class="pt-2">${s.visual}</div>
+      `;
+      document.getElementById('subtitle-text').innerText = `"${s.subtitle}"`;
+      document.getElementById('video-progress').style.width = `${((currentScene + 1) / scenes.length) * 100}%`;
+
+      // Update Tabs
+      document.querySelectorAll('.scene-tab').forEach((tab, idx) => {
+        if (idx === currentScene) {
+          tab.className = 'scene-tab p-2.5 rounded-xl border-2 border-teal-500 bg-teal-50 text-teal-800 font-bold';
+        } else {
+          tab.className = 'scene-tab p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-600';
+        }
+      });
+
+      lucide.createIcons();
+    }
+
+    function nextStep() {
+      currentScene = (currentScene + 1) % scenes.length;
+      renderScene();
+    }
+
+    function prevStep() {
+      currentScene = (currentScene - 1 + scenes.length) % scenes.length;
+      renderScene();
+    }
+
+    function jumpTo(idx) {
+      currentScene = idx;
+      renderScene();
+    }
+
+    function toggleAutoPlay() {
+      autoPlay = !autoPlay;
+      const label = document.getElementById('play-label');
+      const icon = document.getElementById('play-icon');
+      if (autoPlay) {
+        label.innerText = '일시 정지';
+        icon.setAttribute('data-lucide', 'pause');
+        startTimer();
+      } else {
+        label.innerText = '동영상 재생';
+        icon.setAttribute('data-lucide', 'play');
+        clearInterval(timer);
+      }
+      lucide.createIcons();
+    }
+
+    function startTimer() {
+      clearInterval(timer);
+      timer = setInterval(() => {
+        if (autoPlay) nextStep();
+      }, 5000);
+    }
+
+    renderScene();
+    startTimer();
+  </script>
+</body>
+</html>

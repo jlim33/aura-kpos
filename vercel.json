@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "rewrites": [
+    {
+      "source": "/video",
+      "destination": "/video.html"
+    },
+    {
+      "source": "/training",
+      "destination": "/video.html"
+    },
+    {
+      "source": "/showcase",
+      "destination": "/showcase.html"
+    },
+    {
+      "source": "/singularity",
+      "destination": "/showcase.html"
+    },
+    {
+      "source": "/ondam",
+      "destination": "/ondam.html"
+    },
+    {
+      "source": "/korean",
+      "destination": "/ondam.html"
+    }
+  ]
+}

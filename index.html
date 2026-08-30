@@ -1,0 +1,1568 @@
+<!DOCTYPE html>
+<html lang="en" class="theme-pastel">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aura K-POS | San Francisco Bay Area Restaurant Operating System</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            aura: {
+              50: '#f0fdfa', 100: '#ccfbf1', 200: '#99f6e4', 300: '#5eead4',
+              400: '#2dd4bf', 500: '#14b8a6', 600: '#0d9488', 700: '#0f766e',
+              800: '#115e59', 900: '#134e4a',
+            },
+            pastel: {
+              bg: '#faf8f5',
+              card: '#ffffff',
+              mint: '#ecfdf5',
+              peach: '#fff7ed',
+              lavender: '#faf5ff',
+              sky: '#f0f9ff',
+              border: '#e2e8f0',
+              text: '#0f172a',
+              subtext: '#64748b'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap');
+    body { font-family: 'Plus Jakarta Sans', sans-serif; transition: background-color 0.3s ease, color 0.3s ease; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #f5f5f4; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #14b8a6; }
+
+    /* PASTEL THEME (DEFAULT) */
+    html.theme-pastel body {
+      background-color: #faf8f5;
+      color: #1e293b;
+    }
+    html.theme-pastel .theme-bg-header {
+      background-color: #ffffff;
+      border-color: #e2e8f0;
+    }
+    html.theme-pastel .theme-card {
+      background-color: #ffffff;
+      border-color: #e2e8f0;
+      box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+    }
+    html.theme-pastel .theme-sidebar {
+      background-color: #ffffff;
+      border-color: #e2e8f0;
+    }
+    html.theme-pastel .theme-catalog-bg {
+      background-color: #f8fafc;
+    }
+    html.theme-pastel .theme-text-title {
+      color: #0f172a;
+    }
+    html.theme-pastel .theme-text-sub {
+      color: #64748b;
+    }
+    html.theme-pastel .theme-pill-inactive {
+      background-color: #f1f5f9;
+      color: #475569;
+      border-color: #e2e8f0;
+    }
+    html.theme-pastel .theme-pill-inactive:hover {
+      background-color: #e2e8f0;
+      color: #0f172a;
+    }
+    html.theme-pastel .theme-ai-box {
+      background: linear-gradient(135deg, #f0fdfa 0%, #ffffff 50%, #fff7ed 100%);
+      border-color: #99f6e4;
+    }
+    html.theme-pastel .theme-item-box {
+      background-color: #f8fafc;
+      border-color: #e2e8f0;
+      color: #1e293b;
+    }
+
+    /* DARK THEME (OPTIONAL TOGGLE) */
+    html.theme-dark body {
+      background-color: #0b0f19;
+      color: #f1f5f9;
+    }
+    html.theme-dark .theme-bg-header {
+      background-color: #111827;
+      border-color: #1e293b;
+    }
+    html.theme-dark .theme-card {
+      background-color: #111827;
+      border-color: #1e293b;
+      box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
+    }
+    html.theme-dark .theme-sidebar {
+      background-color: #111827;
+      border-color: #1e293b;
+    }
+    html.theme-dark .theme-catalog-bg {
+      background-color: #0c101c;
+    }
+    html.theme-dark .theme-text-title {
+      color: #ffffff;
+    }
+    html.theme-dark .theme-text-sub {
+      color: #94a3b8;
+    }
+    html.theme-dark .theme-pill-inactive {
+      background-color: #1e293b;
+      color: #cbd5e1;
+      border-color: #334155;
+    }
+    html.theme-dark .theme-pill-inactive:hover {
+      background-color: #334155;
+      color: #ffffff;
+    }
+    html.theme-dark .theme-ai-box {
+      background: linear-gradient(135deg, rgba(17, 94, 89, 0.4) 0%, rgba(15, 23, 42, 0.9) 50%, rgba(124, 45, 18, 0.3) 100%);
+      border-color: rgba(45, 212, 191, 0.3);
+    }
+    html.theme-dark .theme-item-box {
+      background-color: #1e293b;
+      border-color: #334155;
+      color: #f1f5f9;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-teal-500 selection:text-white select-none">
+
+  <!-- ==================== TOP SYSTEM STATUS & NAV BAR ==================== -->
+  <header class="h-16 theme-bg-header border-b px-4 sm:px-6 flex items-center justify-between z-30 shrink-0 shadow-sm">
+    <div class="flex items-center gap-3">
+      <div class="flex items-center gap-2.5 cursor-pointer" onclick="switchNav('takeout')">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-teal-500 via-teal-400 to-emerald-300 flex items-center justify-center text-white font-extrabold shadow-md shadow-teal-500/20">
+          <i data-lucide="flame" class="w-6 h-6 text-white fill-white"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-lg font-black tracking-tight theme-text-title">AURA<span class="text-teal-600">POS</span></span>
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-teal-50 text-teal-700 border border-teal-200 uppercase tracking-wider">
+              🌸 Pastel Edition
+            </span>
+          </div>
+          <p class="text-[11px] theme-text-sub font-medium">K-Manna Korean BBQ & Bar · SF Bay Area</p>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs: 1. TAKE OUT BUTTON AT FIRST POSITION -->
+      <nav class="hidden lg:flex items-center ml-2 p-1 rounded-2xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs font-bold">
+        <!-- 1. TAKE OUT TAB (FIRST POSITION) -->
+        <button onclick="switchNav('takeout')" id="nav-takeout" class="nav-tab active px-4 py-2 rounded-xl text-white bg-gradient-to-r from-orange-500 to-amber-500 flex items-center gap-1.5 shadow-md hover:brightness-110 transition-all">
+          <i data-lucide="shopping-bag" class="w-4 h-4"></i> 🥡 Take Out / To-Go
+        </button>
+
+        <!-- 2. FLOOR & TABLES -->
+        <button onclick="switchNav('tables')" id="nav-tables" class="nav-tab px-4 py-2 rounded-xl text-slate-500 hover:text-slate-900 flex items-center gap-1.5 transition-all">
+          <i data-lucide="layout-grid" class="w-4 h-4 text-teal-600"></i> Floor & Tables
+        </button>
+
+        <!-- 3. CATERING & BANQUETS -->
+        <button onclick="switchNav('catering')" id="nav-catering" class="nav-tab px-4 py-2 rounded-xl text-slate-500 hover:text-slate-900 flex items-center gap-1.5 transition-all">
+          <i data-lucide="calendar-check" class="w-4 h-4 text-purple-500"></i> Catering & Banquet
+        </button>
+
+        <!-- 4. KITCHEN KDS -->
+        <button onclick="switchNav('kds')" id="nav-kds" class="nav-tab px-4 py-2 rounded-xl text-slate-500 hover:text-slate-900 flex items-center gap-1.5 transition-all">
+          <i data-lucide="chef-hat" class="w-4 h-4 text-orange-500"></i> Kitchen KDS <span id="kds-badge" class="px-1.5 py-0.2 rounded-full bg-orange-500 text-white text-[10px] font-black">2</span>
+        </button>
+
+        <!-- 5. DELIVERY APPS -->
+        <button onclick="switchNav('online')" id="nav-online" class="nav-tab px-4 py-2 rounded-xl text-slate-500 hover:text-slate-900 flex items-center gap-1.5 transition-all">
+          <i data-lucide="smartphone" class="w-4 h-4 text-blue-500"></i> Delivery Apps <span class="px-1.5 py-0.2 rounded-full bg-blue-500 text-white text-[10px] font-black">DoorDash</span>
+        </button>
+
+        <!-- 6. SHIFT Z-REPORT -->
+        <button onclick="switchNav('analytics')" id="nav-analytics" class="nav-tab px-4 py-2 rounded-xl text-slate-500 hover:text-slate-900 flex items-center gap-1.5 transition-all">
+          <i data-lucide="bar-chart-3" class="w-4 h-4 text-emerald-600"></i> Shift Z-Report
+        </button>
+      </nav>
+    </div>
+
+    <!-- Status & Theme Toggle Switch -->
+    <div class="flex items-center gap-3">
+      <!-- PASTEL / DARK TOGGLE SWITCH (DEFAULT PASTEL ON) -->
+      <button onclick="togglePastelTheme()" id="theme-toggle-btn" class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-900 text-xs font-bold shadow-sm hover:bg-amber-100 transition-all" title="Toggle between Pastel Bright Theme and Dark Mode">
+        <span class="w-4 h-4 rounded-full bg-amber-400 flex items-center justify-center text-[10px]">☀️</span>
+        <span id="theme-mode-text">Pastel Bright</span>
+      </button>
+
+      <div class="hidden md:flex flex-col text-right">
+        <span id="current-pst-time" class="text-xs font-mono font-bold theme-text-title">03:35:00 PM PST</span>
+        <span class="text-[11px] text-emerald-600 font-semibold flex items-center gap-1 justify-end">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Cloud Synced (0ms)
+        </span>
+      </div>
+
+      <div class="h-8 w-px bg-slate-200 dark:bg-slate-800 hidden md:block"></div>
+
+      <div class="flex items-center gap-2">
+        <div class="px-3 py-1.5 rounded-2xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-medium flex items-center gap-2">
+          <i data-lucide="user" class="w-3.5 h-3.5 text-teal-600"></i>
+          <span class="theme-text-title font-semibold">Justin C. <strong class="theme-text-sub font-normal">(Server #4)</strong></span>
+        </div>
+        <button onclick="openTimecardModal()" class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 theme-text-title border border-slate-200 dark:border-slate-700 text-xs" title="Staff Clock In/Out">
+          <i data-lucide="clock" class="w-4 h-4 text-amber-500"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== MAIN VIEW CONTAINER ==================== -->
+  <main class="flex-1 flex overflow-hidden relative">
+
+    <!-- 1. TAKE OUT & QUICK ORDER VIEW (PRIMARY SCREEN) -->
+    <section id="view-takeout" class="view-section flex-1 flex overflow-hidden">
+      <!-- Left: Menu Catalog with Food Pictures -->
+      <div class="flex-1 flex flex-col border-r border-slate-200 dark:border-slate-800 theme-catalog-bg overflow-hidden">
+        <!-- Top Mode Banner with Fast Toggle -->
+        <div class="px-4 py-2.5 bg-orange-50/80 border-b border-orange-200 flex items-center justify-between text-xs">
+          <div class="flex items-center gap-2 text-orange-900 font-bold">
+            <span class="p-1 rounded-lg bg-orange-500 text-white">🥡</span>
+            <span>Take-Out & Walk-In Mode</span>
+            <span class="text-orange-600 font-normal text-[11px]">(Auto-packages with thermal bag & dipping sauces)</span>
+          </div>
+          <button onclick="switchNav('tables')" class="text-teal-700 font-bold hover:underline flex items-center gap-1">
+            <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i> Switch to Dine-In Tables →
+          </button>
+        </div>
+
+        <!-- Category Pill Tabs -->
+        <div class="p-3 theme-bg-header border-b border-slate-200 dark:border-slate-800 flex items-center gap-2 overflow-x-auto">
+          <button onclick="filterMenu('all', this)" class="cat-pill active px-4 py-2 rounded-xl text-xs font-bold bg-teal-600 text-white shadow">
+            ✨ All Items
+          </button>
+          <button onclick="filterMenu('kbbq', this)" class="cat-pill px-4 py-2 rounded-xl text-xs font-bold theme-pill-inactive border">
+            🥩 K-BBQ Sizzle Sets
+          </button>
+          <button onclick="filterMenu('cupbap', this)" class="cat-pill px-4 py-2 rounded-xl text-xs font-bold theme-pill-inactive border">
+            🍚 Artisanal Cupbap
+          </button>
+          <button onclick="filterMenu('street', this)" class="cat-pill px-4 py-2 rounded-xl text-xs font-bold theme-pill-inactive border">
+            🍗 Wings & Street Food
+          </button>
+          <button onclick="filterMenu('stew', this)" class="cat-pill px-4 py-2 rounded-xl text-xs font-bold theme-pill-inactive border">
+            🍲 Sizzling Stews
+          </button>
+          <button onclick="filterMenu('drink', this)" class="cat-pill px-4 py-2 rounded-xl text-xs font-bold theme-pill-inactive border">
+            🍹 Soju, Wine & Beers
+          </button>
+        </div>
+
+        <!-- Menu Item Grid with Food Pictures -->
+        <div class="flex-1 p-4 overflow-y-auto grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5" id="pos-menu-items">
+          <!-- Rendered by JS with Food Images -->
+        </div>
+      </div>
+
+      <!-- Right: Active Ticket & AI Recommendations -->
+      <div class="w-96 lg:w-[420px] theme-sidebar flex flex-col shrink-0 border-l border-slate-200 dark:border-slate-800 justify-between">
+        <!-- Ticket Header -->
+        <div class="p-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/80 flex items-center justify-between">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-base font-black theme-text-title" id="ticket-table-name">🥡 Take-Out Customer #1</span>
+              <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-teal-50 text-teal-700 border border-teal-200 dark:bg-teal-950 dark:text-teal-400 dark:border-teal-800" id="ticket-id">#TO-9021</span>
+            </div>
+            <p class="text-xs theme-text-sub">Server: Justin C. · Order Type: <strong>Take-Out / To-Go</strong></p>
+          </div>
+          <button onclick="clearCurrentTicket()" class="text-xs text-rose-500 hover:text-rose-600 p-1 font-semibold flex items-center gap-1">
+            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Clear
+          </button>
+        </div>
+
+        <!-- AI SMART RECOMMENDATION / UPSELL WIDGET (CREATIVE FEATURE) -->
+        <div class="p-3.5 theme-ai-box border-b shadow-inner" id="ai-recommender-card">
+          <div class="flex items-center justify-between text-xs font-bold text-teal-800 dark:text-teal-300 mb-1.5">
+            <div class="flex items-center gap-1.5">
+              <i data-lucide="sparkles" class="w-4 h-4 text-teal-600 dark:text-teal-400 animate-pulse"></i>
+              <span>AI Chef Smart Pairing Recommendation</span>
+            </div>
+            <span class="text-[10px] bg-teal-100 text-teal-800 dark:bg-teal-500/20 dark:text-teal-300 px-1.5 py-0.5 rounded font-mono font-bold">+18% Ticket Upsell</span>
+          </div>
+          <p class="text-[11px] theme-text-sub leading-snug" id="ai-recommender-msg">
+            Select items to receive chef smart pairing upsells.
+          </p>
+          <div class="mt-2 flex gap-2" id="ai-recommender-btns">
+            <!-- Dynamic 1-Click Upsell Buttons -->
+          </div>
+        </div>
+
+        <!-- Ticket Line Items List -->
+        <div class="flex-1 overflow-y-auto p-3 space-y-2" id="ticket-items-list">
+          <!-- Dynamic Items -->
+        </div>
+
+        <!-- Ticket Summary & Actions -->
+        <div class="p-4 bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 space-y-3">
+          <div class="space-y-1.5 text-xs theme-text-sub font-medium">
+            <div class="flex justify-between"><span>Subtotal</span><span id="ticket-subtotal" class="font-mono theme-text-title font-bold">$0.00</span></div>
+            <div class="flex justify-between"><span>SF City Mandate & Tax (9.63%)</span><span id="ticket-tax" class="font-mono theme-text-title font-bold">$0.00</span></div>
+            <div class="pt-2 border-t border-slate-200 dark:border-slate-800 flex justify-between text-lg font-black theme-text-title">
+              <span>Total Amount</span>
+              <span id="ticket-total" class="text-teal-600 dark:text-teal-400 font-mono font-bold">$0.00</span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2 pt-1">
+            <button onclick="fireTicketToKitchen()" class="py-3 rounded-2xl bg-gradient-to-r from-orange-500 to-amber-500 hover:brightness-110 text-white font-bold text-xs shadow flex items-center justify-center gap-1.5 transition-all">
+              <i data-lucide="flame" class="w-4 h-4"></i> Fire to Kitchen (KDS)
+            </button>
+            <button onclick="openPaymentModal()" class="py-3 rounded-2xl bg-gradient-to-r from-teal-500 to-emerald-500 hover:brightness-110 text-white font-extrabold text-xs shadow flex items-center justify-center gap-1.5 transition-all">
+              <i data-lucide="credit-card" class="w-4 h-4"></i> Pay / Split Check
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. FLOOR PLAN & TABLE MANAGEMENT VIEW -->
+    <section id="view-tables" class="view-section hidden flex-1 flex flex-col p-4 sm:p-6 overflow-y-auto">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800 gap-3">
+        <div>
+          <h2 class="text-xl font-black theme-text-title flex items-center gap-2">
+            <span>Dining Room & Patio Floor Plan</span>
+            <span class="text-xs font-mono px-2.5 py-0.5 rounded-full bg-teal-50 text-teal-700 border border-teal-200 dark:bg-slate-800 dark:text-teal-400 dark:border-teal-800">
+              12 Tables · 42 Capacity
+            </span>
+          </h2>
+          <p class="text-xs theme-text-sub mt-0.5">Select an active table to open ticket or tap an available table to seat guests.</p>
+        </div>
+
+        <div class="flex items-center gap-2 text-xs font-semibold">
+          <button onclick="switchNav('takeout')" class="px-3.5 py-1.5 rounded-xl bg-orange-500 hover:bg-orange-400 text-white font-bold flex items-center gap-1.5 shadow-sm">
+            <span>🥡 Quick Take-Out</span>
+          </button>
+          <span class="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-sm"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> Available (6)</span>
+          <span class="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-blue-50 text-blue-700 border border-blue-200 shadow-sm"><span class="w-2 h-2 rounded-full bg-blue-500"></span> Seated (2)</span>
+          <span class="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-amber-50 text-amber-700 border border-amber-200 shadow-sm"><span class="w-2 h-2 rounded-full bg-amber-500"></span> Dining (3)</span>
+          <span class="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-purple-50 text-purple-700 border border-purple-200 shadow-sm"><span class="w-2 h-2 rounded-full bg-purple-500"></span> Bill Printed (1)</span>
+        </div>
+      </div>
+
+      <!-- Floor Map Grid -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 pt-6" id="tables-grid">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+    <!-- 3. CATERING & BANQUET MANAGER (K-MANNA SPECIALTY) -->
+    <section id="view-catering" class="view-section hidden flex-1 p-6 overflow-y-auto">
+      <div class="max-w-6xl mx-auto space-y-6">
+        <div class="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800">
+          <div>
+            <h2 class="text-xl font-black theme-text-title flex items-center gap-2">
+              <i data-lucide="calendar-check" class="w-6 h-6 text-purple-500"></i>
+              <span>Corporate Catering & Large Banquet Orders</span>
+            </h2>
+            <p class="text-xs theme-text-sub mt-1">Bookings, party platters, 50% deposit tracking, and banquet kitchen schedule.</p>
+          </div>
+          <button onclick="openNewCateringModal()" class="px-4 py-2.5 rounded-2xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs flex items-center gap-2 shadow">
+            <i data-lucide="plus" class="w-4 h-4"></i> New Catering Booking
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5" id="catering-orders-grid">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. LIVE KITCHEN DISPLAY SYSTEM (KDS) -->
+    <section id="view-kds" class="view-section hidden flex-1 p-4 sm:p-6 overflow-y-auto theme-catalog-bg">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-orange-100 dark:bg-orange-950 text-orange-600 dark:text-orange-400 border border-orange-200 dark:border-orange-800 flex items-center justify-center">
+            <i data-lucide="chef-hat" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <h2 class="text-xl font-black theme-text-title">Live Kitchen Display System (KDS)</h2>
+            <p class="text-xs theme-text-sub">Ticket Rail · SLA Wait-Time Timers · Station Routing (Grill/Saute/Bar/Expo)</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 p-1 rounded-2xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs font-bold">
+          <button onclick="filterKDSStation('all', this)" class="kds-station-btn active px-3 py-1.5 rounded-xl bg-orange-500 text-white shadow">All Stations</button>
+          <button onclick="filterKDSStation('grill', this)" class="kds-station-btn px-3 py-1.5 rounded-xl theme-text-sub hover:theme-text-title">🥩 BBQ Grill</button>
+          <button onclick="filterKDSStation('wok', this)" class="kds-station-btn px-3 py-1.5 rounded-xl theme-text-sub hover:theme-text-title">🍲 Stew/Wok</button>
+          <button onclick="filterKDSStation('bar', this)" class="kds-station-btn px-3 py-1.5 rounded-xl theme-text-sub hover:theme-text-title">🍹 Bar</button>
+        </div>
+      </div>
+
+      <!-- KDS Ticket Rail -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 pt-6" id="kds-tickets-rail">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+    <!-- 5. ONLINE DELIVERY AGGREGATOR (DOORDASH / UBEREATS) -->
+    <section id="view-online" class="view-section hidden flex-1 p-6 overflow-y-auto">
+      <div class="max-w-6xl mx-auto space-y-6">
+        <div class="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800">
+          <div>
+            <h2 class="text-xl font-black theme-text-title flex items-center gap-2">
+              <i data-lucide="smartphone" class="w-6 h-6 text-blue-500"></i>
+              <span>Third-Party Online Delivery Hub</span>
+            </h2>
+            <p class="text-xs theme-text-sub">DoorDash, UberEats, Toast Takeout Live Ingestion & Kitchen Throttle</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="throttleKitchen('+15m')" class="px-3.5 py-2 rounded-2xl bg-amber-50 dark:bg-amber-950 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800 text-xs font-bold hover:bg-amber-100">
+              ⏱️ +15m Busy Delay
+            </button>
+            <button onclick="throttleKitchen('pause')" class="px-3.5 py-2 rounded-2xl bg-rose-50 dark:bg-rose-950 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800 text-xs font-bold hover:bg-rose-100">
+              ⏸️ Pause Online Orders
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="online-orders-grid">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. SHIFT ANALYTICS & Z-REPORT -->
+    <section id="view-analytics" class="view-section hidden flex-1 p-6 overflow-y-auto">
+      <div class="max-w-6xl mx-auto space-y-6">
+        <div class="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800">
+          <div>
+            <h2 class="text-xl font-black theme-text-title flex items-center gap-2">
+              <i data-lucide="bar-chart-3" class="w-6 h-6 text-emerald-500"></i>
+              <span>Shift Closeout & End-of-Day Z-Report</span>
+            </h2>
+            <p class="text-xs theme-text-sub">Gross Sales, Tip Breakdown, Labor Cost Ratio, and Cash Reconciliation</p>
+          </div>
+          <button onclick="printZReport()" class="px-4 py-2.5 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs flex items-center gap-2 shadow">
+            <i data-lucide="printer" class="w-4 h-4"></i> Print Daily Z-Report
+          </button>
+        </div>
+
+        <!-- Metrics Cards -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="p-5 rounded-3xl theme-card space-y-1">
+            <span class="text-xs theme-text-sub font-semibold">Gross Sales (Today)</span>
+            <div class="text-2xl font-black theme-text-title font-mono" id="metric-gross-sales">$2,842.50</div>
+            <span class="text-[11px] text-emerald-600 font-medium">↑ +14.2% vs last Thursday</span>
+          </div>
+          <div class="p-5 rounded-3xl theme-card space-y-1">
+            <span class="text-xs theme-text-sub font-semibold">Tips Collected (Avg 20.4%)</span>
+            <div class="text-2xl font-black text-teal-600 dark:text-teal-400 font-mono" id="metric-tips">$524.80</div>
+            <span class="text-[11px] text-teal-600 font-medium">Pooled server distribution</span>
+          </div>
+          <div class="p-5 rounded-3xl theme-card space-y-1">
+            <span class="text-xs theme-text-sub font-semibold">Total Checks Closed</span>
+            <div class="text-2xl font-black text-purple-600 dark:text-purple-400 font-mono" id="metric-checks">38 Checks</div>
+            <span class="text-[11px] theme-text-sub">Avg ticket: $74.80</span>
+          </div>
+          <div class="p-5 rounded-3xl theme-card space-y-1">
+            <span class="text-xs theme-text-sub font-semibold">Labor Cost Ratio</span>
+            <div class="text-2xl font-black text-amber-600 dark:text-amber-400 font-mono">18.4%</div>
+            <span class="text-[11px] text-emerald-600 font-medium">Within target (<22%)</span>
+          </div>
+        </div>
+
+        <!-- Top Selling Items & Cash Drawer -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="p-6 rounded-3xl theme-card space-y-4">
+            <h3 class="text-sm font-bold theme-text-title uppercase tracking-wider">Top Selling Dishes (SF Bay Sizzle)</h3>
+            <div class="space-y-3 text-xs" id="top-sellers-list">
+              <div class="flex justify-between items-center py-2 border-b border-slate-200 dark:border-slate-800">
+                <span class="font-bold theme-text-title">1. Prime LA Galbi (Short Ribs)</span>
+                <span class="font-mono text-teal-600 dark:text-teal-400 font-bold">24 orders ($838.80)</span>
+              </div>
+              <div class="flex justify-between items-center py-2 border-b border-slate-200 dark:border-slate-800">
+                <span class="font-bold theme-text-title">2. Crispy K-Wings (Soy Garlic / Yangnyeom)</span>
+                <span class="font-mono text-teal-600 dark:text-teal-400 font-bold">19 orders ($322.05)</span>
+              </div>
+              <div class="flex justify-between items-center py-2 border-b border-slate-200 dark:border-slate-800">
+                <span class="font-bold theme-text-title">3. Grilled LA Galbi Cupbap</span>
+                <span class="font-mono text-teal-600 dark:text-teal-400 font-bold">16 orders ($287.20)</span>
+              </div>
+              <div class="flex justify-between items-center py-2 border-b border-slate-200 dark:border-slate-800">
+                <span class="font-bold theme-text-title">4. Seafood Haemul Pajeon</span>
+                <span class="font-mono text-teal-600 dark:text-teal-400 font-bold">14 orders ($237.30)</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-6 rounded-3xl theme-card space-y-4">
+            <h3 class="text-sm font-bold theme-text-title uppercase tracking-wider">Cash Drawer Reconciliation</h3>
+            <div class="space-y-2 text-xs theme-text-sub">
+              <div class="flex justify-between py-1.5"><span>Starting Drawer Bank</span><span class="font-mono font-bold theme-text-title">$300.00</span></div>
+              <div class="flex justify-between py-1.5"><span>Cash Sales Received</span><span class="font-mono font-bold theme-text-title">$420.00</span></div>
+              <div class="flex justify-between py-1.5"><span>Paid Out (Vendor delivery)</span><span class="font-mono font-bold text-rose-500">-$45.00</span></div>
+              <div class="pt-3 border-t border-slate-200 dark:border-slate-800 flex justify-between font-extrabold text-sm theme-text-title">
+                <span>Expected Cash in Drawer</span>
+                <span class="text-emerald-600 font-mono font-bold">$675.00</span>
+              </div>
+            </div>
+            <button onclick="alert('Cash Drawer Kick triggered! Drawer is open.')" class="w-full py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 theme-text-title font-bold text-xs border border-slate-200 dark:border-slate-700 flex items-center justify-center gap-2 shadow-sm">
+              <i data-lucide="unlock" class="w-4 h-4 text-teal-600"></i> Open Cash Drawer (No Sale)
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== MODALS ==================== -->
+
+  <!-- 1. ITEM MODIFIERS MODAL (WITH INTERACTIVE SPICY LEVEL SELECTOR) -->
+  <div id="modal-modifier" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm overflow-y-auto">
+    <div class="relative w-full max-w-xl theme-card border rounded-3xl overflow-hidden shadow-2xl my-8">
+      <div class="relative h-44 w-full overflow-hidden bg-slate-900">
+        <img id="mod-item-img" src="" class="w-full h-full object-cover" />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30"></div>
+        <div class="absolute bottom-3 left-5 right-5 flex justify-between items-end">
+          <div>
+            <h3 class="text-xl font-black text-white" id="mod-item-name">Prime LA Galbi (Short Ribs)</h3>
+            <p class="text-xs text-teal-300 font-mono font-bold" id="mod-item-price">$34.95</p>
+          </div>
+          <button onclick="closeModifierModal()" class="p-2 rounded-full bg-black/60 text-white hover:bg-black/90">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="p-6 space-y-5 max-h-[55vh] overflow-y-auto text-xs">
+        <!-- Spice Level Interactive Selection -->
+        <div class="space-y-2">
+          <div class="flex justify-between items-center">
+            <label class="font-bold theme-text-title uppercase tracking-wider flex items-center gap-1.5">
+              <span>🌶️ Choose Spice Level</span>
+            </label>
+            <span class="text-teal-600 font-bold text-xs" id="mod-spice-label">Selected: Mild (Original)</span>
+          </div>
+          <div class="grid grid-cols-3 gap-2" id="spice-selector-group">
+            <button type="button" id="spice-btn-mild" onclick="selectModOption('spice', 'Mild', this)" class="mod-opt-spice p-3 rounded-2xl border border-teal-500 bg-teal-50 text-teal-800 font-bold ring-2 ring-teal-500/30 shadow-sm transition-all text-center">
+              <div class="text-base">🟢</div>
+              <div class="text-xs font-bold mt-1">Mild (Original)</div>
+            </button>
+            <button type="button" id="spice-btn-spicy" onclick="selectModOption('spice', 'Spicy', this)" class="mod-opt-spice p-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 theme-text-sub font-medium hover:border-orange-400 transition-all text-center">
+              <div class="text-base">🌶️</div>
+              <div class="text-xs font-bold mt-1">Medium Spicy 🔥</div>
+            </button>
+            <button type="button" id="spice-btn-fire" onclick="selectModOption('spice', 'Fire', this)" class="mod-opt-spice p-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 theme-text-sub font-medium hover:border-rose-500 transition-all text-center">
+              <div class="text-base">🔥🔥</div>
+              <div class="text-xs font-bold mt-1">Fire Hot 🔥🔥</div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Premium Add-ons -->
+        <div class="space-y-2">
+          <label class="font-bold theme-text-title uppercase tracking-wider">Add-on Toppings & Upgrades</label>
+          <div class="space-y-2">
+            <label class="p-3 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/60 flex items-center justify-between cursor-pointer hover:border-teal-500/50">
+              <span class="flex items-center gap-2 theme-text-title font-medium"><input type="checkbox" id="mod-addon-cheese" class="rounded text-teal-600"> 🧀 Extra Melty Mozzarella Cheese</span>
+              <span class="font-mono text-teal-600 font-bold">+$2.00</span>
+            </label>
+            <label class="p-3 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/60 flex items-center justify-between cursor-pointer hover:border-teal-500/50">
+              <span class="flex items-center gap-2 theme-text-title font-medium"><input type="checkbox" id="mod-addon-egg" class="rounded text-teal-600"> 🍳 Crispy Fried Sunny Egg</span>
+              <span class="font-mono text-teal-600 font-bold">+$1.50</span>
+            </label>
+            <label class="p-3 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/60 flex items-center justify-between cursor-pointer hover:border-teal-500/50">
+              <span class="flex items-center gap-2 theme-text-title font-medium"><input type="checkbox" id="mod-addon-kimchi" class="rounded text-teal-600"> 🥬 Aged Jeolla Kimchi Side</span>
+              <span class="font-mono text-teal-600 font-bold">+$2.50</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Special Kitchen Memo -->
+        <div class="space-y-2">
+          <label class="font-bold theme-text-title uppercase tracking-wider">Kitchen / Allergy Note</label>
+          <input type="text" id="mod-kitchen-note" placeholder="e.g. Gluten allergy, sauce on the side, extra crispy" class="w-full p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 theme-text-title focus:outline-none focus:border-teal-500" />
+        </div>
+      </div>
+
+      <div class="p-5 bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between">
+        <button onclick="closeModifierModal()" class="px-5 py-3 rounded-2xl bg-slate-200 dark:bg-slate-800 theme-text-title font-bold text-xs">Cancel</button>
+        <button onclick="confirmItemModifier()" class="px-8 py-3.5 rounded-2xl bg-teal-600 hover:bg-teal-500 text-white font-extrabold text-xs shadow flex items-center gap-2">
+          <i data-lucide="check" class="w-4 h-4"></i> Add to Ticket
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. US PAYMENT & SPLIT BILL MODAL -->
+  <div id="modal-payment" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm overflow-y-auto">
+    <div class="relative w-full max-w-2xl theme-card border rounded-3xl overflow-hidden shadow-2xl my-6">
+      <div class="p-5 bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+        <div>
+          <h3 class="text-xl font-black theme-text-title">Payment & Checkout Terminal</h3>
+          <p class="text-xs theme-text-sub">Total Balance Due: <strong class="text-teal-600 dark:text-teal-400 font-mono" id="pay-total-due">$0.00</strong></p>
+        </div>
+        <button onclick="closePaymentModal()" class="p-2 rounded-xl theme-text-sub hover:theme-text-title">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="p-6 space-y-6 max-h-[70vh] overflow-y-auto">
+        <!-- Split Check Options -->
+        <div class="space-y-2">
+          <label class="text-xs font-bold theme-text-title uppercase tracking-wider">Split Bill Method</label>
+          <div class="grid grid-cols-4 gap-2">
+            <button onclick="setSplitMode('full', this)" class="split-btn active p-3 rounded-2xl bg-teal-600 text-white font-bold text-xs shadow">Single Check</button>
+            <button onclick="setSplitMode('2way', this)" class="split-btn p-3 rounded-2xl bg-slate-100 dark:bg-slate-800 theme-text-sub font-medium text-xs border border-slate-200 dark:border-slate-700">Split 2-Way</button>
+            <button onclick="setSplitMode('3way', this)" class="split-btn p-3 rounded-2xl bg-slate-100 dark:bg-slate-800 theme-text-sub font-medium text-xs border border-slate-200 dark:border-slate-700">Split 3-Way</button>
+            <button onclick="setSplitMode('4way', this)" class="split-btn p-3 rounded-2xl bg-slate-100 dark:bg-slate-800 theme-text-sub font-medium text-xs border border-slate-200 dark:border-slate-700">Split 4-Way</button>
+          </div>
+        </div>
+
+        <!-- US TIP MATRIX (STANDARD SF 18-25%) -->
+        <div class="p-4 rounded-3xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-3">
+          <div class="flex justify-between items-center text-xs">
+            <label class="font-bold theme-text-title uppercase tracking-wider flex items-center gap-1.5">
+              <i data-lucide="heart" class="w-4 h-4 text-rose-500 fill-rose-500"></i> Gratuity / Tip Selection
+            </label>
+            <span class="text-teal-600 dark:text-teal-400 font-mono text-xs font-bold" id="tip-display-amt">Tip: $0.00 (0%)</span>
+          </div>
+          <div class="grid grid-cols-3 sm:grid-cols-6 gap-2">
+            <button onclick="selectTip(18, this)" class="tip-btn p-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-center hover:border-teal-400 transition-all shadow-sm">
+              <div class="text-xs font-bold theme-text-title">18%</div>
+              <div class="text-[10px] theme-text-sub font-mono" id="tip-calc-18">$0.00</div>
+            </button>
+            <button onclick="selectTip(20, this)" class="tip-btn active p-3 rounded-2xl border border-teal-500 bg-teal-50 text-center ring-2 ring-teal-500/30 shadow-sm">
+              <div class="text-xs font-bold text-teal-800">20% ⭐</div>
+              <div class="text-[10px] text-teal-600 font-mono font-bold" id="tip-calc-20">$0.00</div>
+            </button>
+            <button onclick="selectTip(22, this)" class="tip-btn p-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-center hover:border-teal-400 transition-all shadow-sm">
+              <div class="text-xs font-bold theme-text-title">22%</div>
+              <div class="text-[10px] theme-text-sub font-mono" id="tip-calc-22">$0.00</div>
+            </button>
+            <button onclick="selectTip(25, this)" class="tip-btn p-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-center hover:border-teal-400 transition-all shadow-sm">
+              <div class="text-xs font-bold theme-text-title">25% 🔥</div>
+              <div class="text-[10px] theme-text-sub font-mono" id="tip-calc-25">$0.00</div>
+            </button>
+            <button onclick="selectTip('custom', this)" class="tip-btn p-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-center hover:border-teal-400 transition-all shadow-sm">
+              <div class="text-xs font-bold theme-text-title">Custom $</div>
+              <div class="text-[10px] theme-text-sub">Enter</div>
+            </button>
+            <button onclick="selectTip(0, this)" class="tip-btn p-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-center hover:border-teal-400 transition-all shadow-sm">
+              <div class="text-xs font-bold theme-text-sub">No Tip</div>
+              <div class="text-[10px] theme-text-sub">$0.00</div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Payment Method Tabs -->
+        <div class="space-y-3">
+          <label class="text-xs font-bold theme-text-title uppercase tracking-wider">Select Tender Type</label>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+            <button onclick="processTender('Apple Pay / Tap')" class="p-4 rounded-2xl bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-left flex flex-col justify-between space-y-2 group shadow-sm transition-all">
+              <i data-lucide="smartphone" class="w-5 h-5 text-teal-600"></i>
+              <span class="text-xs font-bold theme-text-title">Tap to Pay / Apple Pay</span>
+            </button>
+            <button onclick="processTender('Credit Card EMV')" class="p-4 rounded-2xl bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-left flex flex-col justify-between space-y-2 group shadow-sm transition-all">
+              <i data-lucide="credit-card" class="w-5 h-5 text-blue-600"></i>
+              <span class="text-xs font-bold theme-text-title">EMV Chip Card</span>
+            </button>
+            <button onclick="processTender('Cash')" class="p-4 rounded-2xl bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-left flex flex-col justify-between space-y-2 group shadow-sm transition-all">
+              <i data-lucide="banknote" class="w-5 h-5 text-emerald-600"></i>
+              <span class="text-xs font-bold theme-text-title">Cash Drawer</span>
+            </button>
+            <button onclick="processTender('Gift Card')" class="p-4 rounded-2xl bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-left flex flex-col justify-between space-y-2 group shadow-sm transition-all">
+              <i data-lucide="gift" class="w-5 h-5 text-purple-600"></i>
+              <span class="text-xs font-bold theme-text-title">Gift Card / House</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. TIMECARD & CLOCK IN/OUT MODAL -->
+  <div id="modal-timecard" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+    <div class="relative w-full max-w-md theme-card border rounded-3xl p-6 shadow-2xl space-y-5">
+      <div class="flex items-center justify-between">
+        <h3 class="text-lg font-black theme-text-title flex items-center gap-2">
+          <i data-lucide="clock" class="w-5 h-5 text-amber-500"></i> Staff PIN Timecard
+        </h3>
+        <button onclick="closeTimecardModal()" class="theme-text-sub hover:theme-text-title">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div class="space-y-3">
+        <input type="password" id="staff-pin-input" maxlength="4" placeholder="Enter 4-Digit Staff PIN" class="w-full text-center tracking-widest text-2xl font-mono py-3.5 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-teal-600 font-bold focus:outline-none focus:border-teal-500" value="1234" />
+        <div class="grid grid-cols-2 gap-3 pt-2">
+          <button onclick="staffClockAction('in')" class="py-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow">
+            Clock In Shift
+          </button>
+          <button onclick="staffClockAction('out')" class="py-3.5 rounded-2xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs shadow">
+            Clock Out / Break
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== JAVASCRIPT LOGIC ==================== -->
+  <script>
+    let isPastel = true; // DEFAULT IS PASTEL BRIGHT THEME
+    let selectedSpiceLevel = 'Mild (Original)'; // ACTIVE SPICE LEVEL STATE
+
+    function togglePastelTheme() {
+      isPastel = !isPastel;
+      const html = document.documentElement;
+      const btnText = document.getElementById('theme-mode-text');
+      const btn = document.getElementById('theme-toggle-btn');
+
+      if (isPastel) {
+        html.className = 'theme-pastel';
+        btnText.innerText = 'Pastel Bright';
+        btn.className = 'flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-900 text-xs font-bold shadow-sm hover:bg-amber-100 transition-all';
+        btn.querySelector('span:first-child').innerText = '☀️';
+      } else {
+        html.className = 'theme-dark dark';
+        btnText.innerText = 'Dark Mode';
+        btn.className = 'flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800 border border-slate-700 text-slate-200 text-xs font-bold shadow-sm hover:bg-slate-700 transition-all';
+        btn.querySelector('span:first-child').innerText = '🌙';
+      }
+      renderTablesGrid();
+      lucide.createIcons();
+    }
+
+    // SPICE LEVEL SELECTION LOGIC
+    function selectModOption(type, value, btn) {
+      if (type === 'spice') {
+        if (value === 'Mild') selectedSpiceLevel = 'Mild (Original)';
+        else if (value === 'Spicy') selectedSpiceLevel = 'Medium Spicy 🔥';
+        else if (value === 'Fire') selectedSpiceLevel = 'Fire Hot 🔥🔥';
+
+        // Update Label
+        document.getElementById('mod-spice-label').innerText = 'Selected: ' + selectedSpiceLevel;
+
+        // Reset all buttons in spice group
+        document.querySelectorAll('.mod-opt-spice').forEach(b => {
+          b.className = 'mod-opt-spice p-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 theme-text-sub font-medium hover:border-orange-400 transition-all text-center';
+        });
+
+        // Highlight selected button
+        btn.className = 'mod-opt-spice p-3 rounded-2xl border border-teal-500 bg-teal-50 text-teal-800 font-bold ring-2 ring-teal-500/30 shadow-sm transition-all text-center';
+      }
+    }
+
+    // SF BAY AREA MENU DATA WITH VIVID FOOD PICTURES & ICONS
+    const POS_MENU = [
+      // K-BBQ Sizzle Sets
+      {
+        id: 'la-galbi',
+        cat: 'kbbq',
+        name: 'Prime Marinated LA Galbi',
+        desc: 'Prime beef short ribs, 48h soy-pear marinade, char-grilled to perfection.',
+        price: 34.95,
+        img: 'https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=400&auto=format&fit=crop',
+        icon: '🥩',
+        pairWith: 'Seafood Haemul Pajeon',
+        pairPrice: 16.95,
+        pairDiscountMsg: 'Add Seafood Pajeon for authentic K-BBQ combo (Save $2)',
+        station: 'grill'
+      },
+      {
+        id: 'beef-bulgogi',
+        cat: 'kbbq',
+        name: 'Traditional Beef Bulgogi Platter',
+        desc: 'Thinly sliced USDA Prime ribeye, sweet sesame-soy glaze, charred onions.',
+        price: 26.95,
+        img: 'https://images.unsplash.com/photo-1592686096463-9a38ac93ee58?q=80&w=400&auto=format&fit=crop',
+        icon: '🥢',
+        pairWith: 'Kimchi Bulgogi Loaded Fries',
+        pairPrice: 13.95,
+        pairDiscountMsg: 'Add Loaded Fries for the ultimate party table',
+        station: 'grill'
+      },
+      {
+        id: 'spicy-pork',
+        cat: 'kbbq',
+        name: 'Spicy Gochujang Pork Belly',
+        desc: 'Thick pork belly wok-seared with aged chili glaze and caramelized scallions.',
+        price: 24.95,
+        img: 'https://images.unsplash.com/photo-1541832676-9b763b0239ab?q=80&w=400&auto=format&fit=crop',
+        icon: '🔥',
+        pairWith: 'Terra Draft Beer Pint',
+        pairPrice: 7.50,
+        pairDiscountMsg: 'Top Pairing: Ice-Cold Terra Draft Beer',
+        station: 'grill'
+      },
+      {
+        id: 'grand-combo',
+        cat: 'kbbq',
+        name: 'Grand Bay Area K-BBQ Feast (3-4P)',
+        desc: 'LA Galbi + Bulgogi + Spicy Pork + Japchae + Steamed Egg + 4 Rice.',
+        price: 89.95,
+        img: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=400&auto=format&fit=crop',
+        icon: '👑',
+        pairWith: 'Chamisul Fresh Soju',
+        pairPrice: 13.95,
+        pairDiscountMsg: 'Pair with Soju + Beer (Somaek set)',
+        station: 'grill'
+      },
+
+      // Artisanal Cupbap
+      {
+        id: 'cupbap-galbi',
+        cat: 'cupbap',
+        name: 'Grilled LA Galbi Cupbap',
+        desc: 'Short ribs over jasmine rice, charred sweet corn, aged kimchi, sunny egg.',
+        price: 17.95,
+        img: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=400&auto=format&fit=crop',
+        icon: '🍚',
+        pairWith: 'Double-Fried Wings (4pcs)',
+        pairPrice: 6.95,
+        pairDiscountMsg: 'Upgrade to K-Box Meal with Wings + Soda (+$6.95)',
+        station: 'wok'
+      },
+      {
+        id: 'cupbap-bulgogi',
+        cat: 'cupbap',
+        name: 'Classic Sweet Bulgogi Cupbap',
+        desc: 'Marinated ribeye, glass noodles, seasoned spinach, roasted sesame.',
+        price: 15.95,
+        img: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?q=80&w=400&auto=format&fit=crop',
+        icon: '🍲',
+        pairWith: 'Mozzarella K-Corndog',
+        pairPrice: 7.95,
+        pairDiscountMsg: 'Add Potato Mozzarella Corndog for $7.95',
+        station: 'wok'
+      },
+      {
+        id: 'cupbap-chicken',
+        cat: 'cupbap',
+        name: 'Crispy K-Fried Chicken Cupbap',
+        desc: 'Crunch boneless chicken, sweet chili drizzle, pickled daikon.',
+        price: 14.95,
+        img: 'https://images.unsplash.com/photo-1562967914-608f82629710?q=80&w=400&auto=format&fit=crop',
+        icon: '🍗',
+        pairWith: 'Milkis Korean Soda',
+        pairPrice: 3.50,
+        pairDiscountMsg: 'Add Milkis or Sac Sac Orange for $3.50',
+        station: 'wok'
+      },
+      {
+        id: 'cupbap-tofu',
+        cat: 'cupbap',
+        name: 'Organic Tofu & Avocado Cupbap (V)',
+        desc: 'Pan-seared organic tofu, fresh avocado, sesame soy dressing.',
+        price: 13.95,
+        img: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?q=80&w=400&auto=format&fit=crop',
+        icon: '🥑',
+        pairWith: 'House Iced Yuja Sparkler',
+        pairPrice: 4.95,
+        pairDiscountMsg: 'Pair with Iced Yuja Sparkler (+$4.95)',
+        station: 'wok'
+      },
+
+      // Wings & Street Food
+      {
+        id: 'wings-10pc',
+        cat: 'street',
+        name: 'Crispy Double-Fried Wings (10pcs)',
+        desc: 'Choice of Soy Garlic, Sweet Spicy Yangnyeom, or Honey Butter.',
+        price: 16.95,
+        img: 'https://images.unsplash.com/photo-1527477321055-43615b6294a5?q=80&w=400&auto=format&fit=crop',
+        icon: '🍗',
+        pairWith: 'Terra Draft Beer Pint',
+        pairPrice: 7.50,
+        pairDiscountMsg: 'Chimaek Combo: Wings + Terra Beer',
+        station: 'wok'
+      },
+      {
+        id: 'loaded-fries',
+        cat: 'street',
+        name: 'Kimchi Bulgogi Loaded Fries',
+        desc: 'Crispy fries, caramelized kimchi, bulgogi, spicy mayo, cheese pull.',
+        price: 13.95,
+        img: 'https://images.unsplash.com/photo-1585109649139-366815a0d713?q=80&w=400&auto=format&fit=crop',
+        icon: '🍟',
+        pairWith: 'Milkis Korean Soda',
+        pairPrice: 3.50,
+        pairDiscountMsg: 'Add Refreshing Soda for $3.50',
+        station: 'wok'
+      },
+      {
+        id: 'seafood-pajeon',
+        cat: 'street',
+        name: 'Seafood Haemul Pajeon (Pancake)',
+        desc: 'Jumbo shrimp, squid, fresh scallions, crispy savory batter.',
+        price: 16.95,
+        img: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=400&auto=format&fit=crop',
+        icon: '🥞',
+        pairWith: 'Prime Marinated LA Galbi',
+        pairPrice: 34.95,
+        pairDiscountMsg: 'Pair with LA Galbi for traditional feast',
+        station: 'wok'
+      },
+      {
+        id: 'k-corndog',
+        cat: 'street',
+        name: 'Crispy Potato Mozzarella K-Corndog',
+        desc: '100% mozzarella cheese pull, crunchy diced potato crust.',
+        price: 7.95,
+        img: 'https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?q=80&w=400&auto=format&fit=crop',
+        icon: '🌭',
+        pairWith: 'Crispy K-Fried Chicken Cupbap',
+        pairPrice: 14.95,
+        pairDiscountMsg: 'Street food combo pair',
+        station: 'wok'
+      },
+
+      // Sizzling Stews
+      {
+        id: 'kimchi-jjigae',
+        cat: 'stew',
+        name: 'Spicy Pork Belly Kimchi Jjigae',
+        desc: '6-month fermented kimchi, pork belly, silken tofu, bubbling spicy broth.',
+        price: 15.95,
+        img: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?q=80&w=400&auto=format&fit=crop',
+        icon: '🍲',
+        pairWith: 'Traditional Beef Bulgogi Platter',
+        pairPrice: 26.95,
+        pairDiscountMsg: 'Classic Korean Stew & BBQ Pair',
+        station: 'wok'
+      },
+      {
+        id: 'sundubu-jjigae',
+        cat: 'stew',
+        name: 'Seafood Soft Tofu Stew (Sundubu)',
+        desc: 'Clams, shrimp, silken tofu, fresh egg poached in bubbling spicy soup.',
+        price: 16.95,
+        img: 'https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?q=80&w=400&auto=format&fit=crop',
+        icon: '🥘',
+        pairWith: 'Grilled LA Galbi Cupbap',
+        pairPrice: 17.95,
+        pairDiscountMsg: 'Add Cupbap for lunch feast',
+        station: 'wok'
+      },
+      {
+        id: 'galbitang',
+        cat: 'stew',
+        name: '24h Simmered Beef Galbitang',
+        desc: 'Rich clear broth with fall-off-the-bone short ribs and glass noodles.',
+        price: 19.95,
+        img: 'https://images.unsplash.com/photo-1541832676-9b763b0239ab?q=80&w=400&auto=format&fit=crop',
+        icon: '🥣',
+        pairWith: 'Seafood Haemul Pajeon',
+        pairPrice: 16.95,
+        pairDiscountMsg: 'Traditional soup + pancake pairing',
+        station: 'wok'
+      },
+
+      // Drinks, Soju, Wine
+      {
+        id: 'terra-beer',
+        cat: 'drink',
+        name: 'Terra Korean Draft Beer Pint',
+        desc: 'Clean, crisp, refreshing draft lager from Korea.',
+        price: 7.50,
+        img: 'https://images.unsplash.com/photo-1608270586620-248524c67de9?q=80&w=400&auto=format&fit=crop',
+        icon: '🍺',
+        station: 'bar'
+      },
+      {
+        id: 'chamisul-soju',
+        cat: 'drink',
+        name: 'Chamisul Fresh Soju (375ml)',
+        desc: 'Clean bamboo-filtered original Korean soju.',
+        price: 13.95,
+        img: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=400&auto=format&fit=crop',
+        icon: '🍶',
+        station: 'bar'
+      },
+      {
+        id: 'napa-cabernet',
+        cat: 'drink',
+        name: 'Napa Valley Cabernet Sauvignon',
+        desc: 'Full-bodied local Napa red wine, pairs with K-BBQ beef.',
+        price: 14.00,
+        img: 'https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?q=80&w=400&auto=format&fit=crop',
+        icon: '🍷',
+        station: 'bar'
+      },
+      {
+        id: 'milkis',
+        cat: 'drink',
+        name: 'Milkis Creamy Carbonated Soda',
+        desc: 'Sweet and creamy carbonated classic Korean soda.',
+        price: 3.50,
+        img: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?q=80&w=400&auto=format&fit=crop',
+        icon: '🥤',
+        station: 'bar'
+      }
+    ];
+
+    // TABLES DATA
+    let TABLES = [
+      { id: 1, name: 'Table 1', seats: 2, status: 'available', time: '', guests: 0, orderId: null },
+      { id: 2, name: 'Table 2', seats: 4, status: 'dining', time: '24m', guests: 3, orderId: 'ORD-781' },
+      { id: 3, name: 'Table 3', seats: 4, status: 'seated', time: '6m', guests: 4, orderId: 'ORD-782' },
+      { id: 4, name: 'Table 4', seats: 6, status: 'dining', time: '38m', guests: 6, orderId: 'ORD-780' },
+      { id: 5, name: 'Table 5', seats: 2, status: 'billed', time: '52m', guests: 2, orderId: 'ORD-779' },
+      { id: 6, name: 'Table 6', seats: 4, status: 'available', time: '', guests: 0, orderId: null },
+      { id: 7, name: 'Patio P1', seats: 4, status: 'available', time: '', guests: 0, orderId: null },
+      { id: 8, name: 'Patio P2', seats: 4, status: 'dining', time: '14m', guests: 4, orderId: 'ORD-783' },
+      { id: 9, name: 'Patio P3', seats: 6, status: 'available', time: '', guests: 0, orderId: null },
+      { id: 10, name: 'Bar Seat 1', seats: 1, status: 'available', time: '', guests: 0, orderId: null },
+      { id: 11, name: 'Bar Seat 2', seats: 1, status: 'seated', time: '4m', guests: 1, orderId: 'ORD-784' },
+      { id: 12, name: 'VIP Room', seats: 10, status: 'available', time: '', guests: 0, orderId: null },
+    ];
+
+    // KDS TICKETS
+    let KDS_TICKETS = [
+      {
+        id: 'TKT-101',
+        table: 'Table 4 (Patio)',
+        orderType: 'Dine-In',
+        server: 'Justin C.',
+        timeElapsed: '4m 20s',
+        status: 'cooking',
+        station: 'grill',
+        items: [
+          { name: 'Prime LA Galbi (Short Ribs)', mod: 'Mild (Original) · Extra Mozzarella', qty: 2, done: false },
+          { name: 'Spicy Gochujang Pork Belly', mod: 'Fire Hot 🔥🔥', qty: 1, done: false },
+          { name: 'Seafood Haemul Pajeon', mod: 'Mild (Original) · Extra crispy', qty: 1, done: true }
+        ]
+      },
+      {
+        id: 'TKT-102',
+        table: 'DoorDash #892',
+        orderType: 'Online Delivery',
+        server: 'Online Aggregator',
+        timeElapsed: '9m 45s',
+        status: 'urgent',
+        station: 'wok',
+        items: [
+          { name: 'Grilled LA Galbi Cupbap', mod: 'Medium Spicy 🔥 · Sunny Egg', qty: 2, done: false },
+          { name: 'Crispy Wings (Soy Garlic 10pc)', mod: 'Mild (Original) · Ranch on side', qty: 1, done: false }
+        ]
+      }
+    ];
+
+    // CATERING DATA
+    let CATERING_ORDERS = [
+      {
+        id: 'CAT-2026-01',
+        client: 'Genentech Biotech Lunch',
+        eventDate: 'Aug 29, 2026 · 12:00 PM',
+        pax: 35,
+        total: 647.50,
+        depositPaid: 323.75,
+        status: 'Confirmed (50% Deposit Paid)',
+        menuSummary: '35x Corporate K-Box Lunch (LA Galbi & Bulgogi mix + Mandu + Drinks)'
+      },
+      {
+        id: 'CAT-2026-02',
+        client: 'UC Berkeley Alumni Banquet',
+        eventDate: 'Sep 2, 2026 · 6:30 PM',
+        pax: 50,
+        total: 1120.00,
+        depositPaid: 560.00,
+        status: 'Confirmed (50% Deposit Paid)',
+        menuSummary: 'Full Banquet Buffet with Chaffing Dishes + K-Wings + Pajeon'
+      }
+    ];
+
+    // CURRENT TICKET STATE
+    let currentTicket = {
+      table: '🥡 Take-Out Customer #1',
+      id: 'TO-' + Math.floor(1000 + Math.random() * 9000),
+      items: [],
+      splitMode: 'full',
+      selectedTipPercent: 20
+    };
+
+    let selectedModItem = null;
+
+    // NAVIGATION SWITCHER
+    function switchNav(view) {
+      document.querySelectorAll('.nav-tab').forEach(t => {
+        t.className = 'nav-tab px-4 py-2 rounded-xl text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white flex items-center gap-1.5 transition-all';
+      });
+      const activeBtn = document.getElementById('nav-' + view);
+      if (activeBtn) {
+        if (view === 'takeout') {
+          activeBtn.className = 'nav-tab active px-4 py-2 rounded-xl text-white bg-gradient-to-r from-orange-500 to-amber-500 flex items-center gap-1.5 shadow-md';
+        } else {
+          activeBtn.className = 'nav-tab active px-4 py-2 rounded-xl text-white bg-teal-600 flex items-center gap-1.5 shadow';
+        }
+      }
+
+      document.querySelectorAll('.view-section').forEach(s => s.classList.add('hidden'));
+      document.getElementById('view-' + view).classList.remove('hidden');
+
+      if (view === 'takeout') renderMenuItems('all');
+      if (view === 'tables') renderTablesGrid();
+      if (view === 'kds') renderKDS();
+      if (view === 'catering') renderCatering();
+      if (view === 'online') renderOnlineOrders();
+      lucide.createIcons();
+    }
+
+    // RENDER TABLES GRID
+    function renderTablesGrid() {
+      const grid = document.getElementById('tables-grid');
+      grid.innerHTML = TABLES.map(t => {
+        let bg = '';
+        let badge = '';
+
+        if (isPastel) {
+          bg = t.status === 'available' ? 'bg-white border-emerald-200 hover:border-emerald-500 shadow-sm' :
+               t.status === 'seated' ? 'bg-blue-50/70 border-blue-300 ring-2 ring-blue-400/30' :
+               t.status === 'dining' ? 'bg-amber-50/70 border-amber-300 ring-2 ring-amber-400/30' :
+               'bg-purple-50/70 border-purple-300 ring-2 ring-purple-400/30';
+
+          badge = t.status === 'available' ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">Available</span>' :
+                  t.status === 'seated' ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800 border border-blue-300 animate-pulse">Seated (' + t.time + ')</span>' :
+                  t.status === 'dining' ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-300">Dining (' + t.time + ')</span>' :
+                  '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-purple-100 text-purple-800 border border-purple-300">Bill Printed</span>';
+        } else {
+          bg = t.status === 'available' ? 'bg-slate-900 border-slate-800 hover:border-emerald-500/50' :
+               t.status === 'seated' ? 'bg-blue-950/30 border-blue-500/40 ring-1 ring-blue-500/30' :
+               t.status === 'dining' ? 'bg-amber-950/30 border-amber-500/40 ring-1 ring-amber-500/30' :
+               'bg-purple-950/30 border-purple-500/40';
+
+          badge = t.status === 'available' ? '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-950 text-emerald-300 border border-emerald-800">Available</span>' :
+                  t.status === 'seated' ? '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-950 text-blue-300 border border-blue-800 animate-pulse">Seated (' + t.time + ')</span>' :
+                  t.status === 'dining' ? '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-950 text-amber-300 border border-amber-800">Dining (' + t.time + ')</span>' :
+                  '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-950 text-purple-300 border border-purple-800">Bill Printed</span>';
+        }
+
+        return `
+          <div onclick="selectTable('${t.id}')" class="p-4 rounded-3xl border ${bg} flex flex-col justify-between h-44 cursor-pointer transition-all hover:scale-105 active:scale-95 shadow-md">
+            <div class="flex justify-between items-start">
+              <div>
+                <h3 class="text-base font-black theme-text-title font-serif">${t.name}</h3>
+                <span class="text-[11px] theme-text-sub font-medium">${t.seats} Seats</span>
+              </div>
+              ${badge}
+            </div>
+
+            <div class="space-y-1">
+              ${t.guests > 0 ? `<div class="text-xs theme-text-title flex items-center gap-1 font-semibold"><i data-lucide="users" class="w-3.5 h-3.5 text-teal-600"></i> ${t.guests} Guests</div>` : '<div class="text-xs theme-text-sub">No active check</div>'}
+              ${t.orderId ? `<div class="text-[11px] font-mono text-teal-600 font-bold">${t.orderId}</div>` : ''}
+            </div>
+
+            <div class="pt-2 border-t border-slate-200 dark:border-slate-800/80 flex justify-between items-center text-[11px]">
+              <span class="theme-text-sub font-medium">Tap to Open</span>
+              <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-teal-600"></i>
+            </div>
+          </div>
+        `;
+      }).join('');
+      lucide.createIcons();
+    }
+
+    function selectTable(id) {
+      const t = TABLES.find(x => x.id === parseInt(id));
+      if (!t) return;
+      currentTicket.table = t.name;
+      if (t.status === 'available') {
+        t.status = 'seated';
+        t.guests = t.seats;
+        t.time = '1m';
+        t.orderId = 'ORD-' + Math.floor(1000 + Math.random() * 9000);
+      }
+      document.getElementById('ticket-table-name').innerText = t.name;
+      document.getElementById('ticket-id').innerText = t.orderId || currentTicket.id;
+      switchNav('takeout');
+    }
+
+    // RENDER MENU ITEMS WITH HIGH-RES FOOD PICTURES & ICONS
+    function renderMenuItems(cat) {
+      const grid = document.getElementById('pos-menu-items');
+      const filtered = cat === 'all' ? POS_MENU : POS_MENU.filter(m => m.cat === cat);
+
+      grid.innerHTML = filtered.map(item => `
+        <div onclick="openItemModifier('${item.id}')" class="rounded-3xl theme-card border hover:border-teal-500 overflow-hidden flex flex-col justify-between cursor-pointer active:scale-95 transition-all group shadow-sm">
+          <!-- Food Image Banner -->
+          <div class="relative h-28 w-full overflow-hidden bg-slate-900">
+            <img src="${item.img}" alt="${item.name}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+            <div class="absolute top-2 left-2 flex items-center gap-1.5">
+              <span class="w-7 h-7 rounded-xl bg-black/70 backdrop-blur-md flex items-center justify-center text-sm shadow">
+                ${item.icon}
+              </span>
+            </div>
+            ${item.station === 'grill' ? '<div class="absolute top-2 right-2 px-2 py-0.5 rounded-full bg-orange-500 text-white text-[10px] font-bold shadow">GRILL</div>' : ''}
+            <div class="absolute bottom-2 left-3 right-3 flex justify-between items-end">
+              <span class="text-sm font-extrabold text-white font-mono drop-shadow">$${item.price.toFixed(2)}</span>
+            </div>
+          </div>
+
+          <!-- Food Description -->
+          <div class="p-3.5 flex-1 flex flex-col justify-between space-y-2">
+            <div class="space-y-1">
+              <h4 class="text-xs sm:text-sm font-bold theme-text-title group-hover:text-teal-600 transition-colors line-clamp-1">${item.name}</h4>
+              <p class="text-[10px] theme-text-sub line-clamp-2 leading-relaxed font-light">${item.desc}</p>
+            </div>
+            <div class="flex justify-between items-center pt-2 border-t border-slate-100 dark:border-slate-800">
+              <span class="text-[11px] text-teal-600 font-bold flex items-center gap-1">
+                <span>Customize</span>
+                <i data-lucide="chevron-right" class="w-3 h-3"></i>
+              </span>
+              <button class="p-1.5 rounded-xl bg-teal-50 text-teal-700 hover:bg-teal-600 hover:text-white transition-all shadow-sm">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+      lucide.createIcons();
+    }
+
+    function filterMenu(cat, btn) {
+      document.querySelectorAll('.cat-pill').forEach(b => {
+        b.className = 'cat-pill px-4 py-2 rounded-xl text-xs font-bold theme-pill-inactive border';
+      });
+      btn.className = 'cat-pill active px-4 py-2 rounded-xl text-xs font-bold bg-teal-600 text-white shadow';
+      renderMenuItems(cat);
+    }
+
+    // MODIFIER MODAL & ADD TO CART
+    function openItemModifier(id) {
+      selectedModItem = POS_MENU.find(m => m.id === id);
+      if (!selectedModItem) return;
+
+      // Reset Spice Level to Mild
+      selectedSpiceLevel = 'Mild (Original)';
+      document.getElementById('mod-spice-label').innerText = 'Selected: Mild (Original)';
+      
+      const mildBtn = document.getElementById('spice-btn-mild');
+      const spicyBtn = document.getElementById('spice-btn-spicy');
+      const fireBtn = document.getElementById('spice-btn-fire');
+
+      if (mildBtn) {
+        mildBtn.className = 'mod-opt-spice p-3 rounded-2xl border border-teal-500 bg-teal-50 text-teal-800 font-bold ring-2 ring-teal-500/30 shadow-sm transition-all text-center';
+      }
+      if (spicyBtn) {
+        spicyBtn.className = 'mod-opt-spice p-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 theme-text-sub font-medium hover:border-orange-400 transition-all text-center';
+      }
+      if (fireBtn) {
+        fireBtn.className = 'mod-opt-spice p-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 theme-text-sub font-medium hover:border-rose-500 transition-all text-center';
+      }
+
+      document.getElementById('mod-item-name').innerText = selectedModItem.name;
+      document.getElementById('mod-item-price').innerText = '$' + selectedModItem.price.toFixed(2);
+      document.getElementById('mod-item-img').src = selectedModItem.img;
+      document.getElementById('mod-addon-cheese').checked = false;
+      document.getElementById('mod-addon-egg').checked = false;
+      document.getElementById('mod-addon-kimchi').checked = false;
+      document.getElementById('mod-kitchen-note').value = '';
+      document.getElementById('modal-modifier').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closeModifierModal() {
+      document.getElementById('modal-modifier').classList.add('hidden');
+    }
+
+    function confirmItemModifier() {
+      if (!selectedModItem) return;
+      let addOnsPrice = 0;
+      let mods = [];
+
+      // 1. PUSH SELECTED SPICY LEVEL
+      if (selectedModItem.cat !== 'drink') {
+        mods.push(selectedSpiceLevel);
+      }
+
+      // 2. ADD-ONS
+      if (document.getElementById('mod-addon-cheese').checked) { addOnsPrice += 2.00; mods.push('Extra Mozzarella (+$2.00)'); }
+      if (document.getElementById('mod-addon-egg').checked) { addOnsPrice += 1.50; mods.push('Sunny Egg (+$1.50)'); }
+      if (document.getElementById('mod-addon-kimchi').checked) { addOnsPrice += 2.50; mods.push('Aged Kimchi (+$2.50)'); }
+
+      // 3. KITCHEN NOTE
+      const note = document.getElementById('mod-kitchen-note').value.trim();
+      if (note) mods.push('Note: ' + note);
+
+      const unitPrice = selectedModItem.price + addOnsPrice;
+
+      currentTicket.items.push({
+        id: 'item-' + Date.now() + Math.random(),
+        menuId: selectedModItem.id,
+        name: selectedModItem.name,
+        icon: selectedModItem.icon,
+        unitPrice: unitPrice,
+        qty: 1,
+        mods: mods.join(' · '),
+        pairWith: selectedModItem.pairWith,
+        pairPrice: selectedModItem.pairPrice,
+        pairDiscountMsg: selectedModItem.pairDiscountMsg
+      });
+
+      closeModifierModal();
+      updateTicketUI();
+    }
+
+    // UPDATE TICKET & AI RECOMMENDER
+    function updateTicketUI() {
+      const list = document.getElementById('ticket-items-list');
+      if (currentTicket.items.length === 0) {
+        list.innerHTML = '<p class="text-xs theme-text-sub text-center py-12">No items on active ticket. Tap menu items with food pictures to add.</p>';
+      } else {
+        list.innerHTML = currentTicket.items.map((i, idx) => `
+          <div class="p-3 rounded-2xl theme-item-box border flex justify-between items-center text-xs shadow-sm">
+            <div class="flex items-center gap-2.5">
+              <span class="text-base">${i.icon || '🍽️'}</span>
+              <div class="space-y-0.5">
+                <div class="font-bold theme-text-title">${i.name}</div>
+                <div class="text-[11px] text-teal-600 font-mono font-semibold">$${i.unitPrice.toFixed(2)} x ${i.qty}</div>
+                <div class="text-[10px] theme-text-sub font-medium flex items-center gap-1">
+                  <span class="px-1.5 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-200">${i.mods}</span>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="font-bold theme-text-title font-mono">$${(i.unitPrice * i.qty).toFixed(2)}</span>
+              <button onclick="removeTicketItem(${idx})" class="p-1 theme-text-sub hover:text-rose-500">
+                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      // Calculations
+      const subtotal = currentTicket.items.reduce((sum, i) => sum + (i.unitPrice * i.qty), 0);
+      const tax = subtotal * 0.0963;
+      const total = subtotal + tax;
+
+      document.getElementById('ticket-subtotal').innerText = '$' + subtotal.toFixed(2);
+      document.getElementById('ticket-tax').innerText = '$' + tax.toFixed(2);
+      document.getElementById('ticket-total').innerText = '$' + total.toFixed(2);
+
+      updateAIRecommender();
+      lucide.createIcons();
+    }
+
+    function removeTicketItem(idx) {
+      currentTicket.items.splice(idx, 1);
+      updateTicketUI();
+    }
+
+    function clearCurrentTicket() {
+      if (confirm('Clear all items from current ticket?')) {
+        currentTicket.items = [];
+        updateTicketUI();
+      }
+    }
+
+    function updateAIRecommender() {
+      const recMsg = document.getElementById('ai-recommender-msg');
+      const recBtns = document.getElementById('ai-recommender-btns');
+
+      if (currentTicket.items.length === 0) {
+        recMsg.innerText = 'Select K-BBQ or Cupbap to generate chef smart pairing upsells.';
+        recBtns.innerHTML = '';
+        return;
+      }
+
+      const lastItem = currentTicket.items[currentTicket.items.length - 1];
+      if (lastItem.pairWith) {
+        recMsg.innerHTML = `${lastItem.pairDiscountMsg || 'Recommended Pairing:'} <strong class="text-teal-700 dark:text-teal-300">${lastItem.pairWith}</strong> ($${lastItem.pairPrice.toFixed(2)})`;
+        recBtns.innerHTML = `
+          <button onclick="addPairItem('${lastItem.pairWith}', ${lastItem.pairPrice})" class="px-3.5 py-1.5 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-extrabold text-xs shadow flex items-center gap-1 transition-all">
+            <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add ${lastItem.pairWith} (+$${lastItem.pairPrice.toFixed(2)})
+          </button>
+        `;
+      }
+    }
+
+    function addPairItem(name, price) {
+      currentTicket.items.push({
+        id: 'item-' + Date.now(),
+        menuId: 'pair-item',
+        name: name,
+        icon: '💡',
+        unitPrice: price,
+        qty: 1,
+        mods: 'Mild (Original) · AI Smart Pair Combo'
+      });
+      updateTicketUI();
+    }
+
+    function fireTicketToKitchen() {
+      if (currentTicket.items.length === 0) return alert('Cannot fire an empty ticket to kitchen!');
+
+      KDS_TICKETS.unshift({
+        id: 'TKT-' + Math.floor(100 + Math.random() * 900),
+        table: currentTicket.table,
+        orderType: 'Take-Out',
+        server: 'Justin C.',
+        timeElapsed: '0m 10s',
+        status: 'cooking',
+        station: 'grill',
+        items: currentTicket.items.map(i => ({ name: i.name, mod: i.mods, qty: i.qty, done: false }))
+      });
+
+      document.getElementById('kds-badge').innerText = KDS_TICKETS.length;
+      alert('🔥 Take-Out ticket with customized spice level fired to Kitchen Display System (KDS)!');
+    }
+
+    // PAYMENT & TIP LOGIC
+    function openPaymentModal() {
+      if (currentTicket.items.length === 0) return alert('Please add items to ticket before opening payment!');
+      const subtotal = currentTicket.items.reduce((sum, i) => sum + (i.unitPrice * i.qty), 0);
+      const tax = subtotal * 0.0963;
+      const total = subtotal + tax;
+
+      document.getElementById('pay-total-due').innerText = '$' + total.toFixed(2);
+      document.getElementById('tip-calc-18').innerText = '$' + (total * 0.18).toFixed(2);
+      document.getElementById('tip-calc-20').innerText = '$' + (total * 0.20).toFixed(2);
+      document.getElementById('tip-calc-22').innerText = '$' + (total * 0.22).toFixed(2);
+      document.getElementById('tip-calc-25').innerText = '$' + (total * 0.25).toFixed(2);
+
+      selectTip(20, document.querySelectorAll('.tip-btn')[1]);
+      document.getElementById('modal-payment').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closePaymentModal() {
+      document.getElementById('modal-payment').classList.add('hidden');
+    }
+
+    function selectTip(percent, btn) {
+      document.querySelectorAll('.tip-btn').forEach(b => {
+        b.className = 'tip-btn p-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-center hover:border-teal-400 transition-all shadow-sm';
+      });
+      btn.className = 'tip-btn active p-3 rounded-2xl border border-teal-500 bg-teal-50 text-center ring-2 ring-teal-500/30 shadow-sm';
+
+      const subtotal = currentTicket.items.reduce((sum, i) => sum + (i.unitPrice * i.qty), 0);
+      const tax = subtotal * 0.0963;
+      const total = subtotal + tax;
+
+      if (percent === 'custom') {
+        const custom = prompt('Enter custom tip dollar amount ($):', '10.00');
+        const tipVal = parseFloat(custom) || 0;
+        document.getElementById('tip-display-amt').innerText = `Tip: $${tipVal.toFixed(2)} (Custom)`;
+      } else {
+        const tipVal = total * (percent / 100);
+        document.getElementById('tip-display-amt').innerText = `Tip: $${tipVal.toFixed(2)} (${percent}%)`;
+      }
+    }
+
+    function processTender(method) {
+      confetti({ particleCount: 150, spread: 90, origin: { y: 0.55 } });
+      setTimeout(() => {
+        alert(`✅ Payment of ${document.getElementById('pay-total-due').innerText} processed successfully via ${method}!`);
+        closePaymentModal();
+        currentTicket.items = [];
+        updateTicketUI();
+        switchNav('tables');
+      }, 500);
+    }
+
+    // KDS RENDER
+    function renderKDS() {
+      const rail = document.getElementById('kds-tickets-rail');
+      rail.innerHTML = KDS_TICKETS.map(tkt => `
+        <div class="p-5 rounded-3xl theme-card border ${tkt.status === 'urgent' ? 'border-rose-400 ring-2 ring-rose-400/30' : 'border-slate-200 dark:border-slate-800'} flex flex-col justify-between space-y-4 shadow-md">
+          <div class="space-y-3">
+            <div class="flex justify-between items-start pb-2 border-b border-slate-200 dark:border-slate-800">
+              <div>
+                <h3 class="text-base font-black theme-text-title">${tkt.table}</h3>
+                <span class="text-xs theme-text-sub font-mono">${tkt.id} · ${tkt.orderType}</span>
+              </div>
+              <span class="px-2.5 py-1 rounded-full text-xs font-mono font-bold ${tkt.status === 'urgent' ? 'bg-rose-100 text-rose-800 border border-rose-300 animate-pulse' : 'bg-amber-100 text-amber-800 border border-amber-300'}">
+                ⏱️ ${tkt.timeElapsed}
+              </span>
+            </div>
+
+            <div class="space-y-2 text-xs">
+              ${tkt.items.map((it, idx) => `
+                <div onclick="toggleKDSItemDone('${tkt.id}', ${idx})" class="p-2.5 rounded-2xl border ${it.done ? 'bg-emerald-50 border-emerald-200 line-through text-slate-400' : 'bg-slate-50 dark:bg-slate-800/80 border-slate-200 dark:border-slate-700 theme-text-title'} flex justify-between items-center cursor-pointer">
+                  <div>
+                    <span class="font-bold">${it.qty}x ${it.name}</span>
+                    <p class="text-[10px] text-amber-700 font-bold">${it.mod}</p>
+                  </div>
+                  <i data-lucide="${it.done ? 'check-circle' : 'circle'}" class="w-4 h-4 ${it.done ? 'text-emerald-600' : 'text-slate-400'}"></i>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+
+          <button onclick="bumpKDSTicket('${tkt.id}')" class="w-full py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow flex items-center justify-center gap-1.5 transition-all">
+            <i data-lucide="check" class="w-4 h-4"></i> Complete & Bump Ticket
+          </button>
+        </div>
+      `).join('');
+      lucide.createIcons();
+    }
+
+    function toggleKDSItemDone(tktId, idx) {
+      const tkt = KDS_TICKETS.find(t => t.id === tktId);
+      if (tkt) {
+        tkt.items[idx].done = !tkt.items[idx].done;
+        renderKDS();
+      }
+    }
+
+    function bumpKDSTicket(tktId) {
+      KDS_TICKETS = KDS_TICKETS.filter(t => t.id !== tktId);
+      document.getElementById('kds-badge').innerText = KDS_TICKETS.length;
+      renderKDS();
+    }
+
+    // CATERING RENDER
+    function renderCatering() {
+      const grid = document.getElementById('catering-orders-grid');
+      grid.innerHTML = CATERING_ORDERS.map(cat => `
+        <div class="p-6 rounded-3xl theme-card border space-y-4 shadow-md">
+          <div class="flex justify-between items-start">
+            <div>
+              <span class="text-xs font-mono text-purple-600 font-bold">${cat.id}</span>
+              <h3 class="text-base font-bold theme-text-title">${cat.client}</h3>
+              <p class="text-xs theme-text-sub">${cat.eventDate} (${cat.pax} Guests)</p>
+            </div>
+            <span class="px-2.5 py-1 rounded-full bg-purple-100 text-purple-800 border border-purple-200 text-[10px] font-bold">50% Deposit Secured</span>
+          </div>
+          <p class="text-xs theme-text-title bg-slate-50 dark:bg-slate-900 p-3 rounded-2xl border border-slate-200 dark:border-slate-800 font-medium">${cat.menuSummary}</p>
+          <div class="pt-2 border-t border-slate-200 dark:border-slate-800 flex justify-between text-xs font-bold">
+            <span class="theme-text-sub">Total: $${cat.total.toFixed(2)}</span>
+            <span class="text-emerald-600 font-extrabold">Deposit Paid: $${cat.depositPaid.toFixed(2)}</span>
+          </div>
+        </div>
+      `).join('');
+      lucide.createIcons();
+    }
+
+    // TIMECARD & CLOCK
+    function openTimecardModal() {
+      document.getElementById('modal-timecard').classList.remove('hidden');
+      lucide.createIcons();
+    }
+    function closeTimecardModal() {
+      document.getElementById('modal-timecard').classList.add('hidden');
+    }
+    function staffClockAction(type) {
+      alert(`Staff Justin C. successfully clocked ${type.toUpperCase()} at ${new Date().toLocaleTimeString()}!`);
+      closeTimecardModal();
+    }
+
+    // PST Clock Ticker
+    setInterval(() => {
+      const now = new Date();
+      document.getElementById('current-pst-time').innerText = now.toLocaleTimeString('en-US', { timeZone: 'America/Los_Angeles' }) + ' PST';
+    }, 1000);
+
+    // Initial Load (Take-Out & Pastel by default)
+    window.onload = () => {
+      renderMenuItems('all');
+      renderTablesGrid();
+      lucide.createIcons();
+    };
+  </script>
+</body>
+</html>
