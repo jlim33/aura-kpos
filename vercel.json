@@ -2,6 +2,22 @@
   "version": 2,
   "rewrites": [
     {
+      "source": "/video-en",
+      "destination": "/video-en.html"
+    },
+    {
+      "source": "/en/video",
+      "destination": "/video-en.html"
+    },
+    {
+      "source": "/showcase-en",
+      "destination": "/showcase-en.html"
+    },
+    {
+      "source": "/en/showcase",
+      "destination": "/showcase-en.html"
+    },
+    {
       "source": "/video",
       "destination": "/video.html"
     },

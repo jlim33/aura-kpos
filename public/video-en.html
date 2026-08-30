@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aura K-POS 3-Minute Interactive Video Training & Simulator (English Edition)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap');
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #faf8f5; color: #1e293b; }
+    .video-canvas {
+      background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+  </style>
+</head>
+<body class="min-h-screen p-4 sm:p-8 flex flex-col items-center">
+
+  <!-- Header -->
+  <header class="max-w-4xl w-full text-center space-y-3 mb-8">
+    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-teal-100 text-teal-800 text-sm font-bold border border-teal-300">
+      <span>🎬 Aura K-POS Multimedia Training Hub</span>
+    </div>
+    <h1 class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
+      Master Aura K-POS in 3 Minutes <br class="hidden sm:inline" />
+      <span class="text-teal-600">Senior & Novice Friendly</span> Visual Video Guide
+    </h1>
+    <p class="text-lg text-slate-600 font-medium">
+      Extra-large fonts, high-contrast subtitles, and step-by-step interactive animations designed for everyone!
+    </p>
+  </header>
+
+  <!-- Interactive Animated Video Player Component -->
+  <main class="max-w-4xl w-full bg-white rounded-3xl border-2 border-slate-200 p-6 sm:p-8 shadow-xl space-y-6">
+
+    <!-- Video Screen Frame -->
+    <div class="video-canvas rounded-2xl p-6 sm:p-10 text-white relative min-h-[400px] flex flex-col justify-between overflow-hidden">
+      <!-- Top Status -->
+      <div class="flex justify-between items-center z-10">
+        <div class="flex items-center gap-2 px-3 py-1 rounded-full bg-rose-600/90 text-white text-xs font-black animate-pulse">
+          <span>● LIVE DEMO PLAYING</span>
+        </div>
+        <span class="text-xs font-mono text-slate-300" id="step-indicator">Chapter 1 / 5</span>
+      </div>
+
+      <!-- Animated Scene Display Area -->
+      <div class="my-6 z-10 space-y-4 text-center sm:text-left" id="scene-container">
+        <!-- Dynamic JS Animation Content -->
+      </div>
+
+      <!-- Subtitle Box for Seniors / Beginners -->
+      <div class="bg-slate-950/80 backdrop-blur border border-slate-700/80 rounded-2xl p-4 sm:p-5 z-10 flex items-start gap-4">
+        <div class="p-2.5 rounded-xl bg-teal-500/20 border border-teal-500/40 text-teal-400 shrink-0">
+          <i data-lucide="volume-2" class="w-6 h-6"></i>
+        </div>
+        <div class="space-y-1 text-left">
+          <span class="text-xs font-bold text-teal-400 tracking-wide uppercase">AI Voice Narration Subtitle</span>
+          <p class="text-base sm:text-lg font-bold text-white leading-snug" id="narration-text">
+            Loading interactive scene...
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Controls & Timeline Bar -->
+    <div class="space-y-4">
+      <!-- Progress Bar -->
+      <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden border border-slate-200">
+        <div class="bg-gradient-to-r from-teal-500 to-amber-500 h-full transition-all duration-500" id="progress-bar" style="width: 20%;"></div>
+      </div>
+
+      <!-- Playback Buttons -->
+      <div class="flex flex-wrap items-center justify-between gap-4">
+        <div class="flex items-center gap-2">
+          <button onclick="prevStep()" class="px-5 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 font-bold text-slate-700 text-sm flex items-center gap-2">
+            <i data-lucide="skip-back" class="w-4 h-4"></i> Previous
+          </button>
+          <button onclick="toggleAutoPlay()" id="play-btn" class="px-6 py-3 rounded-2xl bg-teal-600 hover:bg-teal-500 text-white font-extrabold text-sm flex items-center gap-2 shadow-md shadow-teal-500/30">
+            <i data-lucide="pause" class="w-4 h-4" id="play-icon"></i> <span id="play-label">Pause</span>
+          </button>
+          <button onclick="nextStep()" class="px-5 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 font-bold text-slate-700 text-sm flex items-center gap-2">
+            Next <i data-lucide="skip-forward" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <a href="/" target="_blank" class="px-6 py-3 rounded-2xl bg-gradient-to-r from-orange-500 to-amber-500 hover:brightness-110 text-white font-black text-sm flex items-center gap-2 shadow-md">
+          <span>🚀 Open Live POS Terminal</span>
+          <i data-lucide="external-link" class="w-4 h-4"></i>
+        </a>
+      </div>
+
+      <!-- Scene Quick Select Tabs -->
+      <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 pt-2 text-xs font-bold text-center">
+        <button onclick="jumpTo(0)" class="scene-tab p-2.5 rounded-xl border-2 border-teal-500 bg-teal-50 text-teal-800">1. Take Out Order</button>
+        <button onclick="jumpTo(1)" class="scene-tab p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-600">2. Photo & Spice Level</button>
+        <button onclick="jumpTo(2)" class="scene-tab p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-600">3. AI Chef Pairing</button>
+        <button onclick="jumpTo(3)" class="scene-tab p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-600">4. Kitchen KDS Dispatch</button>
+        <button onclick="jumpTo(4)" class="scene-tab p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-600">5. Tip & Split Pay</button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const scenes = [
+      {
+        chapter: "Chapter 1 / 5",
+        title: "1-Touch Take Out Order Placement",
+        badge: "🥡 1st Priority Position",
+        animationHtml: `
+          <div class="space-y-4">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-orange-500 text-white text-base font-extrabold shadow-lg animate-bounce">
+              <span>👉 1st Tab: [ 🥡 Take Out / To-Go ] Button</span>
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-black text-amber-300">"No need to search table numbers when taking to-go orders!"</h2>
+            <p class="text-slate-300 text-sm sm:text-base">Tap the very first bright orange button on the header bar to immediately start a to-go check in under 1 second.</p>
+          </div>
+        `,
+        narration: "Chapter 1: To take a to-go order, simply tap the very first orange [Take Out] button at the top left. The system instantly switches to packing mode.",
+        progress: "20%"
+      },
+      {
+        chapter: "Chapter 2 / 5",
+        title: "High-Res Food Photos & 1-Touch Spice Level",
+        badge: "🥩 Prime BBQ & 🌶️ Spice Customizer",
+        animationHtml: `
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="p-4 rounded-2xl bg-slate-800/80 border-2 border-teal-400 space-y-2">
+              <span class="text-xs text-teal-300 font-bold">1. Tap Dish Photo</span>
+              <div class="text-xl font-black text-white">🥩 Prime Marinated LA Galbi ($36.99)</div>
+              <p class="text-xs text-slate-400">Glazed short ribs with scallions</p>
+            </div>
+            <div class="p-4 rounded-2xl bg-rose-950/80 border-2 border-rose-500 space-y-2">
+              <span class="text-xs text-rose-300 font-bold">2. Select Spice Level</span>
+              <div class="flex gap-2">
+                <span class="px-3 py-1 rounded-lg bg-emerald-700 text-xs font-bold">Mild</span>
+                <span class="px-3 py-1 rounded-lg bg-orange-600 text-xs font-bold">Medium 🔥</span>
+                <span class="px-3 py-1 rounded-lg bg-rose-600 text-xs font-black ring-2 ring-white animate-pulse">Fire 🔥🔥</span>
+              </div>
+            </div>
+          </div>
+        `,
+        narration: "Chapter 2: Tap the mouth-watering dish photo and choose the customer's preferred spice level: Mild, Medium Spicy, or Fire Hot.",
+        progress: "40%"
+      },
+      {
+        chapter: "Chapter 3 / 5",
+        title: "AI Chef Smart Pairing & Automatic Upsell",
+        badge: "✨ Average Order Value +18% Boost",
+        animationHtml: `
+          <div class="p-6 rounded-2xl bg-gradient-to-r from-teal-900/90 to-emerald-950/90 border-2 border-teal-400 space-y-3">
+            <div class="flex items-center gap-2 text-amber-300 font-black text-sm">
+              <i data-lucide="sparkles" class="w-5 h-5 animate-spin"></i>
+              <span>AI Chef Smart Pairing Suggestion:</span>
+            </div>
+            <div class="text-xl sm:text-2xl font-black text-white">
+              "Add Crispy Seafood Pancake for +$16.00 ($2.00 Bundle Discount)?"
+            </div>
+            <div class="flex gap-3 pt-2">
+              <button class="px-5 py-2 rounded-xl bg-teal-500 text-slate-950 font-black text-sm shadow-md">✓ Add Pairing Combo</button>
+              <button class="px-4 py-2 rounded-xl bg-slate-700 text-slate-300 text-sm">No Thanks</button>
+            </div>
+          </div>
+        `,
+        narration: "Chapter 3: When a customer orders BBQ, the AI Chef automatically suggests a perfectly matched Seafood Pancake combo with a discount, increasing sales by 18%!",
+        progress: "60%"
+      },
+      {
+        chapter: "Chapter 4 / 5",
+        title: "Kitchen Display System (KDS) Live Dispatch",
+        badge: "🔥 0-Latency Kitchen Communication",
+        animationHtml: `
+          <div class="p-6 rounded-2xl bg-slate-800/90 border-2 border-amber-400 space-y-3">
+            <div class="flex justify-between items-center">
+              <span class="px-3 py-1 rounded-full bg-amber-500 text-slate-950 font-black text-xs">KDS Ticket #T-104</span>
+              <span class="text-xs font-mono text-rose-400 font-bold animate-ping">● COOKING LIVE</span>
+            </div>
+            <div class="text-lg font-bold text-white">
+              1x Prime LA Galbi <span class="text-rose-400 font-black">[Spice: Fire 🔥🔥]</span><br/>
+              1x Crispy Seafood Haemul Pajeon [Extra Crispy]
+            </div>
+            <p class="text-xs text-slate-400">Dispatched in 0.01 seconds without missing handwritten tickets!</p>
+          </div>
+        `,
+        narration: "Chapter 4: Tapping [Send to Kitchen] transmits the order and special spice notes to the Kitchen Display System in 0.01 seconds with zero errors.",
+        progress: "80%"
+      },
+      {
+        chapter: "Chapter 5 / 5",
+        title: "Smart Tip Matrix & 1-Touch Checkout",
+        badge: "💳 SF Standard 18% · 20% · 25% Tip",
+        animationHtml: `
+          <div class="p-6 rounded-2xl bg-gradient-to-r from-purple-950/90 to-slate-900/90 border-2 border-purple-400 text-center space-y-3">
+            <div class="text-xs font-bold text-purple-300 uppercase tracking-widest">San Francisco Tip Matrix</div>
+            <div class="grid grid-cols-4 gap-2">
+              <div class="p-3 rounded-xl bg-slate-800 text-slate-300 font-bold text-xs">15% ($7.95)</div>
+              <div class="p-3 rounded-xl bg-slate-800 text-slate-300 font-bold text-xs">18% ($9.54)</div>
+              <div class="p-3 rounded-xl bg-teal-500 text-slate-950 font-black text-xs ring-2 ring-white">20% ($10.60)</div>
+              <div class="p-3 rounded-xl bg-slate-800 text-slate-300 font-bold text-xs">25% ($13.25)</div>
+            </div>
+            <div class="text-2xl font-black text-amber-300 pt-2">Total Paid: $63.60 🎉</div>
+          </div>
+        `,
+        narration: "Chapter 5: Select 18%, 20%, or 25% tip with a single touch, tap Credit Card, and celebrate order completion with festive confetti!",
+        progress: "100%"
+      }
+    ];
+
+    let currentStep = 0;
+    let isPlaying = true;
+    let timer = null;
+
+    function renderScene() {
+      const s = scenes[currentStep];
+      document.getElementById('step-indicator').innerText = s.chapter;
+      document.getElementById('progress-bar').style.width = s.progress;
+      document.getElementById('narration-text').innerText = s.narration;
+      document.getElementById('scene-container').innerHTML = `
+        <div class="space-y-3">
+          <div class="flex items-center gap-2">
+            <span class="px-3 py-1 rounded-full bg-teal-500/20 text-teal-300 text-xs font-bold border border-teal-500/40">${s.badge}</span>
+            <h3 class="text-lg sm:text-xl font-black text-white">${s.title}</h3>
+          </div>
+          ${s.animationHtml}
+        </div>
+      `;
+
+      document.querySelectorAll('.scene-tab').forEach((tab, idx) => {
+        if (idx === currentStep) {
+          tab.className = "scene-tab p-2.5 rounded-xl border-2 border-teal-500 bg-teal-50 text-teal-800 font-black shadow";
+        } else {
+          tab.className = "scene-tab p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-600 font-bold hover:bg-slate-100";
+        }
+      });
+
+      lucide.createIcons();
+    }
+
+    function nextStep() {
+      currentStep = (currentStep + 1) % scenes.length;
+      renderScene();
+    }
+
+    function prevStep() {
+      currentStep = (currentStep - 1 + scenes.length) % scenes.length;
+      renderScene();
+    }
+
+    function jumpTo(idx) {
+      currentStep = idx;
+      renderScene();
+    }
+
+    function toggleAutoPlay() {
+      isPlaying = !isPlaying;
+      const label = document.getElementById('play-label');
+      const icon = document.getElementById('play-icon');
+      if (isPlaying) {
+        label.innerText = "Pause";
+        icon.setAttribute('data-lucide', 'pause');
+        startTimer();
+      } else {
+        label.innerText = "Play Demo";
+        icon.setAttribute('data-lucide', 'play');
+        clearInterval(timer);
+      }
+      lucide.createIcons();
+    }
+
+    function startTimer() {
+      clearInterval(timer);
+      timer = setInterval(() => {
+        if (isPlaying) nextStep();
+      }, 5500);
+    }
+
+    renderScene();
+    startTimer();
+  </script>
+</body>
+</html>
