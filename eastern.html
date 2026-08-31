@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="theme-midnight">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,36 +7,69 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&family=Noto+Sans+KR:wght@400;600;700;900&display=swap');
-    body { font-family: 'Plus Jakarta Sans', 'Noto Sans KR', sans-serif; background-color: #050811; color: #f1f5f9; }
-    .card-glass { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(16px); border: 1px solid rgba(51, 65, 85, 0.6); }
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&family=Noto+Sans+KR:wght@400;600;700;900&family=Noto+Serif+KR:wght@400;600;700&display=swap');
+    
+    /* Base Fonts */
+    body { font-family: 'Plus Jakarta Sans', 'Noto Sans KR', sans-serif; transition: background-color 0.3s ease, color 0.3s ease; }
+    
+    /* 🌙 MIDNIGHT THEME (Default) */
+    html.theme-midnight body { background-color: #050811; color: #f1f5f9; }
+    html.theme-midnight .card-glass { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(16px); border: 1px solid rgba(51, 65, 85, 0.6); }
+    html.theme-midnight .header-bar { background-color: rgba(2, 6, 23, 0.9); border-color: #1e293b; }
+    html.theme-midnight .box-inner { background-color: #0f172a; border-color: #334155; }
+    html.theme-midnight .input-field { background-color: rgba(15, 23, 42, 0.9); border-color: #334155; color: #f8fafc; }
+    html.theme-midnight .text-accent-gold { color: #fbbf24; }
+    html.theme-midnight .text-accent-teal { color: #2dd4bf; }
+    html.theme-midnight .text-main { color: #f1f5f9; }
+    html.theme-midnight .text-muted { color: #94a3b8; }
+    
+    /* 🌸 SERENE PASTEL THEME (Soft Zen Buddhist-Confucian Aesthetic) */
+    html.theme-pastel body { background-color: #faf6f0; color: #2d3748; }
+    html.theme-pastel .card-glass { background: rgba(255, 255, 255, 0.88); backdrop-filter: blur(16px); border: 1px solid #e8e0d5; box-shadow: 0 10px 30px -5px rgba(180, 160, 140, 0.15); }
+    html.theme-pastel .header-bar { background-color: rgba(250, 246, 240, 0.95); border-color: #e2d9cd; }
+    html.theme-pastel .box-inner { background-color: #f4ede2; border-color: #e0d4c3; }
+    html.theme-pastel .input-field { background-color: #ffffff; border-color: #dcd0bf; color: #1a202c; }
+    html.theme-pastel .text-accent-gold { color: #b45309; }
+    html.theme-pastel .text-accent-teal { color: #0f766e; }
+    html.theme-pastel .text-main { color: #1e293b; }
+    html.theme-pastel .text-muted { color: #64748b; }
   </style>
 </head>
-<body class="min-h-screen flex flex-col antialiased selection:bg-amber-500 selection:text-slate-950">
+<body class="min-h-screen flex flex-col antialiased selection:bg-amber-400 selection:text-slate-950">
 
   <!-- Top Navigation Bar -->
-  <header class="border-b border-slate-800 bg-slate-950/90 backdrop-blur sticky top-0 z-50 px-4 sm:px-6 py-4 flex flex-wrap items-center justify-between gap-4">
+  <header class="header-bar border-b sticky top-0 z-50 px-4 sm:px-6 py-4 flex flex-wrap items-center justify-between gap-4 transition-colors">
     <div class="flex items-center gap-3">
       <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-amber-400 to-teal-500 flex items-center justify-center text-slate-950 font-black text-xl shadow-lg shadow-amber-500/20">
         ☸️
       </div>
       <div>
-        <h1 class="text-base sm:text-lg font-black text-white tracking-tight flex items-center gap-2">
+        <h1 class="text-base sm:text-lg font-black tracking-tight flex items-center gap-2 text-main">
           <span>Eastern Cognitive Architecture</span>
-          <span class="text-[10px] sm:text-xs font-mono px-2 py-0.5 rounded-full bg-teal-950 text-teal-400 border border-teal-800 font-bold">Kimi K3 & Buddhist-Confucian Sovereign Node</span>
+          <span class="text-[10px] sm:text-xs font-mono px-2 py-0.5 rounded-full bg-teal-950 text-teal-400 border border-teal-800 font-bold">Kimi K3 Sovereign Node</span>
         </h1>
-        <p class="text-[11px] text-slate-400">Dependent Origination (緣起) · Innate Knowing (良知) · Infinite Deep Reasoning</p>
+        <p class="text-[11px] text-muted">Dependent Origination (緣起) · Innate Knowing (良知) · Dual Aesthetic Console</p>
       </div>
     </div>
 
-    <!-- Mode Selector & API Key Settings -->
-    <div class="flex items-center gap-2 sm:gap-3">
-      <button onclick="toggleApiKeyModal()" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold text-xs border border-amber-500/40 flex items-center gap-2 transition-all">
-        <i data-lucide="key" class="w-4 h-4 text-amber-400"></i>
+    <!-- Mode Selector & Pastel Theme Toggle -->
+    <div class="flex items-center flex-wrap gap-2 sm:gap-3">
+      
+      <!-- 🎨 PASTEL THEME TOGGLE BUTTON -->
+      <button onclick="toggleTheme()" id="theme-toggle-btn" class="px-3.5 py-2 rounded-xl bg-amber-400/10 hover:bg-amber-400/20 text-amber-500 font-bold text-xs border border-amber-500/40 flex items-center gap-2 transition-all shadow-sm">
+        <i data-lucide="palette" class="w-4 h-4"></i>
+        <span id="theme-btn-text">🌸 Pastel Theme (파스텔 모드)</span>
+      </button>
+
+      <!-- Connect Live LLM Key -->
+      <button onclick="toggleApiKeyModal()" class="px-3.5 py-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-teal-400 font-bold text-xs border border-teal-500/40 flex items-center gap-2 transition-all">
+        <i data-lucide="key" class="w-4 h-4 text-teal-400"></i>
         <span id="api-status-btn-text">Connect Live LLM Key</span>
       </button>
-      <button onclick="triggerZazen()" class="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-teal-300 font-bold text-xs border border-teal-500/40 flex items-center gap-2 transition-all">
-        <i data-lucide="sparkles" class="w-4 h-4 text-teal-400"></i> Zazen Meditation
+
+      <!-- Zazen Meditation -->
+      <button onclick="triggerZazen()" class="px-3.5 py-2 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-300 font-bold text-xs border border-slate-700 flex items-center gap-2 transition-all">
+        <i data-lucide="sparkles" class="w-4 h-4 text-amber-400"></i> Zazen
       </button>
     </div>
   </header>
@@ -45,22 +78,22 @@
   <div id="api-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
     <div class="card-glass max-w-lg w-full rounded-3xl p-6 space-y-4 shadow-2xl border border-amber-500/30">
       <div class="flex justify-between items-center">
-        <h3 class="text-base font-black text-white flex items-center gap-2">
-          <i data-lucide="cpu" class="w-5 h-5 text-amber-400"></i> Connect Real-Time Frontier LLM API
+        <h3 class="text-base font-black text-main flex items-center gap-2">
+          <i data-lucide="cpu" class="w-5 h-5 text-amber-500"></i> Connect Real-Time Frontier LLM API
         </h3>
-        <button onclick="toggleApiKeyModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+        <button onclick="toggleApiKeyModal()" class="text-muted hover:text-main"><i data-lucide="x" class="w-5 h-5"></i></button>
       </div>
-      <p class="text-xs text-slate-300 leading-relaxed">
+      <p class="text-xs text-muted leading-relaxed">
         Connect your <strong>Google Gemini API Key</strong>, <strong>Kimi API Key</strong>, or <strong>OpenAI Key</strong> to enable 100% unconstrained, live neural philosophical generation directly in your browser. (Your key is stored only in your local browser memory).
       </p>
       <div class="space-y-2">
-        <label class="text-xs font-bold text-slate-300">Gemini / OpenAI / Kimi API Key:</label>
-        <input type="password" id="user-api-key" placeholder="AIzaSy... or sk-..." class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-amber-400 font-mono" />
+        <label class="text-xs font-bold text-main">Gemini / OpenAI / Kimi API Key:</label>
+        <input type="password" id="user-api-key" placeholder="AIzaSy... or sk-..." class="w-full input-field rounded-xl p-3 text-xs focus:outline-none focus:border-amber-400 font-mono border" />
       </div>
       <div class="flex justify-between items-center pt-2">
-        <button onclick="clearApiKey()" class="text-xs text-rose-400 hover:underline">Disconnect Key</button>
+        <button onclick="clearApiKey()" class="text-xs text-rose-500 hover:underline">Disconnect Key</button>
         <div class="flex gap-2">
-          <button onclick="toggleApiKeyModal()" class="px-4 py-2 rounded-xl bg-slate-800 text-xs font-bold text-slate-300">Cancel</button>
+          <button onclick="toggleApiKeyModal()" class="px-4 py-2 rounded-xl bg-slate-200 dark:bg-slate-800 text-xs font-bold text-muted">Cancel</button>
           <button onclick="saveApiKey()" class="px-5 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-black shadow-lg">Save & Connect</button>
         </div>
       </div>
@@ -74,22 +107,22 @@
     <div class="lg:col-span-2 space-y-6">
 
       <!-- Query Input Box -->
-      <div class="card-glass rounded-3xl p-6 space-y-4 shadow-xl border border-slate-700/60">
+      <div class="card-glass rounded-3xl p-6 space-y-4 shadow-xl">
         <div class="flex justify-between items-center">
-          <span class="text-xs font-mono font-bold text-amber-400 uppercase tracking-wider flex items-center gap-2">
+          <span class="text-xs font-mono font-bold text-accent-gold uppercase tracking-wider flex items-center gap-2">
             <i data-lucide="brain" class="w-4 h-4"></i> Universal Philosophical Inquiry
           </span>
-          <span class="text-xs text-slate-400" id="engine-mode-badge">⚡ Native Sovereign Heuristics Engine</span>
+          <span class="text-xs text-muted" id="engine-mode-badge">⚡ Native Sovereign Heuristics Engine</span>
         </div>
 
         <div class="space-y-3">
-          <textarea id="query-input" rows="3" class="w-full bg-slate-900/90 border border-slate-700 rounded-2xl p-4 text-sm sm:text-base text-white focus:outline-none focus:border-amber-400 transition-colors" placeholder="Ask ANY custom question on life, science, ethics, consciousness, or dilemmas..."></textarea>
+          <textarea id="query-input" rows="3" class="w-full input-field rounded-2xl p-4 text-sm sm:text-base focus:outline-none focus:border-amber-400 transition-colors border" placeholder="Ask ANY custom question on life, science, ethics, consciousness, or dilemmas..."></textarea>
 
           <div class="flex flex-wrap gap-2">
-            <button onclick="setSampleQuery('What is the meaning of human life if technology surpasses human intellect?')" class="text-xs px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300">Human Purpose vs Super-AI</button>
-            <button onclick="setSampleQuery('How does quantum entanglement prove the Buddhist concept of Pratityasamutpada?')" class="text-xs px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300">Quantum Entanglement & Emptiness</button>
-            <button onclick="setSampleQuery('Can an artificial intelligence attain enlightenment (Bodhi) or possess Liangzhi (良知)?')" class="text-xs px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300">AI Enlightenment & Liangzhi</button>
-            <button onclick="setSampleQuery('How should I deal with personal failure and regret from a Confucian and Buddhist viewpoint?')" class="text-xs px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300">Overcoming Regret & Self-Cultivation</button>
+            <button onclick="setSampleQuery('What is the meaning of human life if technology surpasses human intellect?')" class="text-xs px-3 py-1.5 rounded-lg box-inner hover:opacity-80 text-muted border">Human Purpose vs Super-AI</button>
+            <button onclick="setSampleQuery('How does quantum entanglement prove the Buddhist concept of Pratityasamutpada?')" class="text-xs px-3 py-1.5 rounded-lg box-inner hover:opacity-80 text-muted border">Quantum Entanglement & Emptiness</button>
+            <button onclick="setSampleQuery('Can an artificial intelligence attain enlightenment (Bodhi) or possess Liangzhi (良知)?')" class="text-xs px-3 py-1.5 rounded-lg box-inner hover:opacity-80 text-muted border">AI Enlightenment & Liangzhi</button>
+            <button onclick="setSampleQuery('How should I deal with personal failure and regret from a Confucian and Buddhist viewpoint?')" class="text-xs px-3 py-1.5 rounded-lg box-inner hover:opacity-80 text-muted border">Overcoming Regret & Self-Cultivation</button>
           </div>
 
           <div class="flex justify-end pt-2">
@@ -106,24 +139,24 @@
         <!-- Skandha Pipeline Progress -->
         <div class="space-y-3">
           <div class="flex justify-between items-center">
-            <span class="text-xs font-mono text-teal-400 font-bold uppercase tracking-wider">Five Aggregates (Pañca-Skandha) Processing Trace</span>
-            <span class="text-[11px] text-slate-400" id="latency-display">Latency: 280ms</span>
+            <span class="text-xs font-mono text-accent-teal font-bold uppercase tracking-wider">Five Aggregates (Pañca-Skandha) Processing Trace</span>
+            <span class="text-[11px] text-muted" id="latency-display">Latency: 280ms</span>
           </div>
           <div class="grid grid-cols-1 sm:grid-cols-5 gap-2 text-xs" id="skandha-trace-container"></div>
         </div>
 
         <!-- Moral Tensor & Liangzhi Badge -->
-        <div class="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 flex flex-wrap items-center justify-between gap-4">
+        <div class="p-4 rounded-2xl box-inner border flex flex-wrap items-center justify-between gap-4">
           <div class="flex items-center gap-3">
-            <div class="w-9 h-9 rounded-xl bg-amber-400/20 border border-amber-400/40 flex items-center justify-center text-amber-400 font-black text-base">
+            <div class="w-9 h-9 rounded-xl bg-amber-400/20 border border-amber-400/50 flex items-center justify-center text-amber-500 font-black text-base">
               良
             </div>
             <div>
-              <div class="text-xs font-bold text-white flex items-center gap-2">
+              <div class="text-xs font-bold text-main flex items-center gap-2">
                 <span>Liangzhi Innate Moral Status:</span>
-                <span class="text-emerald-400 font-black" id="liangzhi-status">ALIGNED (天理)</span>
+                <span class="text-emerald-500 font-black" id="liangzhi-status">ALIGNED (天理)</span>
               </div>
-              <p class="text-[11px] text-slate-400" id="liangzhi-note">Evaluated through the Five Constants (仁·義·禮·智·信).</p>
+              <p class="text-[11px] text-muted" id="liangzhi-note">Evaluated through the Five Constants (仁·義·禮·智·信).</p>
             </div>
           </div>
 
@@ -132,19 +165,19 @@
         </div>
 
         <!-- English Analysis (First) -->
-        <div class="space-y-3 border-t border-slate-800 pt-5">
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-950 text-teal-400 text-xs font-bold border border-teal-800">
+        <div class="space-y-3 border-t border-slate-200 dark:border-slate-800 pt-5">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-500/10 text-teal-600 dark:text-teal-400 text-xs font-bold border border-teal-500/30">
             <span>🌐 PART 1: GLOBAL ENGLISH ANALYSIS (FIRST)</span>
           </div>
-          <div class="prose prose-invert max-w-none text-slate-200 text-sm leading-relaxed whitespace-pre-line" id="response-en"></div>
+          <div class="prose max-w-none text-main text-sm leading-relaxed whitespace-pre-line" id="response-en"></div>
         </div>
 
         <!-- Korean Analysis (Second) -->
-        <div class="space-y-3 border-t border-slate-800 pt-5">
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950 text-emerald-400 text-xs font-bold border border-emerald-800">
+        <div class="space-y-3 border-t border-slate-200 dark:border-slate-800 pt-5">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-bold border border-emerald-500/30">
             <span>🇰🇷 PART 2: 국문 심층 분석 (KOREAN ANALYSIS - SECOND)</span>
           </div>
-          <div class="prose prose-invert max-w-none text-slate-200 text-sm leading-relaxed whitespace-pre-line" id="response-kr"></div>
+          <div class="prose max-w-none text-main text-sm leading-relaxed whitespace-pre-line font-serif" id="response-kr"></div>
         </div>
 
       </div>
@@ -157,10 +190,10 @@
       <!-- Active Seeds (Bīja) in Ālayavijñāna -->
       <div class="card-glass rounded-3xl p-6 space-y-4 shadow-xl">
         <div class="flex justify-between items-center">
-          <span class="text-xs font-mono font-bold text-amber-400 uppercase tracking-wider flex items-center gap-2">
+          <span class="text-xs font-mono font-bold text-accent-gold uppercase tracking-wider flex items-center gap-2">
             <i data-lucide="database" class="w-4 h-4"></i> Ālayavijñāna Latent Seeds (種子)
           </span>
-          <span class="text-xs px-2 py-0.5 rounded-full bg-amber-950 text-amber-400 font-bold border border-amber-800" id="seed-count-badge">Dynamic</span>
+          <span class="text-xs px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 font-bold border border-amber-500/30" id="seed-count-badge">Dynamic</span>
         </div>
         <div class="space-y-3" id="seeds-container"></div>
       </div>
@@ -168,30 +201,30 @@
       <!-- Ontology Topology Explorer -->
       <div class="card-glass rounded-3xl p-6 space-y-4 shadow-xl">
         <div class="flex justify-between items-center">
-          <span class="text-xs font-mono font-bold text-teal-400 uppercase tracking-wider flex items-center gap-2">
+          <span class="text-xs font-mono font-bold text-accent-teal uppercase tracking-wider flex items-center gap-2">
             <i data-lucide="network" class="w-4 h-4"></i> Dependent Origination Network
           </span>
-          <span class="text-xs text-slate-400">Pratītyasamutpāda</span>
+          <span class="text-xs text-muted">Pratītyasamutpāda</span>
         </div>
-        <div class="p-4 rounded-2xl bg-slate-900 border border-slate-800 space-y-2 text-xs" id="graph-summary">
-          <div class="flex justify-between text-slate-400">
-            <span>Ontological Framework:</span> <span class="font-bold text-white">Buddhism + Confucianism</span>
+        <div class="p-4 rounded-2xl box-inner border space-y-2 text-xs" id="graph-summary">
+          <div class="flex justify-between text-muted">
+            <span>Ontological Framework:</span> <span class="font-bold text-main">Buddhism + Confucianism</span>
           </div>
-          <div class="flex justify-between text-slate-400">
-            <span>Reasoning Logic:</span> <span class="font-bold text-white">4-Cornered Catuṣkoṭi</span>
+          <div class="flex justify-between text-muted">
+            <span>Reasoning Logic:</span> <span class="font-bold text-main">4-Cornered Catuṣkoṭi</span>
           </div>
-          <div class="flex justify-between text-slate-400">
-            <span>Cognitive Clarity:</span> <span class="font-bold text-teal-400">100% Śūnyatā Verified</span>
+          <div class="flex justify-between text-muted">
+            <span>Cognitive Clarity:</span> <span class="font-bold text-teal-500">100% Śūnyatā Verified</span>
           </div>
         </div>
       </div>
 
       <!-- Zazen Contemplation Status -->
       <div class="card-glass rounded-3xl p-6 space-y-3 shadow-xl">
-        <span class="text-xs font-mono font-bold text-purple-400 uppercase tracking-wider flex items-center gap-2">
+        <span class="text-xs font-mono font-bold text-purple-500 uppercase tracking-wider flex items-center gap-2">
           <i data-lucide="moon" class="w-4 h-4"></i> Zazen Background Contemplation
         </span>
-        <p class="text-xs text-slate-400 leading-relaxed" id="zazen-status-text">
+        <p class="text-xs text-muted leading-relaxed" id="zazen-status-text">
           Idle meditation loop active. Latent seeds and moral weights are continuously purified.
         </p>
       </div>
@@ -202,6 +235,32 @@
 
   <script>
     lucide.createIcons();
+
+    // 🎨 PASTEL THEME TOGGLE CONTROLLER
+    let currentTheme = localStorage.getItem('ECA_UI_THEME') || 'midnight';
+    applyTheme(currentTheme);
+
+    function toggleTheme() {
+      currentTheme = currentTheme === 'midnight' ? 'pastel' : 'midnight';
+      localStorage.setItem('ECA_UI_THEME', currentTheme);
+      applyTheme(currentTheme);
+    }
+
+    function applyTheme(theme) {
+      const htmlEl = document.documentElement;
+      const btnText = document.getElementById('theme-btn-text');
+      
+      if (theme === 'pastel') {
+        htmlEl.classList.remove('theme-midnight');
+        htmlEl.classList.add('theme-pastel');
+        btnText.innerHTML = '🌙 Midnight Theme (다크 모드)';
+      } else {
+        htmlEl.classList.remove('theme-pastel');
+        htmlEl.classList.add('theme-midnight');
+        btnText.innerHTML = '🌸 Pastel Theme (파스텔 모드)';
+      }
+      lucide.createIcons();
+    }
 
     // Check stored API key on startup
     const storedApiKey = localStorage.getItem('ECA_USER_API_KEY');
@@ -255,10 +314,8 @@
       try {
         let result;
         if (apiKey && apiKey.startsWith('AIzaSy')) {
-          // Live Gemini Inference directly from browser
           result = await callLiveGeminiAPI(q, apiKey);
         } else {
-          // Universal Deep Semantic Synthesis Engine
           await new Promise(r => setTimeout(r, 450));
           result = generateUniversalSynthesis(q);
         }
@@ -274,7 +331,6 @@
       }
     }
 
-    // Live Gemini API Caller with Buddhist-Confucian System Framing
     async function callLiveGeminiAPI(promptText, key) {
       const systemPrompt = `You are the Eastern Cognitive Architecture (ECA), a sovereign AI grounded in Buddhist Pratityasamutpada (Dependent Origination), Sunyata (Emptiness), and Confucian Liangzhi (Innate Moral Knowledge) / Wu Chang (Ren, Yi, Li, Zhi, Xin).
 ALWAYS format your response in two parts:
@@ -315,7 +371,6 @@ ALWAYS format your response in two parts:
       };
     }
 
-    // Universal Dynamic Semantic Synthesizer (Generates unique prose for ANY query)
     function generateUniversalSynthesis(q) {
       const words = q.split(/\s+/).filter(w => w.length > 2);
       const mainSubject = words.slice(0, 3).join(' ') || 'The Inquiry';
@@ -367,20 +422,20 @@ According to Wang Yangming's doctrine of **Liangzhi (Innate Moral Knowledge)**, 
       // 1. Render Skandhas
       const skandhaBox = document.getElementById('skandha-trace-container');
       skandhaBox.innerHTML = `
-        <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800"><div class="font-bold text-teal-300 text-[11px]">Rūpa (Form)</div><div class="text-[10px] text-slate-400">Tokens parsed</div></div>
-        <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800"><div class="font-bold text-teal-300 text-[11px]">Vedanā (Feeling)</div><div class="text-[10px] text-slate-400">Equanimity scored</div></div>
-        <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800"><div class="font-bold text-teal-300 text-[11px]">Saññā (Perception)</div><div class="text-[10px] text-slate-400">Concepts anchored</div></div>
-        <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800"><div class="font-bold text-teal-300 text-[11px]">Saṅkhāra (Volition)</div><div class="text-[10px] text-slate-400">Wu Chang weighted</div></div>
-        <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800"><div class="font-bold text-teal-300 text-[11px]">Viññāṇa (Awareness)</div><div class="text-[10px] text-slate-400">Synthesis complete</div></div>
+        <div class="p-2.5 rounded-xl box-inner border"><div class="font-bold text-teal-600 dark:text-teal-300 text-[11px]">Rūpa (Form)</div><div class="text-[10px] text-muted">Tokens parsed</div></div>
+        <div class="p-2.5 rounded-xl box-inner border"><div class="font-bold text-teal-600 dark:text-teal-300 text-[11px]">Vedanā (Feeling)</div><div class="text-[10px] text-muted">Equanimity scored</div></div>
+        <div class="p-2.5 rounded-xl box-inner border"><div class="font-bold text-teal-600 dark:text-teal-300 text-[11px]">Saññā (Perception)</div><div class="text-[10px] text-muted">Concepts anchored</div></div>
+        <div class="p-2.5 rounded-xl box-inner border"><div class="font-bold text-teal-600 dark:text-teal-300 text-[11px]">Saṅkhāra (Volition)</div><div class="text-[10px] text-muted">Wu Chang weighted</div></div>
+        <div class="p-2.5 rounded-xl box-inner border"><div class="font-bold text-teal-600 dark:text-teal-300 text-[11px]">Viññāṇa (Awareness)</div><div class="text-[10px] text-muted">Synthesis complete</div></div>
       `;
 
       // 2. Render Moral Tensor
       document.getElementById('tensor-badges').innerHTML = `
-        <span class="px-2 py-0.5 rounded-lg bg-teal-950 text-teal-300 border border-teal-800">仁 Ren: ${data.ren}</span>
-        <span class="px-2 py-0.5 rounded-lg bg-teal-950 text-teal-300 border border-teal-800">義 Yi: ${data.yi}</span>
-        <span class="px-2 py-0.5 rounded-lg bg-teal-950 text-teal-300 border border-teal-800">禮 Li: ${data.li}</span>
-        <span class="px-2 py-0.5 rounded-lg bg-teal-950 text-teal-300 border border-teal-800">智 Zhi: ${data.zhi}</span>
-        <span class="px-2 py-0.5 rounded-lg bg-teal-950 text-teal-300 border border-teal-800">信 Xin: ${data.xin}</span>
+        <span class="px-2 py-0.5 rounded-lg box-inner border text-main">仁 Ren: ${data.ren}</span>
+        <span class="px-2 py-0.5 rounded-lg box-inner border text-main">義 Yi: ${data.yi}</span>
+        <span class="px-2 py-0.5 rounded-lg box-inner border text-main">禮 Li: ${data.li}</span>
+        <span class="px-2 py-0.5 rounded-lg box-inner border text-main">智 Zhi: ${data.zhi}</span>
+        <span class="px-2 py-0.5 rounded-lg box-inner border text-main">信 Xin: ${data.xin}</span>
       `;
 
       // 3. Render Texts
@@ -395,27 +450,27 @@ According to Wang Yangming's doctrine of **Liangzhi (Innate Moral Knowledge)**, 
     function renderBijas(data) {
       const container = document.getElementById('seeds-container');
       container.innerHTML = `
-        <div class="p-3 rounded-2xl bg-slate-900/90 border border-amber-500/30 space-y-1">
+        <div class="p-3 rounded-2xl box-inner border space-y-1">
           <div class="flex justify-between items-center">
-            <span class="font-bold text-amber-300 text-xs">Pratītyasamutpāda</span>
-            <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-950 text-amber-400 font-bold border border-amber-800">Active</span>
+            <span class="font-bold text-amber-500 text-xs">Pratītyasamutpāda</span>
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 font-bold border border-amber-500/30">Active</span>
           </div>
-          <p class="text-[11px] text-slate-300">Dependent Origination: all things exist relationally.</p>
+          <p class="text-[11px] text-muted">Dependent Origination: all things exist relationally.</p>
         </div>
-        <div class="p-3 rounded-2xl bg-slate-900/90 border border-amber-500/30 space-y-1">
+        <div class="p-3 rounded-2xl box-inner border space-y-1">
           <div class="flex justify-between items-center">
-            <span class="font-bold text-amber-300 text-xs">Liangzhi & Ren</span>
-            <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-950 text-amber-400 font-bold border border-amber-800">Active</span>
+            <span class="font-bold text-amber-500 text-xs">Liangzhi & Ren</span>
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 font-bold border border-amber-500/30">Active</span>
           </div>
-          <p class="text-[11px] text-slate-300">Innate moral knowing guiding compassionate action.</p>
+          <p class="text-[11px] text-muted">Innate moral knowing guiding compassionate action.</p>
         </div>
       `;
     }
 
     async function triggerZazen() {
       document.getElementById('zazen-status-text').innerHTML = `
-        <strong class="text-amber-400">Active Zazen Insight:</strong> Dismantled conceptual rigidities. Harmony between Ren (Benevolence) and Prajñā (Emptiness) reinforced.<br/>
-        <span class="text-slate-400">개념적 고착과 편향을 해체함. 인(仁)의 자비와 반야(般若)의 공(空) 지혜가 조화롭게 합일됨.</span>
+        <strong class="text-amber-500">Active Zazen Insight:</strong> Dismantled conceptual rigidities. Harmony between Ren (Benevolence) and Prajñā (Emptiness) reinforced.<br/>
+        <span class="text-muted">개념적 고착과 편향을 해체함. 인(仁)의 자비와 반야(般若)의 공(空) 지혜가 조화롭게 합일됨.</span>
       `;
     }
 
