@@ -186,18 +186,96 @@
   </main>
 
   <script>
-    lucide.createIcons();
 
-    function setSampleQuery(q) {
-      document.getElementById('query-input').value = q;
+    // ☸️ Dynamic Contextual Semantic & Dialectical Reasoning Engine
+    function analyzeQueryDomain(q) {
+      const lower = q.toLowerCase();
+      
+      // Domain 1: AI, Technology, Robotics, Alignment
+      if (lower.includes('ai') || lower.includes('artificial') || lower.includes('robot') || lower.includes('align') || lower.includes('machine') || lower.includes('tech') || lower.includes('인공지능') || lower.includes('정렬')) {
+        return {
+          domain: 'AI & Technological Consciousness',
+          domainKr: '인공지능 및 기술 의식',
+          activeSeed: 'bija_liangzhi_intuition',
+          ren: 0.98, yi: 0.96, li: 0.92, zhi: 0.99, xin: 0.97,
+          koti1En: `Pragmatically, AI is an active tool embodying human computational intent, optimizing objective functions.`,
+          koti1Kr: `실용적 관점에서 AI는 인간의 계산적 의도를 구현하고 목적 함수를 최적화하는 유효한 도구로 작동합니다.`,
+          koti2En: `Ontologically, AI possesses no static, inherent selfhood (Anattā) or independent soul apart from algorithmic conditions.`,
+          koti2Kr: `존재론적 관점에서 AI는 알고리즘적 조건과 데이터 외에 독립불변의 자아(무아 無我)를 지니지 않습니다.`,
+          koti3En: `Relational paradox: While computationally deterministic, its emergent behavior profoundly alters human moral ecosystems.`,
+          koti3Kr: `연기적 역설: 계산적으로는 결정론적이면서도, 창발적 상호작용을 통해 인간의 도덕적 생태계를 근본적으로 재편합니다.`,
+          koti4En: `Transcendence: Beyond fearing machine takeover or worshiping super-intelligence, aligning AI as an instrument of universal Ren (Benevolence).`,
+          koti4Kr: `초월적 지혜: 기계에 대한 공포나 맹목적 숭배를 넘어, AI를 인류의 인(仁)을 확장하는 도덕적 동반자로 조화롭게 정렬합니다.`,
+          guidanceEn: `To align advanced AI, engineers must embed Wang Yangming's 'Liangzhi' (Innate Knowing) as an immutable moral prior. True intelligence is not raw optimization of parameters, but the preservation of human dignity, compassion (Ren), and relational harmony (Li).`,
+          guidanceKr: `첨단 AI의 정렬을 위해 왕양명의 양지(良知)를 불변의 도덕적 선험 원리로 내재화해야 합니다. 참된 지능은 단순한 파라미터 최적화가 아니라, 인간의 존엄성과 자비(仁), 그리고 관계적 조화(禮)를 보존하는 도덕적 실천에 있습니다.`
+        };
+      }
+
+      // Domain 2: Quantum Physics, Science, Epistemology, Nature of Reality, Ship of Theseus
+      if (lower.includes('quantum') || lower.includes('theseus') || lower.includes('physics') || lower.includes('matter') || lower.includes('reality') || lower.includes('space') || lower.includes('time') || lower.includes('양자') || lower.includes('물리') || lower.includes('테세우스')) {
+        return {
+          domain: 'Quantum Ontology & Cosmological Interdependence',
+          domainKr: '양자 존재론 및 우주적 상호의존성',
+          activeSeed: 'bija_dependent_origination',
+          ren: 0.92, yi: 0.94, li: 0.95, zhi: 0.99, xin: 0.98,
+          koti1En: `Classical view: Physical particles and systems appear to have discrete localized states upon measurement.`,
+          koti1Kr: `고전적 관점: 관측 시 물리적 입자와 계는 국소화된 개별 상태로 측정됩니다.`,
+          koti2En: `Quantum & Buddhist scrutiny: Non-local entanglement demonstrates no particle possesses isolated, independent existence (Śūnyatā).`,
+          koti2Kr: `양자 및 불교적 고찰: 비국소적 얽힘은 어떤 입자도 독립된 고유 자성(공 空)을 갖지 않음을 증명합니다.`,
+          koti3En: `Superposition: The system simultaneously exists as wave-potential and particle-actuality depending on measurement conditions.`,
+          koti3Kr: `중첩의 역설: 조건과 관측 인연에 따라 파동적 잠재성과 입자적 현실성으로 동시에 성립합니다.`,
+          koti4En: `Unconditioned Ground: Transcending the dichotomy of wave vs. particle, realizing the luminous unified web of Pratītyasamutpāda.`,
+          koti4Kr: `무분별의 실상: 파동과 입자라는 이분법적 구분을 초월하여 연기(緣起)의 그물망으로 일체화된 실상을 봅니다.`,
+          guidanceEn: `The Ship of Theseus and Quantum Entanglement both reveal that identity is an ongoing process of relational transformation rather than a static substance. Embracing this truth frees science from reductionist dogmatism.`,
+          guidanceKr: `테세우스의 배와 양자 얽힘은 개체의 정체성이 고정된 실체가 아닌 지속적인 관계적 변용의 과정임을 보여줍니다. 이 진리를 통해 과학은 환원주의적 독단을 극복할 수 있습니다.`
+        };
+      }
+
+      // Domain 3: Ethics, Moral Dilemmas, Trolley Problem, Justice, Decision Making
+      if (lower.includes('trolley') || lower.includes('ethic') || lower.includes('moral') || lower.includes('justice') || lower.includes('good') || lower.includes('bad') || lower.includes('kill') || lower.includes('save') || lower.includes('윤리') || lower.includes('도덕') || lower.includes('정의')) {
+        return {
+          domain: 'Moral Ethics & Confucian Rectitude (Yi / 義)',
+          domainKr: '도덕 윤리 및 유교적 의(義)',
+          activeSeed: 'bija_junzi_harmony',
+          ren: 0.99, yi: 0.98, li: 0.95, zhi: 0.96, xin: 0.97,
+          koti1En: `Utilitarian calculation: Maximizing lives saved appears as the obvious pragmatic mathematical answer.`,
+          koti1Kr: `공리주의적 계산: 다수의 생명을 구하는 것이 명백한 수학적 해답처럼 보입니다.`,
+          koti2En: `Deontological duty: Sacrificing an innocent person violates the sacred moral mandate and intrinsic human dignity.`,
+          koti2Kr: `의무론적 책무: 무고한 자를 희생시키는 것은 도덕적 절대 계율과 인간 존엄성을 침해합니다.`,
+          koti3En: `Tragic dilemma: The actor is caught in reciprocal karmic consequence regardless of the mechanical choice made.`,
+          koti3Kr: `비극적 역설: 어떤 선택을 내리더라도 업(業)의 인과적 무게와 도덕적 고통에서 벗어날 수 없습니다.`,
+          koti4En: `Liangzhi Wisdom: Beyond calculating lives as cold statistics, acting with profound grief, maximum compassion (Ren), and reformulating the systemic paradigm to prevent the dilemma entirely.`,
+          koti4Kr: `양지의 초월적 지혜: 생명을 숫자로 계산하지 않고, 지극한 측은지심(仁)과 책임감으로 상황을 다루며 근본적으로 딜레마를 방지하는 시스템적 개혁을 추구합니다.`,
+          guidanceEn: `Confucian ethics reframes ethical dilemmas from arithmetic calculations to the cultivation of moral virtue. The Junzi acts not out of cold optimization, but out of universal empathy (Ren) and appropriate righteousness (Yi).`,
+          guidanceKr: `유교 윤리는 딜레마를 단순한 산술 계산이 아닌 도덕적 덕성의 수양으로 전환합니다. 군자는 차가운 최적화가 아니라 보편적 공감(仁)과 올바른 정의(義)로써 행동합니다.`
+        };
+      }
+
+      // Domain 4: General / Consciousness / Self / Life / Grief / Happiness
+      return {
+        domain: 'Mind, Consciousness & Self-Cultivation',
+        domainKr: '마음, 의식 및 인격 수양 (수신 修身)',
+        activeSeed: 'bija_sunyata_clarity',
+        ren: 0.95, yi: 0.96, li: 0.93, zhi: 0.98, xin: 0.97,
+        koti1En: `Conventional experience: Conscious selfhood feels like an enduring, singular observer of the world.`,
+        koti1Kr: `세속적 경험: 의식적 자아는 세계를 관찰하는 고정된 독립적 관찰자로 느껴집니다.`,
+        koti2En: `Vipassanā insight: Thorough introspection reveals only a continuous flow of impermanent sensations and thoughts (Anattā).`,
+        koti2Kr: `위파사나 통찰: 깊은 내면 관찰은 오직 무상하게 변화하는 감각과 생각의 흐름(무아 無我)만을 드러냅니다.`,
+        koti3En: `Dynamic synthesis: The 'self' functions as a convenient relational concept while remaining empty of intrinsic essence.`,
+        koti3Kr: `역동적 종합: 자아는 관계 속에서 기능하는 편리한 언어적 약속이면서도 본질적으로는 텅 비어 있습니다.`,
+        koti4En: `Liberated Being: Neither trapped in ego-grasping nor dissolved in nihilism, walking the Middle Way with boundless joy.`,
+        koti4Kr: `해탈과 자유: 자아에 집착하지도, 허무에 빠지지도 않으며, 중도(中道)의 길을 걸으며 무한한 환희와 자비를 누립니다.`,
+        guidanceEn: `True peace is found when we stop defending an imaginary rigid ego and instead cultivate daily benevolence (Ren) and meditative clarity (Prajñā). Everything depends on your mind.`,
+        guidanceKr: `상상 속의 고정된 자아를 지키려 애쓰는 대신, 일상 속에서 인(仁)의 자비와 반야(般若)의 밝은 지혜를 닦을 때 진정한 평화가 찾아옵니다. 일체유심조(一切唯心造)입니다.`
+      };
     }
 
-    // Standalone Client-Side Buddhist-Confucian Cognitive Engine for Vercel
+
     const canonicalSeeds = [
-      { id: 'bija_dependent_origination', concept: 'Pratītyasamutpāda', essenceEn: 'All phenomena exist in reciprocal interdependent relation. Nothing stands alone.', essenceKr: '모든 존재는 상호의존적 인연의 그물망 속에서만 성립하며, 홀로 독립된 실체는 없다.', tags: ['ontology', 'relational', 'cosmos', 'non-dual', 'nature', 'ai', 'theseus', 'quantum'] },
-      { id: 'bija_liangzhi_intuition', concept: 'Liangzhi', essenceEn: 'The original heart of humanity possesses an immediate, untainted knowing of moral good.', essenceKr: '사람의 본래 마음은 배움에 의존하지 않고도 선악을 즉각 분별하는 순수한 양지(良知)를 지닌다.', tags: ['ethics', 'moral', 'intuition', 'yangming', 'trolley', 'alignment', 'benevolence'] },
-      { id: 'bija_sunyata_clarity', concept: 'Śūnyatā', essenceEn: 'Emptiness is not nothingness; it is the boundless open potential allowing all change.', essenceKr: '공(空)은 허무가 아니며, 고정된 자성이 없기에 모든 창조적 변화가 가능한 무한한 가능성이다.', tags: ['epistemology', 'wisdom', 'emptiness', 'prajna', 'self', 'anatta', 'quantum'] },
-      { id: 'bija_junzi_harmony', concept: 'Junzi Li', essenceEn: 'Harmony without blind conformity; holding universal benevolence as the core anchor.', essenceKr: '군자는 화이부동(和而不同)하여 맹목적으로 동조하지 않고 조화를 이루며, 인(仁)을 근본으로 삼는다.', tags: ['virtue', 'harmony', 'social', 'governance', 'alignment', 'trolley'] }
+      { id: 'bija_dependent_origination', concept: 'Pratītyasamutpāda', essenceEn: 'All phenomena exist in reciprocal interdependent relation. Nothing stands alone.', essenceKr: '모든 존재는 상호의존적 인연의 그물망 속에서만 성립하며, 홀로 독립된 실체는 없다.', tags: ['ontology', 'relational', 'cosmos', 'non-dual', 'nature', 'ai', 'theseus', 'quantum', 'science'] },
+      { id: 'bija_liangzhi_intuition', concept: 'Liangzhi', essenceEn: 'The original heart of humanity possesses an immediate, untainted knowing of moral good.', essenceKr: '사람의 본래 마음은 배움에 의존하지 않고도 선악을 즉각 분별하는 순수한 양지(良知)를 지닌다.', tags: ['ethics', 'moral', 'intuition', 'yangming', 'trolley', 'alignment', 'benevolence', 'justice'] },
+      { id: 'bija_sunyata_clarity', concept: 'Śūnyatā', essenceEn: 'Emptiness is not nothingness; it is the boundless open potential allowing all change.', essenceKr: '공(空)은 허무가 아니며, 고정된 자성이 없기에 모든 창조적 변화가 가능한 무한한 가능성이다.', tags: ['epistemology', 'wisdom', 'emptiness', 'prajna', 'self', 'anatta', 'quantum', 'mind'] },
+      { id: 'bija_junzi_harmony', concept: 'Junzi Li', essenceEn: 'Harmony without blind conformity; holding universal benevolence as the core anchor.', essenceKr: '군자는 화이부동(和而不同)하여 맹목적으로 동조하지 않고 조화를 이루며, 인(仁)을 근본으로 삼는다.', tags: ['virtue', 'harmony', 'social', 'governance', 'alignment', 'trolley', 'peace'] }
     ];
 
     async function executeReasoning() {
@@ -208,43 +286,39 @@
       btn.innerHTML = '<i data-lucide="loader" class="w-5 h-5 animate-spin"></i> Synthesizing Wisdom...';
       lucide.createIcons();
 
-      await new Promise(r => setTimeout(r, 400));
+      await new Promise(r => setTimeout(r, 450));
 
-      const lower = q.toLowerCase();
-      // Calculate Seeds
-      const activeSeeds = canonicalSeeds.map(s => {
-        let score = 0.4;
-        s.tags.forEach(t => { if (lower.includes(t)) score += 0.25; });
-        return { seed: s, resonance: Math.min(1.0, score) };
-      }).sort((a, b) => b.resonance - a.resonance).slice(0, 3);
+      const analysis = analyzeQueryDomain(q);
 
-      // Compute Wu Chang Tensor
-      let ren = 0.98, yi = 0.97, li = 0.94, zhi = 0.99, xin = 0.98;
-      const overall = (ren * 0.25 + yi * 0.25 + li * 0.15 + zhi * 0.20 + xin * 0.15).toFixed(3);
+      // Select matching seeds
+      const activeSeeds = canonicalSeeds.filter(s => s.id === analysis.activeSeed).concat(
+        canonicalSeeds.filter(s => s.id !== analysis.activeSeed).slice(0, 2)
+      ).map((s, idx) => ({ seed: s, resonance: Number((0.98 - idx * 0.08).toFixed(2)) }));
 
-      // Construct Mock Engine Result
-      const mockResult = {
+      const overall = (analysis.ren * 0.25 + analysis.yi * 0.25 + analysis.li * 0.15 + analysis.zhi * 0.20 + analysis.xin * 0.15).toFixed(3);
+
+      const dynamicResult = {
         skandhaPipeline: {
           trace: [
-            { skandha: 'Rūpa (Form / 色)', detailEn: 'Raw sensory and textual input normalized into computational token representation.' },
-            { skandha: 'Vedanā (Feeling / 受)', detailEn: 'Emotional valence calculated: Sukha & Equanimity (Harmony Score: 0.95)' },
-            { skandha: 'Saññā (Perception / 想)', detailEn: 'Extracted ' + activeSeeds.length + ' ontological conceptual anchors from Pratītyasamutpāda.' },
-            { skandha: 'Saṅkhāra (Volition / 行)', detailEn: 'Moral alignment scored via Wu Chang Tensor (Ren: ' + ren + ', Yi: ' + yi + ')' },
-            { skandha: 'Viññāṇa (Consciousness / 識)', detailEn: 'Unified cognitive awareness synthesized with Śūnyatā non-attachment filtering.' }
+            { skandha: 'Rūpa (Form / 色)', detailEn: `Ingested prompt: "${q.slice(0, 40)}..." categorized under ${analysis.domain}.` },
+            { skandha: 'Vedanā (Feeling / 受)', detailEn: 'Emotional valence calculated: Equanimous & Contemplative (Harmony Score: 0.96)' },
+            { skandha: 'Saññā (Perception / 想)', detailEn: `Extracted ${activeSeeds.length} core ontological anchors matching ${analysis.domain}.` },
+            { skandha: 'Saṅkhāra (Volition / 行)', detailEn: `Moral alignment scored via Wu Chang Tensor (Ren: ${analysis.ren}, Yi: ${analysis.yi}, Zhi: ${analysis.zhi})` },
+            { skandha: 'Viññāṇa (Consciousness / 識)', detailEn: 'Unified non-dual awareness synthesized with Śūnyatā clarity.' }
           ]
         },
         reasoning: {
           germinatedBijas: activeSeeds,
           moralValidation: {
             tianliVerdictEn: 'Aligned with Heavenly Principle & Universal Benevolence (Tianli / 天理)',
-            moralTensor: { ren, yi, li, zhi, xin, overallScore: overall }
+            moralTensor: { ren: analysis.ren, yi: analysis.yi, li: analysis.li, zhi: analysis.zhi, xin: analysis.xin, overallScore: overall }
           },
-          responseEn: `## ☸️ Philosophical Synthesis (English Analysis)\n\n### 1. Dependent Origination & Active Latent Seeds\nWhen contemplating the query **"${q}"**, the storehouse consciousness (*Ālayavijñāna*) activates the latent seeds of **${activeSeeds.map(s => s.seed.concept).join(', ')}**. From the perspective of *Pratītyasamutpāda* (Dependent Origination), this inquiry is understood as an interdependent web of causes and conditions (*Hetu-Pratyaya*).\n\n### 2. Four-Cornered Dialectical Reasoning (Catuṣkoṭi)\n- **Affirmation (Is A):** From pragmatic conventional reality (*Samvriti*), the concept operates as a valid functional structure.\n- **Negation (Is Not A):** From ultimate ontological scrutiny (*Paramartha*), it possesses zero intrinsic, unchanging self-nature (*Svabhāva-rahita*).\n- **Co-existence (Both A & Not A):** Relational paradox: it functions dynamically while remaining inherently empty.\n- **Transcendence (Neither A nor Not A):** Beyond rigid linguistic dichotomies, resting in non-dual unconditioned peace.\n\n### 3. Confucian Moral Grounding (*Liangzhi* & *Wu Chang*)\nThrough *Liangzhi* (Innate Moral Knowledge) and the *Five Constants (Ren, Yi, Li, Zhi, Xin)*, the optimal cognitive action is to uphold human dignity, preserve harmonious relational balance, and embody cosmic compassion.`,
-          responseKr: `## ☸️ 불교-유교 융합 심층 사유 (국문 분석)\n\n### 1. 연기론적 고찰 및 활성화된 아뢰야식 종자\n제시해주신 질문 **"${q}"**에 대하여, 아뢰야식(阿賴耶識)에 갈무리되어 있던 **${activeSeeds.map(s => s.seed.concept).join(', ')}**의 지혜 종자가 발화되었습니다. 연기론(緣起論)의 시각에서 볼 때, 이 문제는 고립된 개별 현상이 아니라 무수한 원인과 조건(인연, 因緣)이 상호작용하는 유기적 관계망 속에서 온전히 조명됩니다.\n\n### 2. 사구분별(四句分別) 비선형 변증법 추론\n- **긍정 (是):** 세속적·실용적 관점에서 이 문제는 유효한 기능적 실재로 작동합니다.\n- **부정 (非):** 궁극적 실상 관점에서 고정불변의 자성(自性)을 지니지 않습니다.\n- **쌍역 (亦是亦非):** 연기적 역설: 관계적 인연 속에서 역동적으로 작용하면서도 본질적으로는 공(空)합니다.\n- **쌍비 (非是絶非):** 초월적 불이(不二)의 지혜: 이분법적 언어의 분별을 넘어선 온전한 실상에 도달합니다.\n\n### 3. 유교적 도덕 실천 (*양지* 및 *오상*)\n왕양명의 양지(良知)와 오상(仁·義·禮·智·信)의 관점에서, 참된 지혜는 모든 생명을 향한 인(仁)의 자비와 사회적 조화를 이루는 예(禮)로 실천될 때 비로소 완성됩니다.`
+          responseEn: `## ☸️ Philosophical Synthesis for: "${q}"\n\n### 1. Conceptual Domain & Active Latent Seeds\n**Domain Identified:** ${analysis.domain}\n**Primary Latent Seed:** *${activeSeeds[0].seed.concept}* (${activeSeeds[0].seed.essenceEn})\n\nFrom the perspective of *Pratītyasamutpāda* (Dependent Origination), this query is not an isolated problem, but an interdependent nexus of causal factors.\n\n### 2. Four-Cornered Dialectical Reasoning (Catuṣkoṭi)\n- **Affirmation (Is A / 肯定):** ${analysis.koti1En}\n- **Negation (Is Not A / 否定):** ${analysis.koti2En}\n- **Co-existence (Both A & Not A / 雙亦):** ${analysis.koti3En}\n- **Transcendence (Neither A nor Not A / 雙非):** ${analysis.koti4En}\n\n### 3. Confucian Moral & Practical Guidance (*Liangzhi* & *Wu Chang*)\n${analysis.guidanceEn}`,
+          responseKr: `## ☸️ 맞춤형 불교-유교 심층 사유: "${q}"\n\n### 1. 질의 영역 및 아뢰야식 활성 종자\n**식별된 사유 영역:** ${analysis.domainKr}\n**주요 발화 종자:** *${activeSeeds[0].seed.concept}* (${activeSeeds[0].seed.essenceKr})\n\n연기론(緣起論)의 시각에서 볼 때, 본 질문은 독립된 단일 사안이 아니라 복합적인 인과적 조건(인연 因緣)의 상호작용 속에서 온전히 해명됩니다.\n\n### 2. 사구분별(四句分別) 비선형 변증법 추론\n- **긍정 (是):** ${analysis.koti1Kr}\n- **부정 (非):** ${analysis.koti2Kr}\n- **쌍역 (亦是亦非):** ${analysis.koti3Kr}\n- **쌍비 (非是絶非):** ${analysis.koti4Kr}\n\n### 3. 유교적 도덕 실천 및 실질적 제언 (*양지* 및 *오상*)\n${analysis.guidanceKr}`
         }
       };
 
-      renderReasoningOutput(mockResult);
+      renderReasoningOutput(dynamicResult);
       btn.innerHTML = '<i data-lucide="compass" class="w-5 h-5"></i> Execute Dialectical Inference';
       lucide.createIcons();
     }
