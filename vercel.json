@@ -2,6 +2,18 @@
   "version": 2,
   "rewrites": [
     {
+      "source": "/eca",
+      "destination": "/eca.html"
+    },
+    {
+      "source": "/eastern",
+      "destination": "/eca.html"
+    },
+    {
+      "source": "/eca-console",
+      "destination": "/eca.html"
+    },
+    {
       "source": "/video-en",
       "destination": "/video-en.html"
     },

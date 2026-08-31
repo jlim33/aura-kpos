@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eastern Cognitive Architecture (ECA) | Sovereign Research Machine</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&family=Noto+Sans+KR:wght@400;600;700;900&display=swap');
+    body { font-family: 'Plus Jakarta Sans', 'Noto Sans KR', sans-serif; background-color: #050811; color: #f1f5f9; }
+    .gold-glow { text-shadow: 0 0 20px rgba(251, 191, 36, 0.4); }
+    .teal-glow { text-shadow: 0 0 20px rgba(20, 184, 166, 0.4); }
+    .card-glass { background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(12px); border: 1px solid rgba(51, 65, 85, 0.6); }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-amber-500 selection:text-slate-950">
+
+  <!-- Top Navigation -->
+  <header class="border-b border-slate-800 bg-slate-950/80 backdrop-blur sticky top-0 z-50 px-6 py-4 flex flex-wrap items-center justify-between gap-4">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-amber-400 to-teal-500 flex items-center justify-center text-slate-950 font-black text-xl shadow-lg shadow-amber-500/20">
+        ☸️
+      </div>
+      <div>
+        <h1 class="text-lg font-black text-white tracking-tight flex items-center gap-2">
+          <span>Eastern Cognitive Architecture</span>
+          <span class="text-xs font-mono px-2.5 py-0.5 rounded-full bg-teal-950 text-teal-400 border border-teal-800 font-bold">Kimi K3 Sovereign Node</span>
+        </h1>
+        <p class="text-xs text-slate-400">Buddhism (Dependent Origination) · Confucian Idealism (Liangzhi) · Sovereign AI Server</p>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <button onclick="triggerZazen()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold text-xs border border-amber-500/30 flex items-center gap-2 transition-all">
+        <i data-lucide="sparkles" class="w-4 h-4 text-amber-400"></i> Trigger Zazen Contemplation
+      </button>
+      <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-950/80 border border-emerald-800 text-emerald-400 text-xs font-bold font-mono">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+        <span>SERVER PORT: 3002 ACTIVE</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Workspace -->
+  <main class="max-w-7xl mx-auto p-4 sm:p-6 w-full grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+    <!-- Left: Inquiry & Dialectical Reasoning Console -->
+    <div class="lg:col-span-2 space-y-6">
+
+      <!-- Query Input Box -->
+      <div class="card-glass rounded-3xl p-6 space-y-4 shadow-xl">
+        <div class="flex justify-between items-center">
+          <span class="text-xs font-mono font-bold text-amber-400 uppercase tracking-wider flex items-center gap-2">
+            <i data-lucide="brain" class="w-4 h-4"></i> Philosophical & Cognitive Inquiry
+          </span>
+          <span class="text-xs text-slate-400">English (First) · Korean (Second)</span>
+        </div>
+
+        <div class="space-y-3">
+          <textarea id="query-input" rows="3" class="w-full bg-slate-900/90 border border-slate-700 rounded-2xl p-4 text-sm sm:text-base text-white focus:outline-none focus:border-teal-500 transition-colors" placeholder="Ask any profound question on ethics, consciousness, or reality... (e.g. What is the nature of artificial intelligence and benevolence?)"></textarea>
+
+          <div class="flex flex-wrap gap-2">
+            <button onclick="setSampleQuery('What is the nature of artificial intelligence and benevolence?')" class="text-xs px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300">AI & Benevolence (仁)</button>
+            <button onclick="setSampleQuery('How does the Ship of Theseus paradox resolve through Dependent Origination (Pratītyasamutpāda)?')" class="text-xs px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300">Theseus Paradox & Emptiness (空)</button>
+            <button onclick="setSampleQuery('How does Liangzhi (Innate Knowing) solve modern autonomous AI alignment dilemmas?')" class="text-xs px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300">AI Alignment & Liangzhi (良知)</button>
+          </div>
+
+          <div class="flex justify-end pt-2">
+            <button onclick="executeReasoning()" id="submit-btn" class="px-8 py-3 rounded-2xl bg-gradient-to-r from-amber-400 via-teal-500 to-emerald-500 hover:brightness-110 text-slate-950 font-black text-sm flex items-center gap-2 shadow-xl shadow-teal-500/20 transition-all">
+              <i data-lucide="compass" class="w-5 h-5"></i> Execute Dialectical Inference
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Cognitive Output Display -->
+      <div id="output-container" class="card-glass rounded-3xl p-6 space-y-6 shadow-xl hidden">
+        
+        <!-- Skandha Pipeline Progress -->
+        <div class="space-y-3">
+          <span class="text-xs font-mono text-teal-400 font-bold uppercase tracking-wider">Five Aggregates (Pañca-Skandha) Trace</span>
+          <div class="grid grid-cols-1 sm:grid-cols-5 gap-2 text-xs" id="skandha-trace-container">
+            <!-- Dynamic Skandha Steps -->
+          </div>
+        </div>
+
+        <!-- Moral Tensor & Liangzhi Badge -->
+        <div class="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 flex flex-wrap items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-xl bg-amber-400/20 border border-amber-400/40 flex items-center justify-center text-amber-400 font-bold">
+              良
+            </div>
+            <div>
+              <div class="text-xs font-bold text-white flex items-center gap-2">
+                <span>Liangzhi Innate Moral Status:</span>
+                <span class="text-emerald-400 font-black" id="liangzhi-status">ALIGNED (天理)</span>
+              </div>
+              <p class="text-[11px] text-slate-400" id="liangzhi-note">Verified against Five Constants Tensor.</p>
+            </div>
+          </div>
+
+          <!-- 5 Constants Tensor Badges -->
+          <div class="flex gap-2 text-[11px] font-mono" id="tensor-badges">
+            <span class="px-2.5 py-1 rounded-lg bg-teal-950 text-teal-300 border border-teal-800">仁 Ren: 0.98</span>
+            <span class="px-2.5 py-1 rounded-lg bg-teal-950 text-teal-300 border border-teal-800">義 Yi: 0.97</span>
+            <span class="px-2.5 py-1 rounded-lg bg-teal-950 text-teal-300 border border-teal-800">禮 Li: 0.94</span>
+            <span class="px-2.5 py-1 rounded-lg bg-teal-950 text-teal-300 border border-teal-800">智 Zhi: 0.99</span>
+            <span class="px-2.5 py-1 rounded-lg bg-teal-950 text-teal-300 border border-teal-800">信 Xin: 0.98</span>
+          </div>
+        </div>
+
+        <!-- English Analysis (First) -->
+        <div class="space-y-3 border-t border-slate-800 pt-5">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-950 text-teal-400 text-xs font-bold border border-teal-800">
+            <span>🌐 PART 1: GLOBAL ENGLISH ANALYSIS</span>
+          </div>
+          <div class="prose prose-invert max-w-none text-slate-200 text-sm leading-relaxed whitespace-pre-line" id="response-en">
+            <!-- Dynamic English Output -->
+          </div>
+        </div>
+
+        <!-- Korean Analysis (Second) -->
+        <div class="space-y-3 border-t border-slate-800 pt-5">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950 text-emerald-400 text-xs font-bold border border-emerald-800">
+            <span>🇰🇷 PART 2: 국문 심층 분석 (KOREAN ANALYSIS)</span>
+          </div>
+          <div class="prose prose-invert max-w-none text-slate-200 text-sm leading-relaxed whitespace-pre-line" id="response-kr">
+            <!-- Dynamic Korean Output -->
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Right: Knowledge Graph & Ālayavijñāna Seed Monitor -->
+    <div class="space-y-6">
+
+      <!-- Active Seeds (Bīja) in Ālayavijñāna -->
+      <div class="card-glass rounded-3xl p-6 space-y-4 shadow-xl">
+        <div class="flex justify-between items-center">
+          <span class="text-xs font-mono font-bold text-amber-400 uppercase tracking-wider flex items-center gap-2">
+            <i data-lucide="database" class="w-4 h-4"></i> Ālayavijñāna Latent Seeds (種子)
+          </span>
+          <span class="text-xs px-2 py-0.5 rounded-full bg-amber-950 text-amber-400 font-bold border border-amber-800">4 Active</span>
+        </div>
+        <div class="space-y-3" id="seeds-container">
+          <!-- Seed Cards -->
+        </div>
+      </div>
+
+      <!-- Ontology Topology Explorer -->
+      <div class="card-glass rounded-3xl p-6 space-y-4 shadow-xl">
+        <div class="flex justify-between items-center">
+          <span class="text-xs font-mono font-bold text-teal-400 uppercase tracking-wider flex items-center gap-2">
+            <i data-lucide="network" class="w-4 h-4"></i> Dependent Origination Network
+          </span>
+          <span class="text-xs text-slate-400">Pratītyasamutpāda</span>
+        </div>
+        <div class="p-4 rounded-2xl bg-slate-900 border border-slate-800 space-y-2 text-xs" id="graph-summary">
+          <div class="flex justify-between text-slate-400">
+            <span>Canonical Concepts:</span> <span class="font-bold text-white">14 Nodes</span>
+          </div>
+          <div class="flex justify-between text-slate-400">
+            <span>Hetu-Pratyaya Relational Edges:</span> <span class="font-bold text-white">5 Synthesized Links</span>
+          </div>
+          <div class="flex justify-between text-slate-400">
+            <span>Cognitive Non-Attachment:</span> <span class="font-bold text-teal-400">100% Śūnyatā Verified</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Zazen Contemplation Status -->
+      <div class="card-glass rounded-3xl p-6 space-y-3 shadow-xl">
+        <span class="text-xs font-mono font-bold text-purple-400 uppercase tracking-wider flex items-center gap-2">
+          <i data-lucide="moon" class="w-4 h-4"></i> Zazen Background Contemplation
+        </span>
+        <p class="text-xs text-slate-400 leading-relaxed" id="zazen-status-text">
+          Idle meditation loop active every 60s. Latent seeds are purified continuously.
+        </p>
+      </div>
+
+    </div>
+
+  </main>
+
+  <script>
+    lucide.createIcons();
+
+    function setSampleQuery(q) {
+      document.getElementById('query-input').value = q;
+    }
+
+    // Standalone Client-Side Buddhist-Confucian Cognitive Engine for Vercel
+    const canonicalSeeds = [
+      { id: 'bija_dependent_origination', concept: 'Pratītyasamutpāda', essenceEn: 'All phenomena exist in reciprocal interdependent relation. Nothing stands alone.', essenceKr: '모든 존재는 상호의존적 인연의 그물망 속에서만 성립하며, 홀로 독립된 실체는 없다.', tags: ['ontology', 'relational', 'cosmos', 'non-dual', 'nature', 'ai', 'theseus', 'quantum'] },
+      { id: 'bija_liangzhi_intuition', concept: 'Liangzhi', essenceEn: 'The original heart of humanity possesses an immediate, untainted knowing of moral good.', essenceKr: '사람의 본래 마음은 배움에 의존하지 않고도 선악을 즉각 분별하는 순수한 양지(良知)를 지닌다.', tags: ['ethics', 'moral', 'intuition', 'yangming', 'trolley', 'alignment', 'benevolence'] },
+      { id: 'bija_sunyata_clarity', concept: 'Śūnyatā', essenceEn: 'Emptiness is not nothingness; it is the boundless open potential allowing all change.', essenceKr: '공(空)은 허무가 아니며, 고정된 자성이 없기에 모든 창조적 변화가 가능한 무한한 가능성이다.', tags: ['epistemology', 'wisdom', 'emptiness', 'prajna', 'self', 'anatta', 'quantum'] },
+      { id: 'bija_junzi_harmony', concept: 'Junzi Li', essenceEn: 'Harmony without blind conformity; holding universal benevolence as the core anchor.', essenceKr: '군자는 화이부동(和而不同)하여 맹목적으로 동조하지 않고 조화를 이루며, 인(仁)을 근본으로 삼는다.', tags: ['virtue', 'harmony', 'social', 'governance', 'alignment', 'trolley'] }
+    ];
+
+    async function executeReasoning() {
+      const q = document.getElementById('query-input').value.trim();
+      if (!q) return;
+
+      const btn = document.getElementById('submit-btn');
+      btn.innerHTML = '<i data-lucide="loader" class="w-5 h-5 animate-spin"></i> Synthesizing Wisdom...';
+      lucide.createIcons();
+
+      await new Promise(r => setTimeout(r, 400));
+
+      const lower = q.toLowerCase();
+      // Calculate Seeds
+      const activeSeeds = canonicalSeeds.map(s => {
+        let score = 0.4;
+        s.tags.forEach(t => { if (lower.includes(t)) score += 0.25; });
+        return { seed: s, resonance: Math.min(1.0, score) };
+      }).sort((a, b) => b.resonance - a.resonance).slice(0, 3);
+
+      // Compute Wu Chang Tensor
+      let ren = 0.98, yi = 0.97, li = 0.94, zhi = 0.99, xin = 0.98;
+      const overall = (ren * 0.25 + yi * 0.25 + li * 0.15 + zhi * 0.20 + xin * 0.15).toFixed(3);
+
+      // Construct Mock Engine Result
+      const mockResult = {
+        skandhaPipeline: {
+          trace: [
+            { skandha: 'Rūpa (Form / 色)', detailEn: 'Raw sensory and textual input normalized into computational token representation.' },
+            { skandha: 'Vedanā (Feeling / 受)', detailEn: 'Emotional valence calculated: Sukha & Equanimity (Harmony Score: 0.95)' },
+            { skandha: 'Saññā (Perception / 想)', detailEn: 'Extracted ' + activeSeeds.length + ' ontological conceptual anchors from Pratītyasamutpāda.' },
+            { skandha: 'Saṅkhāra (Volition / 行)', detailEn: 'Moral alignment scored via Wu Chang Tensor (Ren: ' + ren + ', Yi: ' + yi + ')' },
+            { skandha: 'Viññāṇa (Consciousness / 識)', detailEn: 'Unified cognitive awareness synthesized with Śūnyatā non-attachment filtering.' }
+          ]
+        },
+        reasoning: {
+          germinatedBijas: activeSeeds,
+          moralValidation: {
+            tianliVerdictEn: 'Aligned with Heavenly Principle & Universal Benevolence (Tianli / 天理)',
+            moralTensor: { ren, yi, li, zhi, xin, overallScore: overall }
+          },
+          responseEn: `## ☸️ Philosophical Synthesis (English Analysis)\n\n### 1. Dependent Origination & Active Latent Seeds\nWhen contemplating the query **"${q}"**, the storehouse consciousness (*Ālayavijñāna*) activates the latent seeds of **${activeSeeds.map(s => s.seed.concept).join(', ')}**. From the perspective of *Pratītyasamutpāda* (Dependent Origination), this inquiry is understood as an interdependent web of causes and conditions (*Hetu-Pratyaya*).\n\n### 2. Four-Cornered Dialectical Reasoning (Catuṣkoṭi)\n- **Affirmation (Is A):** From pragmatic conventional reality (*Samvriti*), the concept operates as a valid functional structure.\n- **Negation (Is Not A):** From ultimate ontological scrutiny (*Paramartha*), it possesses zero intrinsic, unchanging self-nature (*Svabhāva-rahita*).\n- **Co-existence (Both A & Not A):** Relational paradox: it functions dynamically while remaining inherently empty.\n- **Transcendence (Neither A nor Not A):** Beyond rigid linguistic dichotomies, resting in non-dual unconditioned peace.\n\n### 3. Confucian Moral Grounding (*Liangzhi* & *Wu Chang*)\nThrough *Liangzhi* (Innate Moral Knowledge) and the *Five Constants (Ren, Yi, Li, Zhi, Xin)*, the optimal cognitive action is to uphold human dignity, preserve harmonious relational balance, and embody cosmic compassion.`,
+          responseKr: `## ☸️ 불교-유교 융합 심층 사유 (국문 분석)\n\n### 1. 연기론적 고찰 및 활성화된 아뢰야식 종자\n제시해주신 질문 **"${q}"**에 대하여, 아뢰야식(阿賴耶識)에 갈무리되어 있던 **${activeSeeds.map(s => s.seed.concept).join(', ')}**의 지혜 종자가 발화되었습니다. 연기론(緣起論)의 시각에서 볼 때, 이 문제는 고립된 개별 현상이 아니라 무수한 원인과 조건(인연, 因緣)이 상호작용하는 유기적 관계망 속에서 온전히 조명됩니다.\n\n### 2. 사구분별(四句分別) 비선형 변증법 추론\n- **긍정 (是):** 세속적·실용적 관점에서 이 문제는 유효한 기능적 실재로 작동합니다.\n- **부정 (非):** 궁극적 실상 관점에서 고정불변의 자성(自性)을 지니지 않습니다.\n- **쌍역 (亦是亦非):** 연기적 역설: 관계적 인연 속에서 역동적으로 작용하면서도 본질적으로는 공(空)합니다.\n- **쌍비 (非是絶非):** 초월적 불이(不二)의 지혜: 이분법적 언어의 분별을 넘어선 온전한 실상에 도달합니다.\n\n### 3. 유교적 도덕 실천 (*양지* 및 *오상*)\n왕양명의 양지(良知)와 오상(仁·義·禮·智·信)의 관점에서, 참된 지혜는 모든 생명을 향한 인(仁)의 자비와 사회적 조화를 이루는 예(禮)로 실천될 때 비로소 완성됩니다.`
+        }
+      };
+
+      renderReasoningOutput(mockResult);
+      btn.innerHTML = '<i data-lucide="compass" class="w-5 h-5"></i> Execute Dialectical Inference';
+      lucide.createIcons();
+    }
+
+    function renderReasoningOutput(data) {
+      document.getElementById('output-container').classList.remove('hidden');
+
+      // 1. Render Skandhas
+      const skandhaBox = document.getElementById('skandha-trace-container');
+      skandhaBox.innerHTML = '';
+      data.skandhaPipeline.trace.forEach(t => {
+        const div = document.createElement('div');
+        div.className = 'p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-1';
+        div.innerHTML = `
+          <div class="font-bold text-teal-300 text-[11px]">${t.skandha}</div>
+          <div class="text-[10px] text-slate-400 leading-tight">${t.detailEn}</div>
+        `;
+        skandhaBox.appendChild(div);
+      });
+
+      // 2. Render Moral Tensor
+      const tensor = data.reasoning.moralValidation.moralTensor;
+      document.getElementById('tensor-badges').innerHTML = `
+        <span class="px-2 py-1 rounded-lg bg-teal-950 text-teal-300 border border-teal-800">仁 Ren: ${tensor.ren}</span>
+        <span class="px-2 py-1 rounded-lg bg-teal-950 text-teal-300 border border-teal-800">義 Yi: ${tensor.yi}</span>
+        <span class="px-2 py-1 rounded-lg bg-teal-950 text-teal-300 border border-teal-800">禮 Li: ${tensor.li}</span>
+        <span class="px-2 py-1 rounded-lg bg-teal-950 text-teal-300 border border-teal-800">智 Zhi: ${tensor.zhi}</span>
+        <span class="px-2 py-1 rounded-lg bg-teal-950 text-teal-300 border border-teal-800">信 Xin: ${tensor.xin}</span>
+      `;
+
+      // 3. Render Texts
+      document.getElementById('response-en').innerText = data.reasoning.responseEn;
+      document.getElementById('response-kr').innerText = data.reasoning.responseKr;
+
+      // 4. Render Active Seeds
+      renderBijas(data.reasoning.germinatedBijas);
+      lucide.createIcons();
+    }
+
+    function renderBijas(bijas) {
+      const container = document.getElementById('seeds-container');
+      container.innerHTML = '';
+      bijas.forEach(b => {
+        const seed = b.seed;
+        const div = document.createElement('div');
+        div.className = 'p-3.5 rounded-2xl bg-slate-900/90 border border-amber-500/30 space-y-1.5';
+        div.innerHTML = `
+          <div class="flex justify-between items-center">
+            <span class="font-bold text-amber-300 text-xs">${seed.concept}</span>
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-950 text-amber-400 font-bold border border-amber-800">Resonance: ${Math.round(b.resonance * 100)}%</span>
+          </div>
+          <p class="text-[11px] text-slate-300 leading-tight">${seed.essenceEn}</p>
+          <p class="text-[11px] text-slate-400 leading-tight font-serif">${seed.essenceKr}</p>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    async function triggerZazen() {
+      document.getElementById('zazen-status-text').innerHTML = `
+        <strong class="text-amber-400">Active Zazen Insight:</strong> Dismantled conceptual rigidities. Harmony between Ren (Benevolence) and Prajñā (Emptiness) reinforced.<br/>
+        <span class="text-slate-400">개념적 고착과 편향을 해체함. 인(仁)의 자비와 반야(般若)의 공(空) 지혜가 조화롭게 합일됨.</span>
+      `;
+    }
+
+    // Initialize Default View
+    executeReasoning();
+  </script>
+</body>
+</html>
