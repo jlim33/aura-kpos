@@ -14,6 +14,7 @@
 * **AI Server Master Guide:** [https://jlim33.github.io/aura-kpos/ai-server/](https://jlim33.github.io/aura-kpos/ai-server/) (Independent Self-Hosted AI Server Guide)
 * **Singularity Showcase:** [https://jlim33.github.io/aura-kpos/showcase.html](https://jlim33.github.io/aura-kpos/showcase.html) ([EN](https://jlim33.github.io/aura-kpos/showcase-en.html))
 * **Interactive Video Guide:** [https://jlim33.github.io/aura-kpos/video.html](https://jlim33.github.io/aura-kpos/video.html) ([EN](https://jlim33.github.io/aura-kpos/video-en.html))
+* **TeslaPulse OS:** [https://jlim33.github.io/aura-kpos/tesla/](https://jlim33.github.io/aura-kpos/tesla/) (Vehicle Diagnostics & Maintenance Hub)
 
 ---
 
