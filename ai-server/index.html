@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Independent AI Server — Master Workflow & Step-by-Step Setup Guide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Floating Navigation -->
+  <header class="navbar-wrapper">
+    <nav class="navbar glass-card">
+      <div class="nav-brand">
+        <span class="brand-icon">⚡</span>
+        <div class="brand-text">
+          <span class="brand-title">AI SERVER MASTER GUIDE</span>
+          <span class="brand-sub">Independent & Self-Hosted Infrastructure</span>
+        </div>
+      </div>
+      <div class="nav-links">
+        <a href="#architecture" class="nav-link">Architecture</a>
+        <a href="#steps" class="nav-link">Step-by-Step Guide</a>
+        <a href="#calculator" class="nav-link">Hardware Calculator</a>
+        <a href="#blueprints" class="nav-link">Docker Blueprints</a>
+        <a href="#agents" class="nav-link">Dify & LangGraph</a>
+      </div>
+      <a href="#steps" class="nav-cta btn btn-primary">Start Setup</a>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="glow-orb glow-top-left"></div>
+    <div class="glow-orb glow-bottom-right"></div>
+    <div class="hero-container">
+      <div class="badge-tag">
+        <span class="pulse-dot"></span> 100% On-Premise • Zero Cloud Token Fees • Full Privacy Control
+      </div>
+      <h1 class="hero-title">
+        The Complete Guide to Building an<br>
+        <span class="gradient-text">Independent AI Server</span>
+      </h1>
+      <p class="hero-desc">
+        Architect, build, and deploy your own private artificial intelligence infrastructure. 
+        Power high-throughput LLM inference, local RAG knowledge bases, visual LLMOps (<strong>Dify</strong>), and autonomous multi-agent graphs (<strong>LangGraph</strong>) on consumer GPUs (<strong>RTX 4090 / 3090</strong>) or workstation hardware.
+      </p>
+
+      <div class="hero-actions">
+        <a href="#steps" class="btn btn-primary btn-lg">
+          <span>Follow 5-Phase Workflow</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#blueprints" class="btn btn-outline btn-lg">
+          <span>Get Docker Compose</span>
+        </a>
+      </div>
+
+      <!-- Quick Metrics Bar -->
+      <div class="metrics-grid glass-card">
+        <div class="metric-item">
+          <div class="metric-value">$0 / mo</div>
+          <div class="metric-label">Recurring Token Bills</div>
+        </div>
+        <div class="metric-divider"></div>
+        <div class="metric-item">
+          <div class="metric-value">16GB - 48GB</div>
+          <div class="metric-label">GPU VRAM Sizing Support</div>
+        </div>
+        <div class="metric-divider"></div>
+        <div class="metric-item">
+          <div class="metric-value">~70 tok/s</div>
+          <div class="metric-label">Token Generation on RTX 4090</div>
+        </div>
+        <div class="metric-divider"></div>
+        <div class="metric-item">
+          <div class="metric-value">100%</div>
+          <div class="metric-label">Local Data Privacy</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive System Data Flow Canvas -->
+  <section class="section-container" id="system-flow">
+    <div class="glass-card graph-sandbox-wrapper">
+      <div class="sandbox-header">
+        <div>
+          <h3 class="sandbox-title">Interactive AI Server Data Flow</h3>
+          <p class="sandbox-desc">Hover and drag components to explore how queries route from User Clients through the Gateway to GPU Tensor Cores and Vector Databases.</p>
+        </div>
+        <button id="resetGraphBtn" class="btn btn-sm btn-outline">Reset Diagram</button>
+      </div>
+      <div class="canvas-container">
+        <canvas id="systemCanvas"></canvas>
+      </div>
+      <div class="graph-legend">
+        <div class="legend-item"><span class="dot dot-ui"></span> Frontend / Client</div>
+        <div class="legend-item"><span class="dot dot-gw"></span> AI Gateway (LiteLLM)</div>
+        <div class="legend-item"><span class="dot dot-gpu"></span> GPU Inference (vLLM/Ollama)</div>
+        <div class="legend-item"><span class="dot dot-rag"></span> Vector DB / RAG (Qdrant)</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 1: Architecture Blueprint -->
+  <section id="architecture" class="section-container">
+    <div class="section-header">
+      <div class="section-badge">FULL-STACK TOPOLOGY</div>
+      <h2 class="section-title">Modular 5-Layer AI Server Architecture</h2>
+      <p class="section-subtitle">A decoupled, containerized stack designed for reliability, sub-second latency, and multi-user scaling.</p>
+    </div>
+
+    <!-- Interactive Architecture Diagram -->
+    <div class="arch-tabs">
+      <button class="arch-tab-btn active" data-layer="all">Full Stack Overview</button>
+      <button class="arch-tab-btn" data-layer="ui">1. Apps & UI</button>
+      <button class="arch-tab-btn" data-layer="gateway">2. Gateway & Proxy</button>
+      <button class="arch-tab-btn" data-layer="inference">3. LLM Inference</button>
+      <button class="arch-tab-btn" data-layer="rag">4. Knowledge & RAG</button>
+      <button class="arch-tab-btn" data-layer="hardware">5. Compute & CUDA</button>
+    </div>
+
+    <div class="arch-visual-container glass-card">
+      <div class="arch-layer" id="layer-ui">
+        <div class="layer-tag">LAYER 1: USER INTERFACES & AGENT WORKFLOWS</div>
+        <div class="layer-cards-row">
+          <div class="component-card">
+            <span class="comp-icon">💬</span>
+            <div class="comp-info">
+              <h4>Open WebUI</h4>
+              <p>ChatGPT-like interface for team members with multi-user RBAC, RAG document chat, and custom system prompts.</p>
+            </div>
+          </div>
+          <div class="component-card">
+            <span class="comp-icon">🔀</span>
+            <div class="comp-info">
+              <h4>Dify (LLMOps)</h4>
+              <p>Visual workflow builder, automated document ingestion pipelines, and interactive agent assistants.</p>
+            </div>
+          </div>
+          <div class="component-card">
+            <span class="comp-icon">🧬</span>
+            <div class="comp-info">
+              <h4>LangGraph Studio</h4>
+              <p>Stateful multi-agent systems, cyclic graphs, code execution sandboxes, and human-in-the-loop validation.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="arch-layer" id="layer-gateway">
+        <div class="layer-tag">LAYER 2: AI GATEWAY & SECURE ACCESS</div>
+        <div class="layer-cards-row">
+          <div class="component-card">
+            <span class="comp-icon">🛡️</span>
+            <div class="comp-info">
+              <h4>LiteLLM Proxy Router</h4>
+              <p>Exposes unified OpenAI-standard REST APIs (<code>/v1/chat/completions</code>), load balancing, rate limiting, and caching.</p>
+            </div>
+          </div>
+          <div class="component-card">
+            <span class="comp-icon">🔒</span>
+            <div class="comp-info">
+              <h4>Tailscale / WireGuard Mesh</h4>
+              <p>Zero-trust encrypted remote office access without exposing open ports to the public internet.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="arch-layer" id="layer-inference">
+        <div class="layer-tag">LAYER 3: GPU INFERENCE ENGINES</div>
+        <div class="layer-cards-row">
+          <div class="component-card featured">
+            <span class="comp-icon">⚡</span>
+            <div class="comp-info">
+              <h4>Ollama / vLLM Engine</h4>
+              <p>Continuous batching, PagedAttention, and automated GPU memory management on NVIDIA Tensor Cores.</p>
+            </div>
+          </div>
+          <div class="component-card">
+            <span class="comp-info">🧠</span>
+            <div class="comp-info">
+              <h4>SOTA Models (14B - 70B)</h4>
+              <p>Qwen 2.5 Coder (14B/32B), DeepSeek-R1 (14B/32B), Llama 3.3 (70B), and BGE-M3 Embeddings.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="arch-layer" id="layer-rag">
+        <div class="layer-tag">LAYER 4: KNOWLEDGE BASE & VECTOR RETRIEVAL (RAG)</div>
+        <div class="layer-cards-row">
+          <div class="component-card">
+            <span class="comp-icon">📊</span>
+            <div class="comp-info">
+              <h4>Qdrant Vector Database</h4>
+              <p>Ultra-fast HNSW indexing for hybrid search (dense embeddings + sparse lexical keyword retrieval).</p>
+            </div>
+          </div>
+          <div class="component-card">
+            <span class="comp-icon">📑</span>
+            <div class="comp-info">
+              <h4>Document Ingestion Pipeline</h4>
+              <p>Extracts text and tables from PDFs, Office docs, and CSVs into chunked vector embeddings.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="arch-layer" id="layer-hardware">
+        <div class="layer-tag">LAYER 5: COMPUTE SUBSTRATE & RUNTIME</div>
+        <div class="layer-cards-row">
+          <div class="component-card">
+            <span class="comp-icon">🎛️</span>
+            <div class="comp-info">
+              <h4>NVIDIA GPU (RTX 4090 / Dual 3090 / Ada)</h4>
+              <p>24GB to 48GB VRAM, PCIe Gen 4/5, FlashAttention-2, 64GB DDR5 RAM, 1000W+ PSU.</p>
+            </div>
+          </div>
+          <div class="component-card">
+            <span class="comp-icon">🐧</span>
+            <div class="comp-info">
+              <h4>Docker Engine & NVIDIA Container Toolkit</h4>
+              <p>Direct CUDA passthrough on Ubuntu Server 24.04 LTS or Windows 11 WSL2.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 2: Step-by-Step Guideline (Workflow Steps) -->
+  <section id="steps" class="section-container">
+    <div class="section-header">
+      <div class="section-badge">EXECUTION ROADMAP</div>
+      <h2 class="section-title">5-Phase Step-by-Step Deployment Guideline</h2>
+      <p class="section-subtitle">Follow this step-by-step workflow to configure your hardware, install the AI stack, and run local agents.</p>
+    </div>
+
+    <div class="timeline-wrapper">
+      <!-- Step 1 -->
+      <div class="timeline-step glass-card">
+        <div class="step-num">01</div>
+        <div class="step-content">
+          <div class="step-header">
+            <h3>Phase 1: Host OS Setup & NVIDIA Driver Installation</h3>
+            <span class="step-time">Est: 20 Mins</span>
+          </div>
+          <p class="step-desc">
+            Install <strong>Ubuntu Server 24.04 LTS</strong> (or Windows 11 with <strong>WSL2</strong>). Verify that your GPU is detected and install the proprietary NVIDIA graphics drivers.
+          </p>
+          <div class="code-box">
+            <div class="code-bar">
+              <span>Terminal (Ubuntu / Linux)</span>
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            </div>
+            <pre><code># 1. Update package lists and install kernel headers
+sudo apt update && sudo apt upgrade -y
+sudo apt install -y build-essential dkms linux-headers-$(uname -r)
+
+# 2. Install recommended NVIDIA display drivers
+sudo ubuntu-drivers install
+sudo reboot
+
+# 3. Verify driver and CUDA detection
+nvidia-smi</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="timeline-step glass-card">
+        <div class="step-num">02</div>
+        <div class="step-content">
+          <div class="step-header">
+            <h3>Phase 2: Install Docker Engine & NVIDIA Container Toolkit</h3>
+            <span class="step-time">Est: 15 Mins</span>
+          </div>
+          <p class="step-desc">
+            Install the Docker engine and configure the NVIDIA Container Toolkit so containerized services can directly allocate GPU VRAM and Tensor Cores.
+          </p>
+          <div class="code-box">
+            <div class="code-bar">
+              <span>Terminal (Bash)</span>
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            </div>
+            <pre><code># 1. Install Docker
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+sudo usermod -aG docker $USER
+
+# 2. Add NVIDIA Container Toolkit repository
+curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
+curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \
+  sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
+  sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+
+# 3. Install and configure runtime
+sudo apt update && sudo apt install -y nvidia-container-toolkit
+sudo nvidia-ctk runtime configure --runtime=docker
+sudo systemctl restart docker
+
+# 4. Verify GPU passthrough inside Docker
+docker run --rm --gpus all nvidia/cuda:12.2.0-base-ubuntu22.04 nvidia-smi</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="timeline-step glass-card">
+        <div class="step-num">03</div>
+        <div class="step-content">
+          <div class="step-header">
+            <h3>Phase 3: Deploy the Unified AI Stack (Docker Compose)</h3>
+            <span class="step-time">Est: 10 Mins</span>
+          </div>
+          <p class="step-desc">
+            Spin up Ollama (Inference), LiteLLM (Gateway), Qdrant (Vector DB), and Open WebUI in a single coordinated environment.
+          </p>
+          <div class="code-box">
+            <div class="code-bar">
+              <span>Terminal (Bash)</span>
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            </div>
+            <pre><code># Create project directory
+mkdir -p ~/ai-server && cd ~/ai-server
+
+# (Save docker-compose.yml and litellm-config.yaml into this folder)
+# Launch all services in background:
+docker compose up -d
+
+# Verify all containers are running
+docker compose ps</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="timeline-step glass-card">
+        <div class="step-num">04</div>
+        <div class="step-content">
+          <div class="step-header">
+            <h3>Phase 4: Pull & Benchmark Core Models</h3>
+            <span class="step-time">Est: 15 Mins</span>
+          </div>
+          <p class="step-desc">
+            Download your primary reasoning model, coding assistant, and high-performance embedding model into the local inference engine.
+          </p>
+          <div class="model-cards-grid">
+            <div class="model-badge-card">
+              <div class="mb-title">qwen2.5-coder:14b</div>
+              <div class="mb-role">Agent Logic & Coding</div>
+              <div class="mb-vram">VRAM: ~14 GB (Q8)</div>
+              <div class="mb-cmd"><code>docker exec -it ollama ollama pull qwen2.5-coder:14b</code></div>
+            </div>
+            <div class="model-badge-card">
+              <div class="mb-title">deepseek-r1:14b</div>
+              <div class="mb-role">Deep Chain-of-Thought</div>
+              <div class="mb-vram">VRAM: ~12 GB (Q4)</div>
+              <div class="mb-cmd"><code>docker exec -it ollama ollama pull deepseek-r1:14b</code></div>
+            </div>
+            <div class="model-badge-card">
+              <div class="mb-title">bge-m3</div>
+              <div class="mb-role">Multilingual RAG Embeddings</div>
+              <div class="mb-vram">VRAM: ~1.2 GB</div>
+              <div class="mb-cmd"><code>docker exec -it ollama ollama pull bge-m3</code></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 5 -->
+      <div class="timeline-step glass-card">
+        <div class="step-num">05</div>
+        <div class="step-content">
+          <div class="step-header">
+            <h3>Phase 5: Connect Web UI, Dify & LangGraph</h3>
+            <span class="step-time">Est: 20 Mins</span>
+          </div>
+          <p class="step-desc">
+            Access your web interface at <code>http://&lt;SERVER-IP&gt;:3000</code>. Connect your local models to Dify for visual pipelines and execute LangGraph Python scripts against the local OpenAI-compatible endpoint.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 3: Hardware & Sizing Calculator -->
+  <section id="calculator" class="section-container">
+    <div class="section-header">
+      <div class="section-badge">HARDWARE SIZING MATRIX</div>
+      <h2 class="section-title">GPU & Hardware Sizing Calculator</h2>
+      <p class="section-subtitle">Select your target tier to see recommended GPU, RAM, power supply, and model capabilities.</p>
+    </div>
+
+    <div class="calculator-card glass-card">
+      <div class="calc-controls">
+        <label class="calc-label">Select Hardware Tier:</label>
+        <div class="tier-selector">
+          <button class="tier-btn active" data-tier="lite">
+            <span class="tier-name">Entry: Office Lite</span>
+            <span class="tier-price">~$1,000 Hardware (16GB VRAM)</span>
+          </button>
+          <button class="tier-btn" data-tier="pro">
+            <span class="tier-name">Pro: Agent Workhorse</span>
+            <span class="tier-price">~$1,800 Hardware (RTX 4090/3090 24GB)</span>
+          </button>
+          <button class="tier-btn" data-tier="enterprise">
+            <span class="tier-name">Max: Dual 70B Master</span>
+            <span class="tier-price">~$3,200 Hardware (Dual 3090 48GB)</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="calc-results-grid">
+        <div class="res-box">
+          <span class="res-tag">Recommended GPU</span>
+          <h4 id="calc-gpu">NVIDIA GeForce RTX 4060 Ti (16GB)</h4>
+          <p id="calc-gpu-desc">Optimal for 7B-8B parameter models with low power draw (165W).</p>
+        </div>
+        <div class="res-box">
+          <span class="res-tag">RAM, Storage & PSU</span>
+          <h4 id="calc-ram">32GB DDR5 + 1TB NVMe + 650W PSU</h4>
+          <p id="calc-ram-desc">Fast document indexing with light multi-user concurrency.</p>
+        </div>
+        <div class="res-box">
+          <span class="res-tag">Optimal Models</span>
+          <h4 id="calc-models">Qwen 2.5 7B + Llama 3.1 8B + BGE-M3</h4>
+          <p id="calc-model-desc">Sub-second response time for summaries, search, and drafts.</p>
+        </div>
+        <div class="res-box highlight-box">
+          <span class="res-tag">Break-Even Period</span>
+          <h4 id="calc-roi">3 - 4 Months</h4>
+          <p id="calc-roi-desc">Compared to commercial cloud API token and seat subscriptions.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 4: Code Blueprints Vault -->
+  <section id="blueprints" class="section-container">
+    <div class="section-header">
+      <div class="section-badge">CONFIGURATION VAULT</div>
+      <h2 class="section-title">Production Docker & Code Blueprints</h2>
+      <p class="section-subtitle">Copy-paste production-ready configuration files directly onto your AI Server.</p>
+    </div>
+
+    <div class="code-tabs-wrapper glass-card">
+      <div class="code-nav">
+        <button class="code-tab-btn active" data-code="docker">docker-compose.yml</button>
+        <button class="code-tab-btn" data-code="litellm">litellm-config.yaml</button>
+        <button class="code-tab-btn" data-code="langgraph">langgraph_agent.py</button>
+      </div>
+
+      <div class="code-display" id="code-content">
+        <pre><code id="code-snippet"># Loading blueprint...</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 5: Dify & LangGraph Integration Guide -->
+  <section id="agents" class="section-container">
+    <div class="section-header">
+      <div class="section-badge">AGENT FRAMEWORKS</div>
+      <h2 class="section-title">Integrating Dify & LangGraph with Your Server</h2>
+      <p class="section-subtitle">Combine visual LLMOps with programmatic multi-agent loops against your local server endpoint.</p>
+    </div>
+
+    <div class="pillars-grid">
+      <div class="pillar-card glass-card">
+        <div class="pillar-header">
+          <div class="pillar-seal">🔀</div>
+          <div class="pillar-meta">
+            <h3>Dify (Visual LLMOps & RAG)</h3>
+            <span class="sub-meta">No-code / Low-code Visual Pipelines</span>
+          </div>
+        </div>
+        <p class="pillar-text">
+          Run Dify on your local machine and point the <strong>Model Provider</strong> to <code>http://host.docker.internal:11434</code> (Ollama) or <code>http://localhost:4000/v1</code> (LiteLLM). Build visual chatbots, document search engines, and prompt workflows.
+        </p>
+        <div class="pillar-tech-badge">Endpoint: http://localhost:80</div>
+      </div>
+
+      <div class="pillar-card glass-card">
+        <div class="pillar-header">
+          <div class="pillar-seal">🧬</div>
+          <div class="pillar-meta">
+            <h3>LangGraph (Stateful Multi-Agents)</h3>
+            <span class="sub-meta">Python Code-First Agent Graphs</span>
+          </div>
+        </div>
+        <p class="pillar-text">
+          Build cyclical, multi-agent systems with tool calling and human-in-the-loop approvals using <code>langgraph</code> and <code>ChatOpenAI(base_url="http://localhost:4000/v1")</code>.
+        </p>
+        <div class="pillar-tech-badge">Python: pip install langgraph langchain-openai</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer-wrapper">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <span class="brand-icon">⚡</span>
+        <span>INDEPENDENT AI SERVER BUILDER</span>
+      </div>
+      <p class="footer-note">
+        Engineered for absolute data privacy, high-throughput local compute, and self-hosted AI sovereignty.
+      </p>
+      <div class="footer-copy">© 2026 Independent AI Systems • Open Source Architecture</div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

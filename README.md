@@ -1,40 +1,28 @@
-# 🚀 Aura K-POS Enterprise: GitHub (jlim33) & Vercel Deployment
+# 🚀 Aura K-POS Enterprise Suite: GitHub Pages & Vercel Deployment
 
 * **GitHub Repository:** [https://github.com/jlim33/aura-kpos](https://github.com/jlim33/aura-kpos)
+* **GitHub Pages Live:** [https://jlim33.github.io/aura-kpos/](https://jlim33.github.io/aura-kpos/)
 * **Author / GitHub ID:** `jlim33`
 
 ---
 
-## ⚡ Quick Push to GitHub (Bash Commands)
+## 🌐 Live Suite Routes on GitHub Pages
 
-If you haven't created the repository yet, create a new public or private repo named **`aura-kpos`** at:  
-👉 **[https://github.com/new](https://github.com/new)** (Repository name: `aura-kpos`)
-
-Then run these commands in your Git Bash / Terminal:
-
-```bash
-cd "i:/AntigravityWorkspace/vercel-deployment"
-git branch -M main
-git add .
-git commit -m "feat: Aura K-POS Enterprise & Technological Singularity Showcase"
-git push -u origin main
-```
+* **Main Terminal:** [https://jlim33.github.io/aura-kpos/](https://jlim33.github.io/aura-kpos/) (Aura K-POS Pastel/Dark POS)
+* **ONDAM Dining:** [https://jlim33.github.io/aura-kpos/ondam.html](https://jlim33.github.io/aura-kpos/ondam.html) (Korean Gourmet Dining Experience)
+* **Eastern Cognitive AI:** [https://jlim33.github.io/aura-kpos/eca.html](https://jlim33.github.io/aura-kpos/eca.html) (ECA Reasoning Console)
+* **AI Server Master Guide:** [https://jlim33.github.io/aura-kpos/ai-server/](https://jlim33.github.io/aura-kpos/ai-server/) (Independent Self-Hosted AI Server Guide)
+* **Singularity Showcase:** [https://jlim33.github.io/aura-kpos/showcase.html](https://jlim33.github.io/aura-kpos/showcase.html) ([EN](https://jlim33.github.io/aura-kpos/showcase-en.html))
+* **Interactive Video Guide:** [https://jlim33.github.io/aura-kpos/video.html](https://jlim33.github.io/aura-kpos/video.html) ([EN](https://jlim33.github.io/aura-kpos/video-en.html))
 
 ---
 
-## 🌐 Deploy to Vercel (1-Click)
+## ⚡ Deployment
 
-1. Open **[https://vercel.com/new](https://vercel.com/new)**.
-2. Under **Import Git Repository**, find and select **`jlim33/aura-kpos`**.
-3. Click **Deploy**!
+### GitHub Pages (Automated)
+This repository includes `.github/workflows/deploy.yml` which deploys automatically on every push to `main`.
+Ensure **Settings > Pages > Source** is set to **GitHub Actions** (or branch `gh-pages` / `main`).
 
-Within ~15 seconds, your live site (e.g. `https://aura-kpos-jlim33.vercel.app`) will be live worldwide!
+### Vercel Deployment
+Also deployable to Vercel via `https://vercel.com/new` by connecting `jlim33/aura-kpos`.
 
----
-
-## 🗺️ Live Routes on Vercel
-* `/` ➔ **Aura K-POS Main Terminal** (Pastel/Dark, Take Out, KDS, Modifiers, Tip Matrix, Z-Report)
-* `/video` ➔ **3-Minute Video Guide & Interactive Simulator**
-* `/showcase` ➔ **Technological Singularity & Visual Gallery Showcase**
-* `/ondam` ➔ **Korean Gourmet Delivery Hub**
-* `/assets/*` ➔ High-Resolution Promotional Images

@@ -3,6 +3,8 @@
   "version": "2.0.0",
   "description": "Aura K-POS: San Francisco Bay Area Restaurant Operating System & Technological Singularity Showcase",
   "scripts": {
-    "start": "node server.js"
+    "build": "echo 'Static build complete'",
+    "vercel-build": "echo 'Static build complete'",
+    "start": "npx serve ."
   }
 }
